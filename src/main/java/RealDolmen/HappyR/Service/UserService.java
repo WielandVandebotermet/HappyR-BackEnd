@@ -23,4 +23,36 @@ public class UserService {
         userList.add(new User(9, "Wade", "Allen"));
         userList.add(new User(10, "Todd", "Carter"));
     }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public Optional<User> getOptionalUserById(int userId){
+        return getUserList().stream().filter(u-> u.getId()==userId).findFirst();
+    }
+    public User getUserById(Optional<User> optionalUser){
+        return optionalUser.orElse(null);
+    }
+
+    public User addUser(User newUser) {
+        newUser.setId(userList.size()+1);
+        userList.add(newUser);
+        return userList.get(userList.size()-1);
+    }
+
+    public User updateUserById(User updateUser, int userId) {
+        Optional<User> userOptional = getOptionalUserById(userId);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setFirstName(updateUser.getFirstName());
+            user.setLastName(updateUser.getLastName());
+            return user;
+        }
+        return null;
+    }
 }

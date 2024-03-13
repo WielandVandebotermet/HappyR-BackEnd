@@ -1,6 +1,7 @@
 package RealDolmen.HappyR.model;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 
 public class Result {
@@ -8,9 +9,10 @@ public class Result {
     private int SurveyId;
     private int UserId;
     private int TotalResult;
-    private Dictionary ScoreList;
 
-    public Result(int id, int surveyId, int userId, int totalResult, Dictionary scoreList) {
+    private HashMap<String, String> ScoreList;
+
+    public Result(int id, int surveyId, int userId, int totalResult, HashMap<String, String> scoreList) {
         this.id = id;
         SurveyId = surveyId;
         UserId = userId;
@@ -50,11 +52,11 @@ public class Result {
         TotalResult = totalResult;
     }
 
-    public Dictionary getScoreList() {
+    public HashMap<String, String> getScoreList() {
         return ScoreList;
     }
 
-    public void setScoreList(Dictionary scoreList) {
+    public void setScoreList(HashMap<String, String> scoreList) {
         ScoreList = scoreList;
     }
 

@@ -1,5 +1,7 @@
 package RealDolmen.HappyR.model;
 
+import org.apache.catalina.User;
+
 public class Manager {
     private int id;
     private int Userid;

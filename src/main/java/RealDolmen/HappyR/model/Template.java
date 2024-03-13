@@ -1,16 +1,21 @@
 package RealDolmen.HappyR.model;
 
-import java.util.List;
+import java.util.*;
 
 public class Template {
     private int id;
-    private String TemplateName;
-    private Question Question;
+    private String templateName;
 
-    public Template(int id, String templateName, Question question) {
+    private HashMap<String, Boolean> options;
+    private HashMap<String, String> q;
+    private String[] externalPeople;
+
+    public Template(int id, String templateName, HashMap<String, Boolean> options, HashMap<String, String> q, String[] externalPeople) {
         this.id = id;
-        TemplateName = templateName;
-        Question = question;
+        this.templateName = templateName;
+        this.options = options;
+        this.q = q;
+        this.externalPeople = externalPeople;
     }
 
     public int getId() {
@@ -22,27 +27,45 @@ public class Template {
     }
 
     public String getTemplateName() {
-        return TemplateName;
+        return templateName;
     }
 
     public void setTemplateName(String templateName) {
-        TemplateName = templateName;
+        this.templateName = templateName;
     }
 
-    public Question getQuestion() {
-        return Question;
+    public HashMap<String, Boolean> getOptions() {
+        return options;
     }
 
-    public void setQuestion(Question question) {
-        Question = question;
+    public void setOptions(HashMap<String, Boolean> options) {
+        this.options = options;
+    }
+
+    public HashMap<String, String> getQ() {
+        return q;
+    }
+
+    public void setQ(HashMap<String, String> q) {
+        this.q = q;
+    }
+
+    public String[] getExternalPeople() {
+        return externalPeople;
+    }
+
+    public void setExternalPeople(String[] externalPeople) {
+        this.externalPeople = externalPeople;
     }
 
     @Override
     public String toString() {
         return "Template{" +
                 "id=" + id +
-                ", TemplateName='" + TemplateName + '\'' +
-                ", Question=" + Question +
+                ", templateName='" + templateName + '\'' +
+                ", options=" + options +
+                ", q=" + q +
+                ", externalPeople=" + Arrays.toString(externalPeople) +
                 '}';
     }
 }

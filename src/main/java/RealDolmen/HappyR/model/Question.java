@@ -2,22 +2,20 @@ package RealDolmen.HappyR.model;
 
 import java.util.Arrays;
 import java.util.Dictionary;
+import java.util.HashMap;
 
 public class Question {
     private int id;
-    private int Templateid;
-
-    private Dictionary<String, Boolean> Options;
-
-    private Dictionary<String, String> Q;
-
+    private int Surveyid;
+    private HashMap<String, Boolean> options;
+    private HashMap<String, String> q;
     private String[] ExternalPeople;
 
-    public Question(int id, int templateid, Dictionary<String, Boolean> options, Dictionary<String, String> q, String[] externalPeople) {
+    public Question(int id, int surveyid, HashMap<String, Boolean> options, HashMap<String, String> q, String[] externalPeople) {
         this.id = id;
-        Templateid = templateid;
-        Options = options;
-        Q = q;
+        Surveyid = surveyid;
+        this.options = options;
+        this.q = q;
         ExternalPeople = externalPeople;
     }
 
@@ -29,28 +27,28 @@ public class Question {
         this.id = id;
     }
 
-    public int getTemplateid() {
-        return Templateid;
+    public int getSurveyid() {
+        return Surveyid;
     }
 
-    public void setTemplateid(int templateid) {
-        Templateid = templateid;
+    public void setSurveyid(int surveyid) {
+        Surveyid = surveyid;
     }
 
-    public Dictionary<String, Boolean> getOptions() {
-        return Options;
+    public HashMap<String, Boolean> getOptions() {
+        return options;
     }
 
-    public void setOptions(Dictionary<String, Boolean> options) {
-        Options = options;
+    public void setOptions(HashMap<String, Boolean> options) {
+        this.options = options;
     }
 
-    public Dictionary<String, String> getQ() {
-        return Q;
+    public HashMap<String, String> getQ() {
+        return q;
     }
 
-    public void setQ(Dictionary<String, String> q) {
-        Q = q;
+    public void setQ(HashMap<String, String> q) {
+        this.q = q;
     }
 
     public String[] getExternalPeople() {
@@ -65,10 +63,11 @@ public class Question {
     public String toString() {
         return "Question{" +
                 "id=" + id +
-                ", Templateid=" + Templateid +
-                ", Options=" + Options +
-                ", Q=" + Q +
+                ", Surveyid=" + Surveyid +
+                ", options=" + options +
+                ", q=" + q +
                 ", ExternalPeople=" + Arrays.toString(ExternalPeople) +
                 '}';
     }
 }
+

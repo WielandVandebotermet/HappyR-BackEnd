@@ -1,20 +1,23 @@
 package RealDolmen.HappyR.model;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class Survey {
     private int id;
-    private List<Group> GroupList;
+    private int[] GroupList;
     private String TestName;
     private Date StartDate;
+    private Boolean Started;
     private List<Question> Questions;
 
-    public Survey(int id, List<Group> groupList, String testName, Date startDate, List<Question> questions) {
+    public Survey(int id, int[] groupList, String testName, Date startDate, Boolean started, List<Question> questions) {
         this.id = id;
         GroupList = groupList;
         TestName = testName;
         StartDate = startDate;
+        Started = started;
         Questions = questions;
     }
 
@@ -26,11 +29,11 @@ public class Survey {
         this.id = id;
     }
 
-    public List<Group> getGroupList() {
+    public int[] getGroupList() {
         return GroupList;
     }
 
-    public void setGroupList(List<Group> groupList) {
+    public void setGroupList(int[] groupList) {
         GroupList = groupList;
     }
 
@@ -50,6 +53,14 @@ public class Survey {
         StartDate = startDate;
     }
 
+    public Boolean getStarted() {
+        return Started;
+    }
+
+    public void setStarted(Boolean started) {
+        Started = started;
+    }
+
     public List<Question> getQuestions() {
         return Questions;
     }
@@ -62,10 +73,11 @@ public class Survey {
     public String toString() {
         return "Survey{" +
                 "id=" + id +
-                ", Groupid=" + GroupList +
+                ", GroupList=" + Arrays.toString(GroupList) +
                 ", TestName='" + TestName + '\'' +
                 ", StartDate=" + StartDate +
-                ", BuildList=" + Questions +
+                ", Started=" + Started +
+                ", Questions=" + Questions +
                 '}';
     }
 }
