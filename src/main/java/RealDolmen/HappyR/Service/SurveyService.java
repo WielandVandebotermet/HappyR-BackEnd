@@ -1,7 +1,6 @@
 package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.model.Survey;
-import RealDolmen.HappyR.model.Question;
 
 import java.util.ArrayList;
 import java.util.Date;

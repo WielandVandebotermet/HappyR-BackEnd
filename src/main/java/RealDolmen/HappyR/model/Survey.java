@@ -1,83 +1,91 @@
 package RealDolmen.HappyR.model;
 
-import java.util.Arrays;
+import jakarta.persistence.*;
+import lombok.Builder;
+
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Survey")
+@Builder
 public class Survey {
-    private int id;
-    private int[] GroupList;
-    private String TestName;
-    private Date StartDate;
-    private Boolean Started;
-    private List<Question> Questions;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public Survey(int id, int[] groupList, String testName, Date startDate, Boolean started, List<Question> questions) {
-        this.id = id;
-        GroupList = groupList;
-        TestName = testName;
-        StartDate = startDate;
-        Started = started;
-        Questions = questions;
+    @ElementCollection
+    private List<Integer> groupList;
+
+    private String testName;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startDate;
+
+    private Boolean started;
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    private List<SurveyQuestion> questions;
+
+    public Survey() {
     }
 
-    public int getId() {
+    public Survey(Long id, List<Integer> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions) {
+        this.id = id;
+        this.groupList = groupList;
+        this.testName = testName;
+        this.startDate = startDate;
+        this.started = started;
+        this.questions = questions;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int[] getGroupList() {
-        return GroupList;
+    public List<Integer> getGroupList() {
+        return groupList;
     }
 
-    public void setGroupList(int[] groupList) {
-        GroupList = groupList;
+    public void setGroupList(List<Integer> groupList) {
+        this.groupList = groupList;
     }
 
     public String getTestName() {
-        return TestName;
+        return testName;
     }
 
     public void setTestName(String testName) {
-        TestName = testName;
+        this.testName = testName;
     }
 
     public Date getStartDate() {
-        return StartDate;
+        return startDate;
     }
 
     public void setStartDate(Date startDate) {
-        StartDate = startDate;
+        this.startDate = startDate;
     }
 
     public Boolean getStarted() {
-        return Started;
+        return started;
     }
 
     public void setStarted(Boolean started) {
-        Started = started;
+        this.started = started;
     }
 
-    public List<Question> getQuestions() {
-        return Questions;
+    public List<SurveyQuestion> getQuestions() {
+        return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
-        Questions = questions;
+    public void setQuestions(List<SurveyQuestion> questions) {
+        this.questions = questions;
     }
 
-    @Override
-    public String toString() {
-        return "Survey{" +
-                "id=" + id +
-                ", GroupList=" + Arrays.toString(GroupList) +
-                ", TestName='" + TestName + '\'' +
-                ", StartDate=" + StartDate +
-                ", Started=" + Started +
-                ", Questions=" + Questions +
-                '}';
-    }
 }

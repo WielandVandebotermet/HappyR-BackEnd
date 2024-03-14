@@ -1,46 +1,53 @@
 package RealDolmen.HappyR.model;
 
-public class GroupUser {
-    private int id;
-    private int Userid;
-    private int Groupid;
+import jakarta.persistence.*;
+import lombok.Builder;
 
-    public GroupUser(int id, int userid, int groupid) {
-        this.id = id;
-        Userid = userid;
-        Groupid = groupid;
+@Entity
+@Table(name = "GroupUser")
+@Builder
+public class GroupUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+    public GroupUser() {
     }
 
-    public int getId() {
+    public GroupUser(Long id, User user, Group group) {
+        this.id = id;
+        this.user = user;
+        this.group = group;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getUserid() {
-        return Userid;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserid(int userid) {
-        Userid = userid;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getGroupid() {
-        return Groupid;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupid(int groupid) {
-        Groupid = groupid;
-    }
-
-    @Override
-    public String toString() {
-        return "GroupUser{" +
-                "id=" + id +
-                ", Userid=" + Userid +
-                ", Groupid=" + Groupid +
-                '}';
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

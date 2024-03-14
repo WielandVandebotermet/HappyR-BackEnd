@@ -1,21 +1,32 @@
 package RealDolmen.HappyR.model;
 
+import jakarta.persistence.*;
+import lombok.Builder;
+
+@Entity
+@Table(name = "Category")
+@Builder
 public class Category {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String CategoryName;
     private int ScoreImpact;
 
-    public Category(int id, String categoryName, int scoreImpact) {
+    public Category() {
+    }
+
+    public Category(Long id, String categoryName, int scoreImpact) {
         this.id = id;
         CategoryName = categoryName;
         ScoreImpact = scoreImpact;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -33,14 +44,5 @@ public class Category {
 
     public void setScoreImpact(int scoreImpact) {
         ScoreImpact = scoreImpact;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", CategoryName='" + CategoryName + '\'' +
-                ", ScoreImpact=" + ScoreImpact +
-                '}';
     }
 }

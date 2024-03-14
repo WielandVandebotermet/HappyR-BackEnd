@@ -1,22 +1,32 @@
 package RealDolmen.HappyR.model;
 
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.Builder;
 
+@Table(name = "User")
+@Builder
+@Entity
 public class User {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String FirstName, LastName;
 
-    public User(int id, String firstName, String lastName) {
+    public User() {
+    }
+
+    public User(Long id, String firstName, String lastName) {
         this.id = id;
         FirstName = firstName;
         LastName = lastName;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,13 +45,6 @@ public class User {
     public void setLastName(String lastName) {
         LastName = lastName;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
-                '}';
-    }
 }
+
+

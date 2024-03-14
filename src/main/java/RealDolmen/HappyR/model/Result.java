@@ -1,30 +1,42 @@
 package RealDolmen.HappyR.model;
 
+import jakarta.persistence.*;
+import lombok.Builder;
+
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
-
+@Entity
+@Table(name = "Result")
+@Builder
 public class Result {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private int SurveyId;
     private int UserId;
     private int TotalResult;
 
-    private HashMap<String, String> ScoreList;
+    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ResultScoreList> scoreList;
 
-    public Result(int id, int surveyId, int userId, int totalResult, HashMap<String, String> scoreList) {
+    public Result() {
+    }
+
+    public Result(Long id, int surveyId, int userId, int totalResult, List<ResultScoreList> scoreList) {
         this.id = id;
         SurveyId = surveyId;
         UserId = userId;
         TotalResult = totalResult;
-        ScoreList = scoreList;
+        this.scoreList = scoreList;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,22 +64,11 @@ public class Result {
         TotalResult = totalResult;
     }
 
-    public HashMap<String, String> getScoreList() {
-        return ScoreList;
+    public List<ResultScoreList> getScoreList() {
+        return scoreList;
     }
 
-    public void setScoreList(HashMap<String, String> scoreList) {
-        ScoreList = scoreList;
-    }
-
-    @Override
-    public String toString() {
-        return "Result{" +
-                "id=" + id +
-                ", SurveyId=" + SurveyId +
-                ", UserId=" + UserId +
-                ", TotalResult=" + TotalResult +
-                ", ScoreList=" + ScoreList +
-                '}';
+    public void setScoreList(List<ResultScoreList> scoreList) {
+        this.scoreList = scoreList;
     }
 }

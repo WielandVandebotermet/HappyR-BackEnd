@@ -1,58 +1,87 @@
 package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.model.User;
+import RealDolmen.HappyR.Repository.UserRepository;
 
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private List<User> userList= new ArrayList<>();
+    private final UserRepository userRepository;
 
-    public UserService() {
-        userList.add(new User(1, "Wieland", "Vandebotermet"));
-        userList.add(new User(2, "Hugh", "Hargraves"));
-        userList.add(new User(3, "Jeff", "Burrows"));
-        userList.add(new User(4, "Tilda", "Miles"));
-        userList.add(new User(5, "Salena", "Becker"));
-        userList.add(new User(6, "Christine", "Kemp"));
-        userList.add(new User(7, "Stewart", "Abbott"));
-        userList.add(new User(8, "Harrison", "Knight"));
-        userList.add(new User(9, "Wade", "Allen"));
-        userList.add(new User(10, "Todd", "Carter"));
-    }
+    @PostConstruct
+    public void LoadData() {
+        if (userRepository.count() <= 0) {
+            User user = new User();
+            user.setId(1L);
+            user.setFirstName("Wieland");
+            user.setLastName("Vandebotermet");
+            userRepository.save(user);
 
-    public List<User> getUserList() {
-        return userList;
-    }
+            User user1 = new User();
+            user1.setId(2L);
+            user1.setFirstName("Hugh");
+            user1.setLastName("Hargraves");
+            userRepository.save(user1);
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
+            User user2 = new User();
+            user2.setId(3L);
+            user2.setFirstName("Jeff");
+            user2.setLastName("Burrows");
+            userRepository.save(user2);
 
-    public Optional<User> getOptionalUserById(int userId){
-        return getUserList().stream().filter(u-> u.getId()==userId).findFirst();
-    }
-    public User getUserById(Optional<User> optionalUser){
-        return optionalUser.orElse(null);
-    }
-
-    public User addUser(User newUser) {
-        newUser.setId(userList.size()+1);
-        userList.add(newUser);
-        return userList.get(userList.size()-1);
-    }
-
-    public User updateUserById(User updateUser, int userId) {
-        Optional<User> userOptional = getOptionalUserById(userId);
-        if (userOptional.isPresent()){
-            User user = userOptional.get();
-            user.setFirstName(updateUser.getFirstName());
-            user.setLastName(updateUser.getLastName());
-            return user;
+            User user3 = new User();
+            user3.setId(4L);
+            user3.setFirstName("Tilda");
+            user3.setLastName("Miles");
+            userRepository.save(user3);
         }
-        return null;
+    }
+
+    public void createUser(User userRequest){
+        User user = User.builder()
+                .FirstName(userRequest.getFirstName())
+                .LastName(userRequest.getLastName())
+                .build();
+
+        userRepository.save(user);
+    }
+
+    public void editUser(int id, User userRequest){
+        User user = userRepository.findById((long) id).orElse(null);
+
+        if(user != null)
+        {
+            user.setId(user.getId());
+            user.setFirstName(userRequest.getFirstName());
+            user.setLastName(userRequest.getLastName());
+
+            userRepository.save(user);
+        }
+    }
+    public void deleteUser(int id){
+        userRepository.deleteById((long) id);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream().map(this::mapToUserResponse).toList();
+    }
+
+    public User getUserById(int id){
+        return userRepository.findById((long) id).orElse(null);
+    }
+
+    private User mapToUserResponse(User user) {
+        return User.builder()
+                .id(user.getId())
+                .FirstName(user.getFirstName())
+                .LastName(user.getLastName())
+                .build();
     }
 }

@@ -1,48 +1,55 @@
 package RealDolmen.HappyR.model;
 
+import jakarta.persistence.*;
+import lombok.Builder;
 import org.apache.catalina.User;
 
+@Entity
+@Table(name = "Manager")
+@Builder
 public class Manager {
-    private int id;
-    private int Userid;
-    private int Groupid;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public Manager(int id, int userid, int groupid) {
-        this.id = id;
-        Userid = userid;
-        Groupid = groupid;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+    public Manager() {
     }
 
-    public int getId() {
+    public Manager(Long id, User user, Group group) {
+        this.id = id;
+        this.user = user;
+        this.group = group;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getUserid() {
-        return Userid;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserid(int userid) {
-        Userid = userid;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getGroupid() {
-        return Groupid;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupid(int groupid) {
-        Groupid = groupid;
-    }
-
-    @Override
-    public String toString() {
-        return "Manager{" +
-                "id=" + id +
-                ", Userid=" + Userid +
-                ", Groupid=" + Groupid +
-                '}';
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }
