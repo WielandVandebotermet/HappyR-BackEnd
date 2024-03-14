@@ -4,10 +4,10 @@ import RealDolmen.HappyR.model.Template;
 
 import java.util.*;
 
-public class TemplateSurvice {
+public class TemplateService {
     private List<Template> templateList= new ArrayList<>();
 
-    public TemplateSurvice() {
+    public TemplateService() {
         templateList.add(new Template(1, "Question Bar",
                 new HashMap<String, Boolean>() {{
                     put("subtext", true);
@@ -68,10 +68,10 @@ public class TemplateSurvice {
         return templateList.get(templateList.size()-1);
     }
 
-    public Template updateUserById(Template updateTemplate, int templateId) {
-        Optional<Template> productOptional = getOptionalTemplateById(templateId);
-        if (productOptional.isPresent()){
-            Template template = productOptional.get();
+    public Template updateTemplateById(Template updateTemplate, int templateId) {
+        Optional<Template> TemplateOptional = getOptionalTemplateById(templateId);
+        if (TemplateOptional.isPresent()){
+            Template template = TemplateOptional.get();
             template.setTemplateName(updateTemplate.getTemplateName());
             template.setOptions(updateTemplate.getOptions());
             template.setQ(updateTemplate.getQ());

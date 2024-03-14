@@ -31,8 +31,8 @@ public class QuestionService {
         return questionList;
     }
 
-    public void setQuestionList(List<Question> userList) {
-        this.questionList = userList;
+    public void setQuestionList(List<Question> questionList) {
+        this.questionList = questionList;
     }
 
     public Optional<Question> getOptionalQuestionById(int questionId){
@@ -47,7 +47,7 @@ public class QuestionService {
                 .filter(question -> question.getSurveyid() == surveyId)
                 .collect(Collectors.toList());
 
-        return Optional.ofNullable(matchingQuestions);
+        return Optional.of(matchingQuestions);
     }
     public Question addQuestion(Question newQuestion) {
         newQuestion.setId(questionList.size()+1);
@@ -55,14 +55,14 @@ public class QuestionService {
         return questionList.get(questionList.size()-1);
     }
 
-    public Question updateUserById(Question updateUser, int questionId) {
+    public Question updateQuestionById(Question updateQuestion, int questionId) {
         Optional<Question> questionOptional = getOptionalQuestionById(questionId);
         if (questionOptional.isPresent()){
             Question question = questionOptional.get();
-            question.setSurveyid(updateUser.getId());
-            question.setOptions(updateUser.getOptions());
-            question.setQ(updateUser.getQ());
-            question.setExternalPeople(updateUser.getExternalPeople());
+            question.setSurveyid(updateQuestion.getId());
+            question.setOptions(updateQuestion.getOptions());
+            question.setQ(updateQuestion.getQ());
+            question.setExternalPeople(updateQuestion.getExternalPeople());
             return question;
         }
         return null;

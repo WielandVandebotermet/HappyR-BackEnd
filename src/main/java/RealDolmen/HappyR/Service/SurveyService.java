@@ -2,7 +2,6 @@ package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.model.Survey;
 import RealDolmen.HappyR.model.Question;
-import RealDolmen.HappyR.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,9 +40,9 @@ public class SurveyService {
     }
 
     public Survey updateSurveyById(Survey updateSurvey, int surveyId) {
-        Optional<Survey> userOptional = getOptionalSurveyById(surveyId);
-        if (userOptional.isPresent()){
-            Survey survey = userOptional.get();
+        Optional<Survey> surveyOptional = getOptionalSurveyById(surveyId);
+        if (surveyOptional.isPresent()){
+            Survey survey = surveyOptional.get();
             survey.setGroupList(updateSurvey.getGroupList());
             survey.setStartDate(updateSurvey.getStartDate());
             survey.setStarted(updateSurvey.getStarted());

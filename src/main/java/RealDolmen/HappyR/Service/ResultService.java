@@ -1,7 +1,6 @@
 package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.model.Result;
-import RealDolmen.HappyR.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +33,9 @@ public class ResultService {
     }
 
     public Result updateResultById(Result updateResult, int resultId) {
-        Optional<Result> userOptional = getOptionalResultById(resultId);
-        if (userOptional.isPresent()){
-            Result result = userOptional.get();
+        Optional<Result> resultOptional = getOptionalResultById(resultId);
+        if (resultOptional.isPresent()){
+            Result result = resultOptional.get();
             result.setSurveyId(updateResult.getSurveyId());
             result.setUserId(updateResult.getUserId());
             result.setTotalResult(updateResult.getTotalResult());

@@ -23,7 +23,7 @@ public class GroupService {
         this.groupList = groupList;
     }
 
-    public Optional<Group> getOptionalUserById(int groupId){
+    public Optional<Group> getOptionalGroupById(int groupId){
         return getGroupList().stream().filter(g-> g.getId()==groupId).findFirst();
     }
     public Group getGroupById(Optional<Group> optionalGroup){
@@ -36,8 +36,8 @@ public class GroupService {
         return groupList.get(groupList.size()-1);
     }
 
-    public Group updateUserById(Group updateGroup, int groupId) {
-        Optional<Group> productOptional = getOptionalUserById(groupId);
+    public Group updateGroupById(Group updateGroup, int groupId) {
+        Optional<Group> productOptional = getOptionalGroupById(groupId);
         if (productOptional.isPresent()){
             Group group = productOptional.get();
             group.setGroupName(updateGroup.getGroupName());

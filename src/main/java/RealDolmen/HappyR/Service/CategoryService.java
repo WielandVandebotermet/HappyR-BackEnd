@@ -1,7 +1,6 @@
 package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.model.Category;
-import RealDolmen.HappyR.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
