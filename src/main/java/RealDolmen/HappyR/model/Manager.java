@@ -2,7 +2,6 @@ package RealDolmen.HappyR.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import org.apache.catalina.User;
 
 @Entity
 @Table(name = "Manager")

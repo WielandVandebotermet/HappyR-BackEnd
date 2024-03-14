@@ -1,51 +1,81 @@
 package RealDolmen.HappyR.Service;
 
+import RealDolmen.HappyR.Repository.CategoryRepository;
 import RealDolmen.HappyR.model.Category;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class CategoryService {
-    private List<Category> categoryList= new ArrayList<>();
+    private final CategoryRepository categoryRepository;
 
-    public CategoryService() {
-        categoryList.add(new Category(1, "General happiness", 100));
-        categoryList.add(new Category(2, "Workplace", 90));
-        categoryList.add(new Category(3, "Team Contribution", 130));
-        categoryList.add(new Category(4, "Team Members", 100));
-        categoryList.add(new Category(5, "Project", 50));
-    }
+    @PostConstruct
+    public void LoadData() {
+        if (categoryRepository.count() <= 0) {
+            Category category = new Category();
+            category.setId(1L);
+            category.setCategoryName("General happiness");
+            category.setScoreImpact(100);
+            categoryRepository.save(category);
 
-    public List<Category> getCategoryList() {
-        return categoryList;
-    }
+            Category category1 = new Category();
+            category1.setId(2L);
+            category1.setCategoryName("Workplace");
+            category1.setScoreImpact(80);
+            categoryRepository.save(category1);
 
-    public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
-    }
-
-    public Optional<Category> getOptionalCategoryById(int categoryId){
-        return getCategoryList().stream().filter(c-> c.getId()==categoryId).findFirst();
-    }
-    public Category getCategoryById(Optional<Category> optionalCategory){
-        return optionalCategory.orElse(null);
-    }
-
-    public Category addCategory(Category newCategory) {
-        newCategory.setId(categoryList.size()+1);
-        categoryList.add(newCategory);
-        return categoryList.get(categoryList.size()-1);
-    }
-
-    public Category updateCategoryById(Category updateCategory, int categoryId) {
-        Optional<Category> productOptional = getOptionalCategoryById(categoryId);
-        if (productOptional.isPresent()){
-            Category category = productOptional.get();
-            category.setCategoryName(updateCategory.getCategoryName());
-            category.setScoreImpact(updateCategory.getScoreImpact());
-            return category;
+            Category category2 = new Category();
+            category2.setId(3L);
+            category2.setCategoryName("Project");
+            category2.setScoreImpact(90);
+            categoryRepository.save(category2);
         }
-        return null;
     }
+    public void createCategory(Category categoryRequest){
+        Category category = Category.builder()
+                .CategoryName(categoryRequest.getCategoryName())
+                .ScoreImpact(categoryRequest.getScoreImpact())
+                .build();
+
+        categoryRepository.save(category);
+    }
+
+    public void editCategory(int id, Category categoryRequest){
+        Category category = categoryRepository.findById((long) id).orElse(null);
+
+        if(category != null)
+        {
+            category.setId(category.getId());
+            category.setCategoryName(categoryRequest.getCategoryName());
+            category.setScoreImpact(categoryRequest.getScoreImpact());
+
+            categoryRepository.save(category);
+        }
+    }
+    public void deleteCategory(int id){
+        categoryRepository.deleteById((long) id);
+    }
+
+    public List<Category> getAllCategorys() {
+        List<Category> categorys = categoryRepository.findAll();
+
+        return categorys.stream().map(this::mapToCategoryResponse).toList();
+    }
+
+    public Category getCategoryById(int id){
+        return categoryRepository.findById((long) id).orElse(null);
+    }
+
+    private Category mapToCategoryResponse(Category category) {
+        return Category.builder()
+                .id(category.getId())
+                .CategoryName(category.getCategoryName())
+                .ScoreImpact(category.getScoreImpact())
+                .build();
+    }
+
 }

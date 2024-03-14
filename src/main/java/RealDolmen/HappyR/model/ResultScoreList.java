@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class ResultScoreList {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @ManyToOne
     private Result result;
@@ -17,18 +17,18 @@ public class ResultScoreList {
     public ResultScoreList() {
     }
 
-    public ResultScoreList(int id, Result result, String questionId, String score) {
+    public ResultScoreList(Long id, Result result, String questionId, String score) {
         this.id = id;
         this.result = result;
         this.questionId = questionId;
         this.score = score;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

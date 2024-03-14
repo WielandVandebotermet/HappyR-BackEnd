@@ -15,7 +15,7 @@ public class Survey {
     private Long id;
 
     @ElementCollection
-    private List<Integer> groupList;
+    private List<Long> groupList;
 
     private String testName;
 
@@ -25,19 +25,22 @@ public class Survey {
     private Boolean started;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-
     private List<SurveyQuestion> questions;
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SurveyQuestion> reoccuring;
 
     public Survey() {
     }
 
-    public Survey(Long id, List<Integer> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions) {
+    public Survey(Long id, List<Long> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions, List<SurveyQuestion> reoccuring) {
         this.id = id;
         this.groupList = groupList;
         this.testName = testName;
         this.startDate = startDate;
         this.started = started;
         this.questions = questions;
+        this.reoccuring = reoccuring;
     }
 
     public Long getId() {
@@ -48,11 +51,11 @@ public class Survey {
         this.id = id;
     }
 
-    public List<Integer> getGroupList() {
+    public List<Long> getGroupList() {
         return groupList;
     }
 
-    public void setGroupList(List<Integer> groupList) {
+    public void setGroupList(List<Long> groupList) {
         this.groupList = groupList;
     }
 
@@ -88,4 +91,11 @@ public class Survey {
         this.questions = questions;
     }
 
+    public List<SurveyQuestion> getReoccuring() {
+        return reoccuring;
+    }
+
+    public void setReoccuring(List<SurveyQuestion> reoccuring) {
+        this.reoccuring = reoccuring;
+    }
 }

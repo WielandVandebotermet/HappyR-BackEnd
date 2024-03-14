@@ -3,25 +3,25 @@ package RealDolmen.HappyR.model;
 import jakarta.persistence.*;
 
 @Entity
-public class SurveyQuestion {
+public class SurveyReoccuring {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @ManyToOne
     private Survey survey;
 
-    private String key;
-    private String value;
+    private int Time;
 
-    public SurveyQuestion() {
+    private String TimeMultiplier;
+
+    public SurveyReoccuring() {
     }
 
-    public SurveyQuestion(Long id, Survey survey, String key, String value) {
+    public SurveyReoccuring(Long id, Survey survey, int time, String timeMultiplier) {
         this.id = id;
         this.survey = survey;
-        this.key = key;
-        this.value = value;
+        Time = time;
+        TimeMultiplier = timeMultiplier;
     }
 
     public Long getId() {
@@ -40,19 +40,19 @@ public class SurveyQuestion {
         this.survey = survey;
     }
 
-    public String getKey() {
-        return key;
+    public int getTime() {
+        return Time;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setTime(int time) {
+        Time = time;
     }
 
-    public String getValue() {
-        return value;
+    public String getTimeMultiplier() {
+        return TimeMultiplier;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setTimeMultiplier(String timeMultiplier) {
+        TimeMultiplier = timeMultiplier;
     }
 }

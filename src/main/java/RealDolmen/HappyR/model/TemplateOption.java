@@ -13,12 +13,12 @@ public class TemplateOption {
     private Template template;
 
     private String key;
-    private Boolean value;
+    private boolean value;
 
     public TemplateOption() {
     }
 
-    public TemplateOption(Long id, Template template, String key, Boolean value) {
+    public TemplateOption(Long id, Template template, String key, boolean value) {
         this.id = id;
         this.template = template;
         this.key = key;

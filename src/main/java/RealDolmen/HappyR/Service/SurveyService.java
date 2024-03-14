@@ -1,54 +1,94 @@
 package RealDolmen.HappyR.Service;
 
+import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.model.Survey;
+import RealDolmen.HappyR.model.Survey;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class SurveyService {
-    private List<Survey> surveyList= new ArrayList<>();
+    private final SurveyRepository SurveyRepository;
 
+    @PostConstruct
+    public void LoadData() {
+        if (SurveyRepository.count() <= 0) {
+            Survey survey = new Survey();
+            survey.setId(1L);
+            survey.setTestName("Satisfaction Survey");
+            survey.setStartDate(new Date());
+            survey.setStarted(true);
+            survey.setQuestions(null);
+            survey.setReoccuring(null);
 
-    public SurveyService(QuestionService questionService) {
-        Optional<List<Question>> optionalQuestions = questionService.getOptionalQuestionsBySurveyId(1);
-        List<Question> questions = optionalQuestions.orElse(new ArrayList<>()); // Provide a default empty list if optional is empty
-        surveyList.add(new Survey(1, new int[]{1}, "Weekly Satisfaction Survey", new Date(), true, new ArrayList<>(questions)));
-    }
+            List<Long> groupList = new ArrayList<>();
+            groupList.add(1L);
+            survey.setGroupList(groupList);
 
-    public List<Survey> getSurveyList() {
-        return surveyList;
-    }
-
-    public void setSurveyList(List<Survey> surveyList) {
-        this.surveyList = surveyList;
-    }
-
-    public Optional<Survey> getOptionalSurveyById(int surveyId){
-        return getSurveyList().stream().filter(u-> u.getId()==surveyId).findFirst();
-    }
-    public Survey getSurveyById(Optional<Survey> optionalSurvey){
-        return optionalSurvey.orElse(null);
-    }
-
-    public Survey addSurvey(Survey newSurvey) {
-        newSurvey.setId(surveyList.size()+1);
-        surveyList.add(newSurvey);
-        return surveyList.get(surveyList.size()-1);
-    }
-
-    public Survey updateSurveyById(Survey updateSurvey, int surveyId) {
-        Optional<Survey> surveyOptional = getOptionalSurveyById(surveyId);
-        if (surveyOptional.isPresent()){
-            Survey survey = surveyOptional.get();
-            survey.setGroupList(updateSurvey.getGroupList());
-            survey.setStartDate(updateSurvey.getStartDate());
-            survey.setStarted(updateSurvey.getStarted());
-            survey.setTestName(updateSurvey.getTestName());
-            survey.setQuestions(updateSurvey.getQuestions());
-            return survey;
+            SurveyRepository.save(survey);
         }
-        return null;
     }
+
+    public void createSurvey(Survey surveyRequest){
+        Survey survey = Survey.builder()
+                .testName(surveyRequest.getTestName())
+                .startDate(surveyRequest.getStartDate())
+                .reoccuring(surveyRequest.getReoccuring())
+                .questions(surveyRequest.getQuestions())
+                .groupList(surveyRequest.getGroupList())
+                .started(surveyRequest.getStarted())
+                .build();
+
+        SurveyRepository.save(survey);
+    }
+
+    public void editSurvey(int id, Survey surveyRequest){
+        Survey survey = SurveyRepository.findById((long) id).orElse(null);
+
+        if(survey != null)
+        {
+            survey.setId(survey.getId());
+            survey.setStarted(surveyRequest.getStarted());
+            survey.setTestName(surveyRequest.getTestName());
+            survey.setStartDate(surveyRequest.getStartDate());
+            survey.setReoccuring(surveyRequest.getReoccuring());
+            survey.setQuestions(surveyRequest.getQuestions());
+            survey.setGroupList(surveyRequest.getGroupList());
+
+            SurveyRepository.save(survey);
+        }
+    }
+    public void deleteSurvey(int id){
+        SurveyRepository.deleteById((long) id);
+    }
+
+    public List<Survey> getAllSurveys() {
+        List<Survey> surveys = SurveyRepository.findAll();
+
+        return surveys.stream().map(this::mapToSurveyResponse).toList();
+    }
+
+    public Survey getSurveyById(int id){
+        return SurveyRepository.findById((long) id).orElse(null);
+    }
+
+    private Survey mapToSurveyResponse(Survey survey) {
+        return Survey.builder()
+                .id(survey.getId())
+                .testName(survey.getTestName())
+                .startDate(survey.getStartDate())
+                .reoccuring(survey.getReoccuring())
+                .questions(survey.getQuestions())
+                .groupList(survey.getGroupList())
+                .started(survey.getStarted())
+                .build();
+    }
+
 }
