@@ -17,15 +17,15 @@ public class Manager {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group group;
+    private Team team;
 
     public Manager() {
     }
 
-    public Manager(Long id, User user, Group group) {
+    public Manager(Long id, User user, Team team) {
         this.id = id;
         this.user = user;
-        this.group = group;
+        this.team = team;
     }
 
     public Long getId() {
@@ -44,11 +44,11 @@ public class Manager {
         this.user = user;
     }
 
-    public Group getGroup() {
-        return group;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

@@ -12,17 +12,17 @@ public class TemplateOption {
     @ManyToOne
     private Template template;
 
-    private String key;
-    private boolean value;
+    private String Setting;
+    private boolean SettingValue;
 
     public TemplateOption() {
     }
 
-    public TemplateOption(Long id, Template template, String key, boolean value) {
+    public TemplateOption(Long id, Template template, String setting, boolean settingValue) {
         this.id = id;
         this.template = template;
-        this.key = key;
-        this.value = value;
+        Setting = setting;
+        SettingValue = settingValue;
     }
 
     public Long getId() {
@@ -41,19 +41,19 @@ public class TemplateOption {
         this.template = template;
     }
 
-    public String getKey() {
-        return key;
+    public String getSetting() {
+        return Setting;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSetting(String setting) {
+        Setting = setting;
     }
 
-    public Boolean getValue() {
-        return value;
+    public boolean isSettingValue() {
+        return SettingValue;
     }
 
-    public void setValue(Boolean value) {
-        this.value = value;
+    public void setSettingValue(boolean settingValue) {
+        SettingValue = settingValue;
     }
 }

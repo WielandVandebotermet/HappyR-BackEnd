@@ -2,7 +2,6 @@ package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.model.Survey;
-import RealDolmen.HappyR.model.Survey;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +16,7 @@ public class SurveyService {
     private final SurveyRepository SurveyRepository;
 
     @PostConstruct
-    public void LoadData() {
+    public void loadData() {
         if (SurveyRepository.count() <= 0) {
             Survey survey = new Survey();
             survey.setId(1L);

@@ -11,17 +11,17 @@ public class SurveyQuestion {
     @ManyToOne
     private Survey survey;
 
-    private String key;
-    private String value;
+    private String Question;
+    private String Text;
 
     public SurveyQuestion() {
     }
 
-    public SurveyQuestion(Long id, Survey survey, String key, String value) {
+    public SurveyQuestion(Long id, Survey survey, String question, String text) {
         this.id = id;
         this.survey = survey;
-        this.key = key;
-        this.value = value;
+        Question = question;
+        Text = text;
     }
 
     public Long getId() {
@@ -40,19 +40,19 @@ public class SurveyQuestion {
         this.survey = survey;
     }
 
-    public String getKey() {
-        return key;
+    public String getQuestion() {
+        return Question;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setQuestion(String question) {
+        Question = question;
     }
 
-    public String getValue() {
-        return value;
+    public String getText() {
+        return Text;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setText(String text) {
+        Text = text;
     }
 }

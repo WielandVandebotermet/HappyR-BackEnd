@@ -70,12 +70,12 @@ public class TemplateService {
 
             List<TemplateOption> options2 = new ArrayList<>();
             options2.add(new TemplateOption(null,template2, "subtext", true));
-            template1.setOptions(options2);
+            template2.setOptions(options2);
 
-            template1.setQuestions(null);
+            template2.setQuestions(null);
 
-            template1.setExternalPeople(null);
-            templateRepository.save(template1);
+            template2.setExternalPeople(null);
+            templateRepository.save(template2);
         }
     }
 

@@ -2,11 +2,10 @@ package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.Repository.ManagerRepository;
 import RealDolmen.HappyR.model.Manager;
-import RealDolmen.HappyR.Service.UserService;
-import RealDolmen.HappyR.Service.GroupService;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerService {
     private final ManagerRepository managerRepository;
+    @Autowired
     private UserService userService;
-    private GroupService groupService;
+    @Autowired
+    private TeamService teamService;
 
     @PostConstruct
     public void LoadData() {
@@ -24,14 +25,14 @@ public class ManagerService {
             Manager manager = new Manager();
             manager.setId(1L);
             manager.setUser(userService.getUserById(1));
-            manager.setGroup(groupService.getGroupById(1));
+            manager.setTeam(teamService.getGroupById(1));
             managerRepository.save(manager);
         }
     }
 
     public void createManager(Manager ManagerRequest){
         Manager manager = ManagerRequest.builder()
-                .group(ManagerRequest.getGroup())
+                .team(ManagerRequest.getTeam())
                 .user(ManagerRequest.getUser())
                 .build();
 
@@ -45,7 +46,7 @@ public class ManagerService {
         {
             manager.setId(manager.getId());
             manager.setUser(managerRequest.getUser());
-            manager.setGroup(managerRequest.getGroup());
+            manager.setTeam(managerRequest.getTeam());
 
             managerRepository.save(manager);
         }
@@ -67,7 +68,7 @@ public class ManagerService {
     private Manager mapToManagerResponse(Manager groupManagers) {
         return Manager.builder()
                 .id(groupManagers.getId())
-                .group(groupManagers.getGroup())
+                .team(groupManagers.getTeam())
                 .user(groupManagers.getUser())
                 .build();
     }

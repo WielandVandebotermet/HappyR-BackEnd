@@ -6,7 +6,7 @@ import lombok.Builder;
 @Entity
 @Table(name = "GroupUser")
 @Builder
-public class GroupUser {
+public class TeamUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,15 +16,15 @@ public class GroupUser {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group group;
+    private Team team;
 
-    public GroupUser() {
+    public TeamUser() {
     }
 
-    public GroupUser(Long id, User user, Group group) {
+    public TeamUser(Long id, User user, Team team) {
         this.id = id;
         this.user = user;
-        this.group = group;
+        this.team = team;
     }
 
     public Long getId() {
@@ -43,11 +43,11 @@ public class GroupUser {
         this.user = user;
     }
 
-    public Group getGroup() {
-        return group;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

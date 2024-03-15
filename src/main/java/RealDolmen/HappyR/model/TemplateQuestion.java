@@ -11,17 +11,17 @@ public class TemplateQuestion {
     @ManyToOne
     private Template template;
 
-    private String key;
-    private String value;
+    private String Question;
+    private String Text;
 
     public TemplateQuestion() {
     }
 
-    public TemplateQuestion(Long id, Template template, String key, String value) {
+    public TemplateQuestion(Long id, Template template, String question, String text) {
         this.id = id;
         this.template = template;
-        this.key = key;
-        this.value = value;
+        Question = question;
+        Text = text;
     }
 
     public Long getId() {
@@ -40,19 +40,19 @@ public class TemplateQuestion {
         this.template = template;
     }
 
-    public String getKey() {
-        return key;
+    public String getQuestion() {
+        return Question;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setQuestion(String question) {
+        Question = question;
     }
 
-    public String getValue() {
-        return value;
+    public String getText() {
+        return Text;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setText(String text) {
+        Text = text;
     }
 }

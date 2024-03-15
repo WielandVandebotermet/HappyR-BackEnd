@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 import lombok.Builder;
 
 @Entity
-@Table(name = "Group")
+@Table(name = "Team")
 @Builder
-public class Group {
+public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String GroupName;
 
-    public Group() {
+    public Team() {
     }
 
-    public Group(Long id, String groupName) {
+    public Team(Long id, String groupName) {
         this.id = id;
         GroupName = groupName;
     }
