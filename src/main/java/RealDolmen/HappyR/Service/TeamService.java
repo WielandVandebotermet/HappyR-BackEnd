@@ -33,7 +33,7 @@ public class TeamService {
         }
     }
 
-    public void createGroup(Team teamRequest){
+    public void createTeam(Team teamRequest){
         Team team = Team.builder()
                 .GroupName(teamRequest.getGroupName())
                 .build();
@@ -41,7 +41,7 @@ public class TeamService {
         teamRepository.save(team);
     }
 
-    public void editGroup(int id, Team teamRequest){
+    public void editTeam(int id, Team teamRequest){
         Team team = teamRepository.findById((long) id).orElse(null);
 
         if(team != null)
@@ -52,21 +52,21 @@ public class TeamService {
             teamRepository.save(team);
         }
     }
-    public void deleteGroup(int id){
+    public void deleteTeam(int id){
         teamRepository.deleteById((long) id);
     }
 
-    public List<Team> getAllGroups() {
+    public List<Team> getAllTeams() {
         List<Team> teams = teamRepository.findAll();
 
-        return teams.stream().map(this::mapToGroupResponse).toList();
+        return teams.stream().map(this::mapToTeamResponse).toList();
     }
 
-    public Team getGroupById(int id){
+    public Team getTeamById(int id){
         return teamRepository.findById((long) id).orElse(null);
     }
 
-    private Team mapToGroupResponse(Team team) {
+    private Team mapToTeamResponse(Team team) {
         return Team.builder()
                 .id(team.getId())
                 .GroupName(team.getGroupName())

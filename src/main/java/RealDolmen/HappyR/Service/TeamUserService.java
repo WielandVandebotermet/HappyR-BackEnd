@@ -24,13 +24,13 @@ public class TeamUserService {
             TeamUser teamUser = new TeamUser();
             teamUser.setId(1L);
             teamUser.setUser(userService.getUserById(2));
-            teamUser.setTeam(teamService.getGroupById(1));
+            teamUser.setTeam(teamService.getTeamById(1));
             teamUserRepository.save(teamUser);
 
             TeamUser teamUser1 = new TeamUser();
             teamUser1.setId(2L);
             teamUser1.setUser(userService.getUserById(3));
-            teamUser1.setTeam(teamService.getGroupById(1));
+            teamUser1.setTeam(teamService.getTeamById(1));
             teamUserRepository.save(teamUser1);
         }
     }

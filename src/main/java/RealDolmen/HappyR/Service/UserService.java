@@ -56,7 +56,6 @@ public class UserService {
 
         if(user != null)
         {
-            user.setId(user.getId());
             user.setFirstName(userRequest.getFirstName());
             user.setLastName(userRequest.getLastName());
 

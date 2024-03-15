@@ -25,7 +25,7 @@ public class ManagerService {
             Manager manager = new Manager();
             manager.setId(1L);
             manager.setUser(userService.getUserById(1));
-            manager.setTeam(teamService.getGroupById(1));
+            manager.setTeam(teamService.getTeamById(1));
             managerRepository.save(manager);
         }
     }

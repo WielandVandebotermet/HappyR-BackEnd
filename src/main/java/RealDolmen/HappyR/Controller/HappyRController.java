@@ -3,6 +3,7 @@ package RealDolmen.HappyR.Controller;
 import RealDolmen.HappyR.Service.UserService;
 import RealDolmen.HappyR.model.User;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
