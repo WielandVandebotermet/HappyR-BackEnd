@@ -3,6 +3,8 @@ package RealDolmen.HappyR.Service;
 import RealDolmen.HappyR.Repository.ManagerRepository;
 import RealDolmen.HappyR.model.Manager;
 
+import RealDolmen.HappyR.model.Team;
+import RealDolmen.HappyR.model.User;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerService {
     private final ManagerRepository managerRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TeamService teamService;
 
     @PostConstruct
     public void LoadData() {
         if (managerRepository.count() <= 0) {
+            User user = new User();
+            user.setId(1L);
+            user.setFirstName("Wieland");
+            user.setLastName("Vandebotermet");
+
+            Team team = new Team();
+            team.setId(1L);
+            team.setGroupName("Development");
+
             Manager manager = new Manager();
             manager.setId(1L);
-            manager.setUser(userService.getUserById(1));
-            manager.setTeam(teamService.getTeamById(1));
+            manager.setUser(user);
+            manager.setTeam(team);
             managerRepository.save(manager);
         }
     }

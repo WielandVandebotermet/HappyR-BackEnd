@@ -40,7 +40,7 @@ public class TeamController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void createKoers
-            (@RequestBody Team team) {
-        teamService.createTeam(team);
+            (@RequestBody Team team, int UserId) {
+        teamService.createTeam(team, UserId);
     }
 }

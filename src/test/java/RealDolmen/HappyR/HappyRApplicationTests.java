@@ -8,6 +8,7 @@ class HappyRApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

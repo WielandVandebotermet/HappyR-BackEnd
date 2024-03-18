@@ -1,12 +1,19 @@
 package RealDolmen.HappyR;
 
+import RealDolmen.HappyR.Repository.ManagerRepository;
 import RealDolmen.HappyR.Repository.TeamRepository;
+import RealDolmen.HappyR.Repository.UserRepository;
+import RealDolmen.HappyR.Service.ManagerService;
 import RealDolmen.HappyR.Service.TeamService;
+import RealDolmen.HappyR.model.Manager;
 import RealDolmen.HappyR.model.Team;
+import RealDolmen.HappyR.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -16,15 +23,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
+
 
 @ExtendWith(MockitoExtension.class)
 public class TeamTest {
     @InjectMocks
     private TeamService teamService;
-
+    @Mock
+    private ManagerService managerService;
     @Mock
     private TeamRepository teamRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private ManagerRepository managerRepository;
 
     @Test
     void testGetAllTeam() {
@@ -66,11 +78,12 @@ public class TeamTest {
         Team team = new Team();
         team.setGroupName("Development");
 
-        teamService.createTeam(team);
+        teamService.createTeam(team, 1);
 
-        // Verify that save method was called with the correct arguments
         verify(teamRepository, times(1)).save(any(Team.class));
+        verify(managerRepository, times(1)).save(any(Manager.class));
     }
+
 
     @Test
     void testEditTeam() {
