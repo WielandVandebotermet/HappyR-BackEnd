@@ -2,6 +2,7 @@ package RealDolmen.HappyR.Controller;
 
 import RealDolmen.HappyR.Service.TeamService;
 import RealDolmen.HappyR.model.Team;
+import RealDolmen.HappyR.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class TeamController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void createKoers
-            (@RequestBody Team team, int UserId) {
-        teamService.createTeam(team, UserId);
+            (@RequestBody Team team, User user) {
+        teamService.createTeam(team, user);
     }
 }

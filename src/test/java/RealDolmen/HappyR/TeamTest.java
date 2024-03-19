@@ -11,6 +11,7 @@ import RealDolmen.HappyR.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -37,6 +38,18 @@ public class TeamTest {
     private UserRepository userRepository;
     @Mock
     private ManagerRepository managerRepository;
+
+    @BeforeEach
+    public void setUp() {
+        // Initialize Mockito annotations
+        try {
+            MockitoAnnotations.openMocks(this);
+            teamService = new TeamService(teamRepository, userRepository, managerService, managerRepository);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     void testGetAllTeam() {
@@ -78,7 +91,13 @@ public class TeamTest {
         Team team = new Team();
         team.setGroupName("Development");
 
-        teamService.createTeam(team, 1);
+        User user = new User();
+        user.setId(1L);
+        user.setFirstName("Wieland");
+        user.setLastName("Vandebotermet");
+        userRepository.save(user);
+
+        teamService.createTeam(team, user);
 
         verify(teamRepository, times(1)).save(any(Team.class));
         verify(managerRepository, times(1)).save(any(Manager.class));

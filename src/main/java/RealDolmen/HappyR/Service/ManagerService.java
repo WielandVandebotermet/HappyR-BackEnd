@@ -1,6 +1,7 @@
 package RealDolmen.HappyR.Service;
 
 import RealDolmen.HappyR.Repository.ManagerRepository;
+import RealDolmen.HappyR.Repository.TeamRepository;
 import RealDolmen.HappyR.model.Manager;
 
 import RealDolmen.HappyR.model.Team;
@@ -16,7 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerService {
     private final ManagerRepository managerRepository;
-
+    @Autowired
+    private TeamService teamService;
     @PostConstruct
     public void LoadData() {
         if (managerRepository.count() <= 0) {
@@ -25,9 +27,7 @@ public class ManagerService {
             user.setFirstName("Wieland");
             user.setLastName("Vandebotermet");
 
-            Team team = new Team();
-            team.setId(1L);
-            team.setGroupName("Development");
+            Team team = teamService.getTeamById(1);
 
             Manager manager = new Manager();
             manager.setId(1L);

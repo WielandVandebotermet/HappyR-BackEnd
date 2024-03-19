@@ -1,5 +1,6 @@
     package RealDolmen.HappyR.Service;
 
+    import RealDolmen.HappyR.Repository.ManagerRepository;
     import RealDolmen.HappyR.Repository.TeamRepository;
     import RealDolmen.HappyR.Repository.UserRepository;
     import RealDolmen.HappyR.model.Manager;
@@ -18,6 +19,7 @@
         private final TeamRepository teamRepository;
         private final UserRepository userRepository;
         private final ManagerService managerService;
+        private final ManagerRepository managerRepository;
 
 
         @PostConstruct
@@ -40,27 +42,20 @@
             }
         }
 
-        public void createTeam(Team teamRequest,int UserId){
+        public void createTeam(Team teamRequest,User user){
             Team team = Team.builder()
                     .GroupName(teamRequest.getGroupName())
                     .build();
 
             teamRepository.save(team);
 
-            User user = new User();
-            user.setId(1L);
-            user.setFirstName("Wieland");
-            user.setLastName("Vandebotermet");
-            userRepository.save(user);
-
-            User user1 = userRepository.findById((long) UserId).orElse(null);
-            if (user1 != null) {
+            if (user != null) {
                 Manager manager = new Manager();
-                manager.setUser(user1);
+                manager.setUser(user);
                 manager.setTeam(team);
                 managerService.createManager(manager);
             } else {
-                // Handle case when user is not found
+
             }
         }
 
