@@ -27,21 +27,20 @@ public class TeamController {
 
     @DeleteMapping("/Delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteKoers
+    public void DeleteTeam
             (@PathVariable("id") String id) {
         teamService.deleteTeam(Integer.parseInt(id));
     }
 
     @PutMapping("/Edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditKoers
+    public void EditTeam
             (@PathVariable("id") String id, @RequestBody Team team) {
         teamService.editTeam(Integer.parseInt(id), team);
     }
-    @PostMapping
+    @PostMapping("/Create/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public void createKoers
-            (@RequestBody Team team, User user) {
-        teamService.createTeam(team, user);
+    public void createTeam(@RequestBody String GroupName, @PathVariable int userId) {
+        teamService.createTeam(GroupName, userId);
     }
 }

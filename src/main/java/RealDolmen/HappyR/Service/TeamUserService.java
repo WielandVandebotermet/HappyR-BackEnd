@@ -1,7 +1,10 @@
 package RealDolmen.HappyR.Service;
 
+import RealDolmen.HappyR.Data.DataLoader;
 import RealDolmen.HappyR.Repository.TeamUserRepository;
+import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.TeamUser;
+import RealDolmen.HappyR.model.User;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +17,13 @@ import java.util.List;
 public class TeamUserService {
     private final TeamUserRepository teamUserRepository;
     @Autowired
-    private  UserService userService;
-    @Autowired
-    private TeamService teamService;
+    private DataLoader dataLoader;
 
     @PostConstruct
-    public void LoadData() {
-        if (teamUserRepository.count() <= 0) {
-            TeamUser teamUser = new TeamUser();
-            teamUser.setId(1L);
-            teamUser.setUser(userService.getUserById(2));
-            teamUser.setTeam(teamService.getTeamById(1));
-            teamUserRepository.save(teamUser);
-
-            TeamUser teamUser1 = new TeamUser();
-            teamUser1.setId(2L);
-            teamUser1.setUser(userService.getUserById(3));
-            teamUser1.setTeam(teamService.getTeamById(1));
-            teamUserRepository.save(teamUser1);
-        }
+    public void loadData() {
+        dataLoader.loadData();
     }
+
 
     public void createGroupUser(TeamUser teamUserRequest){
         TeamUser teamUser = TeamUser.builder()
@@ -42,6 +32,14 @@ public class TeamUserService {
                 .build();
 
         teamUserRepository.save(teamUser);
+    }
+
+    public List<TeamUser> getAllGroupUsersByTeamId(Long teamId) {
+        return teamUserRepository.findByTeamId(teamId);
+    }
+
+    public List<TeamUser> getAllTeamsByUserId(Long teamId) {
+        return teamUserRepository.findByUserId(teamId);
     }
 
     public void editGroupUser(int id, TeamUser teamUserRequest){

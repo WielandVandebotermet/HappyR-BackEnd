@@ -13,28 +13,6 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    @PostConstruct
-    public void LoadData() {
-        if (categoryRepository.count() <= 0) {
-            Category category = new Category();
-            category.setId(1L);
-            category.setCategoryName("General happiness");
-            category.setScoreImpact(100);
-            categoryRepository.save(category);
-
-            Category category1 = new Category();
-            category1.setId(2L);
-            category1.setCategoryName("Workplace");
-            category1.setScoreImpact(80);
-            categoryRepository.save(category1);
-
-            Category category2 = new Category();
-            category2.setId(3L);
-            category2.setCategoryName("Project");
-            category2.setScoreImpact(90);
-            categoryRepository.save(category2);
-        }
-    }
     public void createCategory(Category categoryRequest){
         Category category = Category.builder()
                 .CategoryName(categoryRequest.getCategoryName())

@@ -1,14 +1,10 @@
     package RealDolmen.HappyR.Service;
 
-    import RealDolmen.HappyR.Repository.ManagerRepository;
     import RealDolmen.HappyR.Repository.TeamRepository;
-    import RealDolmen.HappyR.Repository.UserRepository;
     import RealDolmen.HappyR.model.Manager;
     import RealDolmen.HappyR.model.Team;
     import RealDolmen.HappyR.model.User;
-    import jakarta.annotation.PostConstruct;
     import lombok.RequiredArgsConstructor;
-    import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Service;
     import java.util.List;
 
@@ -17,38 +13,17 @@
     @RequiredArgsConstructor
     public class TeamService {
         private final TeamRepository teamRepository;
-        private final UserRepository userRepository;
+        private final UserService userService;
         private final ManagerService managerService;
-        private final ManagerRepository managerRepository;
 
-
-        @PostConstruct
-        public void LoadData() {
-            if (teamRepository.count() <= 0) {
-                Team team = new Team();
-                team.setId(1L);
-                team.setGroupName("Development");
-                teamRepository.save(team);
-
-                Team team1 = new Team();
-                team1.setId(2L);
-                team1.setGroupName("Operations");
-                teamRepository.save(team1);
-
-                Team team2 = new Team();
-                team2.setId(3L);
-                team2.setGroupName("Quality Control");
-                teamRepository.save(team2);
-            }
-        }
-
-        public void createTeam(Team teamRequest,User user){
+        public void createTeam(String GroupName, int userId){
             Team team = Team.builder()
-                    .GroupName(teamRequest.getGroupName())
+                    .GroupName(GroupName)
                     .build();
 
             teamRepository.save(team);
 
+            User user = userService.getUserById(userId);
             if (user != null) {
                 Manager manager = new Manager();
                 manager.setUser(user);

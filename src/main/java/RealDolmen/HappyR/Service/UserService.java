@@ -13,35 +13,6 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    @PostConstruct
-    public void LoadData() {
-        if (userRepository.count() <= 0) {
-            User user = new User();
-            user.setId(1L);
-            user.setFirstName("Wieland");
-            user.setLastName("Vandebotermet");
-            userRepository.save(user);
-
-            User user1 = new User();
-            user1.setId(2L);
-            user1.setFirstName("Hugh");
-            user1.setLastName("Hargraves");
-            userRepository.save(user1);
-
-            User user2 = new User();
-            user2.setId(3L);
-            user2.setFirstName("Jeff");
-            user2.setLastName("Burrows");
-            userRepository.save(user2);
-
-            User user3 = new User();
-            user3.setId(4L);
-            user3.setFirstName("Tilda");
-            user3.setLastName("Miles");
-            userRepository.save(user3);
-        }
-    }
-
     public void createUser(User userRequest){
         User user = User.builder()
                 .FirstName(userRequest.getFirstName())

@@ -8,13 +8,10 @@ import RealDolmen.HappyR.Service.TeamService;
 import RealDolmen.HappyR.model.Manager;
 import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -30,7 +27,8 @@ import static org.mockito.Mockito.*;
 public class TeamTest {
     @InjectMocks
     private TeamService teamService;
-    @Mock
+    @Mock // Todo: injects Mock instead for injecting repositories
+            // Integration Test
     private ManagerService managerService;
     @Mock
     private TeamRepository teamRepository;
@@ -38,18 +36,6 @@ public class TeamTest {
     private UserRepository userRepository;
     @Mock
     private ManagerRepository managerRepository;
-
-    @BeforeEach
-    public void setUp() {
-        // Initialize Mockito annotations
-        try {
-            MockitoAnnotations.openMocks(this);
-            teamService = new TeamService(teamRepository, userRepository, managerService, managerRepository);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Test
     void testGetAllTeam() {
@@ -88,16 +74,13 @@ public class TeamTest {
 
     @Test
     void testCreateTeam() {
-        Team team = new Team();
-        team.setGroupName("Development");
-
         User user = new User();
         user.setId(1L);
         user.setFirstName("Wieland");
         user.setLastName("Vandebotermet");
         userRepository.save(user);
 
-        teamService.createTeam(team, user);
+        teamService.createTeam("Development", Math.toIntExact(user.getId()));
 
         verify(teamRepository, times(1)).save(any(Team.class));
         verify(managerRepository, times(1)).save(any(Manager.class));

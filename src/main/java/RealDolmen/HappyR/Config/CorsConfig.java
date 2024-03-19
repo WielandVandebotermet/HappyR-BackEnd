@@ -1,4 +1,4 @@
-package RealDolmen.HappyR.Controller;
+package RealDolmen.HappyR.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

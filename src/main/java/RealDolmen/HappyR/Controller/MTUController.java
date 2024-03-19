@@ -7,7 +7,6 @@ import RealDolmen.HappyR.model.TeamUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,6 +16,7 @@ public class MTUController {
     private final ManagerService managerService;
     private final TeamUserService teamUserService;
 
+    //Team Users
     @GetMapping("TU/all")
     @ResponseStatus(HttpStatus.OK)
     public List<TeamUser> getAllTeamUsers() {
@@ -49,6 +49,9 @@ public class MTUController {
         teamUserService.createGroupUser(teamUser);
     }
 
+
+
+    //Managers
     @GetMapping("M/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Manager> getAllManagers() {
@@ -79,5 +82,31 @@ public class MTUController {
     public void createManager
             (@RequestBody Manager manager) {
         managerService.createManager(manager);
+    }
+
+
+
+
+    @GetMapping("TU/Users/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TeamUser> getTeamUsersByTeamId(@PathVariable("id") Long teamId) {
+        return teamUserService.getAllGroupUsersByTeamId(teamId);
+    }
+    @GetMapping("M/Users/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Manager> getManagersByTeamId(@PathVariable("id") Long teamId) {
+        return managerService.getAllManagersByTeamId(teamId);
+    }
+
+    @GetMapping("TU/Teams/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TeamUser> getTeamsByTUUserId(@PathVariable("id") Long UserId) {
+        return teamUserService.getAllTeamsByUserId(UserId);
+    }
+
+    @GetMapping("M/Teams/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Manager> getTeamsByMUserId(@PathVariable("id") Long UserId) {
+        return managerService.getAllTeamsByUserId(UserId);
     }
 }

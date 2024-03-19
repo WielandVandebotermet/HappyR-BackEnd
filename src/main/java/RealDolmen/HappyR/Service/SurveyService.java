@@ -15,25 +15,6 @@ import java.util.List;
 public class SurveyService {
     private final SurveyRepository SurveyRepository;
 
-    @PostConstruct
-    public void loadData() {
-        if (SurveyRepository.count() <= 0) {
-            Survey survey = new Survey();
-            survey.setId(1L);
-            survey.setTestName("Satisfaction Survey");
-            survey.setStartDate(new Date());
-            survey.setStarted(true);
-            survey.setQuestions(null);
-            survey.setReoccuring(null);
-
-            List<Long> groupList = new ArrayList<>();
-            groupList.add(1L);
-            survey.setGroupList(groupList);
-
-            SurveyRepository.save(survey);
-        }
-    }
-
     public void createSurvey(Survey surveyRequest){
         Survey survey = Survey.builder()
                 .testName(surveyRequest.getTestName())

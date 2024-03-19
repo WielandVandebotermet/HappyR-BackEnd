@@ -5,6 +5,7 @@ import RealDolmen.HappyR.Repository.TeamRepository;
 import RealDolmen.HappyR.model.Manager;
 
 import RealDolmen.HappyR.model.Team;
+import RealDolmen.HappyR.model.TeamUser;
 import RealDolmen.HappyR.model.User;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerService {
     private final ManagerRepository managerRepository;
-    @Autowired
-    private TeamService teamService;
-    @PostConstruct
-    public void LoadData() {
-        if (managerRepository.count() <= 0) {
-            User user = new User();
-            user.setId(1L);
-            user.setFirstName("Wieland");
-            user.setLastName("Vandebotermet");
-
-            Team team = teamService.getTeamById(1);
-
-            Manager manager = new Manager();
-            manager.setId(1L);
-            manager.setUser(user);
-            manager.setTeam(team);
-            managerRepository.save(manager);
-        }
-    }
 
     public void createManager(Manager ManagerRequest){
         Manager manager = ManagerRequest.builder()
@@ -44,6 +26,14 @@ public class ManagerService {
                 .build();
 
         managerRepository.save(manager);
+    }
+
+    public List<Manager> getAllManagersByTeamId(Long teamId) {
+        return managerRepository.findByTeamId(teamId);
+    }
+
+    public List<Manager> getAllTeamsByUserId(Long teamId) {
+        return managerRepository.findByUserId(teamId);
     }
 
     public void editManager(int id, Manager managerRequest){
