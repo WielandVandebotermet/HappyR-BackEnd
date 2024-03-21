@@ -1,7 +1,6 @@
     package RealDolmen.HappyR.Service;
 
     import RealDolmen.HappyR.Repository.TeamRepository;
-    import RealDolmen.HappyR.model.Manager;
     import RealDolmen.HappyR.model.Team;
     import RealDolmen.HappyR.model.User;
     import lombok.RequiredArgsConstructor;
@@ -25,10 +24,8 @@
 
             User user = userService.getUserById(userId);
             if (user != null) {
-                Manager manager = new Manager();
-                manager.setUser(user);
-                manager.setTeam(team);
-                managerService.createManager(manager);
+
+                managerService.createManager(Math.toIntExact(team.getId()), Math.toIntExact(user.getId()));
             } else {
 
             }
@@ -39,7 +36,7 @@
 
             if(team != null)
             {
-                team.setGroupName(GroupName.strip().toString());
+                team.setGroupName(GroupName.strip());
                 teamRepository.save(team);
             }
         }

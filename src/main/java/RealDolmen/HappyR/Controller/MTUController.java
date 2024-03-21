@@ -45,8 +45,8 @@ public class MTUController {
     @PostMapping("TU/")
     @ResponseStatus(HttpStatus.OK)
     public void createTeamUser
-            (@RequestBody TeamUser teamUser) {
-        teamUserService.createGroupUser(teamUser);
+            (@RequestBody int teamId, int userID) {
+        teamUserService.createGroupUser(teamId,userID);
     }
 
 
@@ -80,8 +80,8 @@ public class MTUController {
     @PostMapping("M/")
     @ResponseStatus(HttpStatus.OK)
     public void createManager
-            (@RequestBody Manager manager) {
-        managerService.createManager(manager);
+            (@RequestBody int teamId, int userID) {
+        managerService.createManager(teamId,userID);
     }
 
 

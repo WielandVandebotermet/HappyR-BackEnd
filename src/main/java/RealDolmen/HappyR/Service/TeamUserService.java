@@ -16,6 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamUserService {
     private final TeamUserRepository teamUserRepository;
+    private final TeamService teamService;
+    private final UserService userService;
+
     @Autowired
     private DataLoader dataLoader;
 
@@ -25,10 +28,10 @@ public class TeamUserService {
     }
 
 
-    public void createGroupUser(TeamUser teamUserRequest){
+    public void createGroupUser(int TeamId, int UserId){
         TeamUser teamUser = TeamUser.builder()
-                .team(teamUserRequest.getTeam())
-                .user(teamUserRequest.getUser())
+                .team(teamService.getTeamById(TeamId))
+                .user(userService.getUserById(UserId))
                 .build();
 
         teamUserRepository.save(teamUser);

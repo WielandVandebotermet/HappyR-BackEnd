@@ -102,11 +102,7 @@ public class ManagerTest {
         team.setGroupName("Development");
         teamRepository.save(team);
 
-        Manager manager = new Manager();
-        manager.setUser(userService.getUserById(2));
-        manager.setTeam(teamService.getTeamById(1));
-
-        managerService.createManager(manager);
+        managerService.createManager(1,2);
 
         // Verify that save method was called with the correct arguments
         verify(managerRepository, times(1)).save(any(Manager.class));

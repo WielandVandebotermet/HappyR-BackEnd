@@ -103,11 +103,8 @@ public class TeamUserTest {
         team.setGroupName("Development");
         teamRepository.save(team);
 
-        TeamUser teamUser = new TeamUser();
-        teamUser.setUser(userService.getUserById(2));
-        teamUser.setTeam(teamService.getTeamById(1));
 
-        teamUserService.createGroupUser(teamUser);
+        teamUserService.createGroupUser(1,2);
 
         // Verify that save method was called with the correct arguments
         verify(teamUserRepository, times(1)).save(any(TeamUser.class));
