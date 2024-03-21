@@ -5,6 +5,7 @@ import RealDolmen.HappyR.Repository.TeamRepository;
 import RealDolmen.HappyR.Repository.UserRepository;
 import RealDolmen.HappyR.Service.ManagerService;
 import RealDolmen.HappyR.Service.TeamService;
+import RealDolmen.HappyR.Service.UserService;
 import RealDolmen.HappyR.model.Manager;
 import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.User;
@@ -30,6 +31,9 @@ public class TeamTest {
     @Mock // Todo: injects Mock instead for injecting repositories
             // Integration Test
     private ManagerService managerService;
+
+    @Mock
+    private UserService userService;
     @Mock
     private TeamRepository teamRepository;
     @Mock
@@ -78,12 +82,12 @@ public class TeamTest {
         user.setId(1L);
         user.setFirstName("Wieland");
         user.setLastName("Vandebotermet");
-        userRepository.save(user);
+        when(userService.getUserById(1)).thenReturn(user);
 
-        teamService.createTeam("Development", Math.toIntExact(user.getId()));
+        teamService.createTeam("Development", 1);
 
         verify(teamRepository, times(1)).save(any(Team.class));
-        verify(managerRepository, times(1)).save(any(Manager.class));
+        verify(managerService, times(1)).createManager(any(Manager.class)); // Verify that createManager is called
     }
 
 
@@ -93,19 +97,14 @@ public class TeamTest {
         team.setId(1L);
         team.setGroupName("Development");
 
-        Team team1 = new Team();
-        team1.setId(1L);
-        team1.setGroupName("Operations");
-
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
 
-        teamService.editTeam(1, team1);
+        teamService.editTeam("Operations",1);
 
         verify(teamRepository, times(1)).save(team);
 
-        assertEquals(1L, team1.getId());
-        assertEquals("Operations", team1.getGroupName());
+        assertEquals(1L, team.getId());
+        assertEquals("Operations", team.getGroupName());
     }
 
     @Test

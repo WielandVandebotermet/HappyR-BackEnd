@@ -32,12 +32,12 @@ public class TeamController {
         teamService.deleteTeam(Integer.parseInt(id));
     }
 
-    @PutMapping("/Edit/{id}")
+    @PutMapping("/Edit/{groupId}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditTeam
-            (@PathVariable("id") String id, @RequestBody Team team) {
-        teamService.editTeam(Integer.parseInt(id), team);
+    public void EditTeam(@RequestBody String updatedName, @PathVariable int groupId) {
+        teamService.editTeam(updatedName, groupId);
     }
+
     @PostMapping("/Create/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public void createTeam(@RequestBody String GroupName, @PathVariable int userId) {

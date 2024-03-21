@@ -34,14 +34,12 @@
             }
         }
 
-        public void editTeam(int id, Team teamRequest){
+        public void editTeam(String GroupName, int id){
             Team team = teamRepository.findById((long) id).orElse(null);
 
             if(team != null)
             {
-                team.setId(team.getId());
-                team.setGroupName(teamRequest.getGroupName());
-
+                team.setGroupName(GroupName.strip().toString());
                 teamRepository.save(team);
             }
         }
