@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/Category")
+@RequestMapping("/category")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -24,22 +24,22 @@ public class CategoryController {
         return categoryService.getCategoryById(Integer.parseInt(id));
     }
 
-    @DeleteMapping("/Delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteKoers
+    public void deleteCategory
             (@PathVariable("id") String id) {
         categoryService.deleteCategory(Integer.parseInt(id));
     }
 
-    @PutMapping("/Edit/{id}")
+    @PutMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditKoers
+    public void editCategory
             (@PathVariable("id") String id, @RequestBody Category category) {
         categoryService.editCategory(Integer.parseInt(id), category);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createKoers
+    public void createCategory
             (@RequestBody Category category) {
         categoryService.createCategory(category);
     }

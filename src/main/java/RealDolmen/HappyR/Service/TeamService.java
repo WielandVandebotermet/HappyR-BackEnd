@@ -24,10 +24,7 @@
 
             User user = userService.getUserById(userId);
             if (user != null) {
-
-                managerService.createManager(Math.toIntExact(team.getId()), Math.toIntExact(user.getId()));
-            } else {
-
+                managerService.createManager(team, user);
             }
         }
 

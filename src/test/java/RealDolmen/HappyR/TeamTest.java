@@ -28,8 +28,7 @@ import static org.mockito.Mockito.*;
 public class TeamTest {
     @InjectMocks
     private TeamService teamService;
-    @Mock // Todo: injects Mock instead for injecting repositories
-            // Integration Test
+    @Mock
     private ManagerService managerService;
 
     @Mock
@@ -87,7 +86,7 @@ public class TeamTest {
         teamService.createTeam("Development", 1);
 
         verify(teamRepository, times(1)).save(any(Team.class));
-        verify(managerService, times(1)).createManager(1, 1); // Verify that createManager is called
+        verify(managerService, times(1)).createManager(any(Team.class), any(User.class));
     }
 
 

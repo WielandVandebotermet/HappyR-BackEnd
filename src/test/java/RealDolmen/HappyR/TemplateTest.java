@@ -200,7 +200,7 @@ public class TemplateTest {
     }
 
     @Test
-    void testDeleteKoers() {
+    void testDeleteTemplate() {
         Template template = new Template();
         template.setId(1L);
         template.setTemplateName("TestTemplateName");

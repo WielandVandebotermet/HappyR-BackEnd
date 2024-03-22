@@ -28,12 +28,12 @@ public class Survey {
     private List<SurveyQuestion> questions;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SurveyQuestion> reoccuring;
+    private List<SurveyReoccuring> reoccuring;
 
     public Survey() {
     }
 
-    public Survey(Long id, List<Long> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions, List<SurveyQuestion> reoccuring) {
+    public Survey(Long id, List<Long> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions, List<SurveyReoccuring> reoccuring) {
         this.id = id;
         this.groupList = groupList;
         this.testName = testName;
@@ -91,11 +91,11 @@ public class Survey {
         this.questions = questions;
     }
 
-    public List<SurveyQuestion> getReoccuring() {
+    public List<SurveyReoccuring> getReoccuring() {
         return reoccuring;
     }
 
-    public void setReoccuring(List<SurveyQuestion> reoccuring) {
+    public void setReoccuring(List<SurveyReoccuring> reoccuring) {
         this.reoccuring = reoccuring;
     }
 }

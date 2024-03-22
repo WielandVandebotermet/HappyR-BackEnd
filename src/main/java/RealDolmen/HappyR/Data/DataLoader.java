@@ -25,6 +25,8 @@ public class DataLoader {
     private final TeamService teamService;
     private final UserService userService;
 
+
+    //Loads Dummy Data and Important Template Data
     public void loadData() {
         if (userRepository.count() <= 0) {
             User user = new User();

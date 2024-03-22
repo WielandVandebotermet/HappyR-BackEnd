@@ -1,7 +1,11 @@
 package RealDolmen.HappyR.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 public class SurveyQuestion {
     @Id
@@ -24,35 +28,4 @@ public class SurveyQuestion {
         Text = text;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Survey getSurvey() {
-        return survey;
-    }
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
-    }
-
-    public String getQuestion() {
-        return Question;
-    }
-
-    public void setQuestion(String question) {
-        Question = question;
-    }
-
-    public String getText() {
-        return Text;
-    }
-
-    public void setText(String text) {
-        Text = text;
-    }
 }

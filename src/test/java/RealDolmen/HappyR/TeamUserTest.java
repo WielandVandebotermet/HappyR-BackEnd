@@ -104,7 +104,7 @@ public class TeamUserTest {
         teamRepository.save(team);
 
 
-        teamUserService.createGroupUser(1,2);
+        teamUserService.createGroupUser(team,user1);
 
         // Verify that save method was called with the correct arguments
         verify(teamUserRepository, times(1)).save(any(TeamUser.class));

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Team")
+@RequestMapping("/team")
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
@@ -25,20 +25,20 @@ public class TeamController {
         return teamService.getTeamById(Integer.parseInt(id));
     }
 
-    @DeleteMapping("/Delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteTeam
+    public void deleteTeam
             (@PathVariable("id") String id) {
         teamService.deleteTeam(Integer.parseInt(id));
     }
 
-    @PutMapping("/Edit/{groupId}")
+    @PutMapping("/edit/{groupId}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditTeam(@RequestBody String updatedName, @PathVariable int groupId) {
+    public void editTeam(@RequestBody String updatedName, @PathVariable int groupId) {
         teamService.editTeam(updatedName, groupId);
     }
 
-    @PostMapping("/Create/{userId}")
+    @PostMapping("/create/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public void createTeam(@RequestBody String GroupName, @PathVariable int userId) {
         teamService.createTeam(GroupName, userId);

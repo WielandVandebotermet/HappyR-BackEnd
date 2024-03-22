@@ -1,9 +1,14 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.MTURequest;
 import RealDolmen.HappyR.Service.ManagerService;
+import RealDolmen.HappyR.Service.TeamService;
 import RealDolmen.HappyR.Service.TeamUserService;
+import RealDolmen.HappyR.Service.UserService;
 import RealDolmen.HappyR.model.Manager;
+import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.TeamUser;
+import RealDolmen.HappyR.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +20,8 @@ import java.util.List;
 public class MTUController {
     private final ManagerService managerService;
     private final TeamUserService teamUserService;
+    private final TeamService teamService;
+    private final UserService userService;
 
     //Team Users
     @GetMapping("TU/all")
@@ -29,24 +36,31 @@ public class MTUController {
         return teamUserService.getGroupUserById(Integer.parseInt(id));
     }
 
-    @DeleteMapping("TU/Delete/{id}")
+    @DeleteMapping("TU/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteTeamUser
+    public void deleteTeamUser
             (@PathVariable("id") String id) {
         teamUserService.deleteGroupUser(Integer.parseInt(id));
     }
 
-    @PutMapping("TU/Edit/{id}")
+    @PutMapping("TU/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditTeamUser
+    public void editTeamUser
             (@PathVariable("id") String id, @RequestBody TeamUser teamUser) {
         teamUserService.editGroupUser(Integer.parseInt(id), teamUser);
     }
     @PostMapping("TU/")
     @ResponseStatus(HttpStatus.OK)
     public void createTeamUser
-            (@RequestBody int teamId, int userID) {
-        teamUserService.createGroupUser(teamId,userID);
+            (@RequestBody MTURequest request) {
+        int teamId = request.getTeamId();
+        int userId = request.getUserId();
+
+        Team team = teamService.getTeamById(teamId);
+        User user = userService.getUserById(userId);
+        if(user != null && team != null) {
+            teamUserService.createGroupUser(team,user);
+        }
     }
 
 
@@ -64,47 +78,54 @@ public class MTUController {
         return managerService.getManagerById(Integer.parseInt(id));
     }
 
-    @DeleteMapping("M/Delete/{id}")
+    @DeleteMapping("M/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteManager
+    public void deleteManager
             (@PathVariable("id") String id) {
         managerService.deleteManager(Integer.parseInt(id));
     }
 
-    @PutMapping("M/Edit/{id}")
+    @PutMapping("M/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditManager
+    public void editManager
             (@PathVariable("id") String id, @RequestBody Manager manager) {
         managerService.editManager(Integer.parseInt(id), manager);
     }
     @PostMapping("M/")
     @ResponseStatus(HttpStatus.OK)
     public void createManager
-            (@RequestBody int teamId, int userID) {
-        managerService.createManager(teamId,userID);
+            (@RequestBody MTURequest request) {
+        int teamId = request.getTeamId();
+        int userId = request.getUserId();
+
+        Team team = teamService.getTeamById(teamId);
+        User user = userService.getUserById(userId);
+        if(user != null && team != null) {
+            managerService.createManager(team, user);
+        }
     }
 
 
 
 
-    @GetMapping("TU/Users/{id}")
+    @GetMapping("TU/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TeamUser> getTeamUsersByTeamId(@PathVariable("id") Long teamId) {
         return teamUserService.getAllGroupUsersByTeamId(teamId);
     }
-    @GetMapping("M/Users/{id}")
+    @GetMapping("M/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<Manager> getManagersByTeamId(@PathVariable("id") Long teamId) {
         return managerService.getAllManagersByTeamId(teamId);
     }
 
-    @GetMapping("TU/Teams/{id}")
+    @GetMapping("TU/teams/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TeamUser> getTeamsByTUUserId(@PathVariable("id") Long UserId) {
         return teamUserService.getAllTeamsByUserId(UserId);
     }
 
-    @GetMapping("M/Teams/{id}")
+    @GetMapping("M/teams/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<Manager> getTeamsByMUserId(@PathVariable("id") Long UserId) {
         return managerService.getAllTeamsByUserId(UserId);

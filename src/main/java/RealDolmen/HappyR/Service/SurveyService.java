@@ -1,7 +1,11 @@
 package RealDolmen.HappyR.Service;
 
+import RealDolmen.HappyR.Repository.SurveyQuestionRepository;
+import RealDolmen.HappyR.Repository.SurveyReoccuringRepository;
 import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.model.Survey;
+import RealDolmen.HappyR.model.SurveyQuestion;
+import RealDolmen.HappyR.model.SurveyReoccuring;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,8 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SurveyService {
     private final SurveyRepository SurveyRepository;
+    private final SurveyQuestionRepository surveyQuestionRepository;
+    private final SurveyReoccuringRepository surveyReoccuringRepository;
 
     public void createSurvey(Survey surveyRequest){
+
         Survey survey = Survey.builder()
                 .testName(surveyRequest.getTestName())
                 .startDate(surveyRequest.getStartDate())

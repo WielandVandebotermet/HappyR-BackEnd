@@ -18,13 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerService {
     private final ManagerRepository managerRepository;
-    private final TeamService teamService;
-    private final UserService userService;
 
-    public void createManager(int TeamId, int UserId){
+    public void createManager(Team team, User user){
         Manager manager = Manager.builder()
-                .team(teamService.getTeamById(TeamId))
-                .user(userService.getUserById(UserId))
+                .team(team)
+                .user(user)
                 .build();
 
         managerRepository.save(manager);

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Survey")
+@RequestMapping("/survey")
 @RequiredArgsConstructor
 public class SurveyController {
     private final SurveyService surveyService;
@@ -23,22 +23,22 @@ public class SurveyController {
         return surveyService.getSurveyById(Integer.parseInt(id));
     }
 
-    @DeleteMapping("/Delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteKoers
+    public void deleteSurvey
             (@PathVariable("id") String id) {
         surveyService.deleteSurvey(Integer.parseInt(id));
     }
 
-    @PutMapping("/Edit/{id}")
+    @PutMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditKoers
+    public void EditSurvey
             (@PathVariable("id") String id, @RequestBody Survey survey) {
         surveyService.editSurvey(Integer.parseInt(id), survey);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createKoers
+    public void createSurvey
             (@RequestBody Survey survey) {
         surveyService.createSurvey(survey);
     }

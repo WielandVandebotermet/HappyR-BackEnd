@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Template")
+@RequestMapping("/template")
 @RequiredArgsConstructor
 public class TemplateController {
     private final TemplateService templateService;
@@ -23,22 +23,22 @@ public class TemplateController {
         return templateService.getTemplateById(Integer.parseInt(id));
     }
 
-    @DeleteMapping("/Delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void DeleteKoers
+    public void deleteTemplate
             (@PathVariable("id") String id) {
         templateService.deleteTemplate(Integer.parseInt(id));
     }
 
-    @PutMapping("/Edit/{id}")
+    @PutMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void EditKoers
+    public void EditTemplate
             (@PathVariable("id") String id, @RequestBody Template template) {
         templateService.editTemplate(Integer.parseInt(id), template);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createKoers
+    public void createTemplate
             (@RequestBody Template template) {
         templateService.createTemplate(template);
     }
