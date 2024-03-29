@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 
@@ -27,20 +28,20 @@ public class Survey {
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SurveyQuestion> questions;
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SurveyReoccuring> reoccuring;
+    @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private SurveyReoccuring surveyReoccuring;
 
     public Survey() {
     }
 
-    public Survey(Long id, List<Long> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions, List<SurveyReoccuring> reoccuring) {
+    public Survey(Long id, List<Long> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions, SurveyReoccuring surveyReoccuring) {
         this.id = id;
         this.groupList = groupList;
         this.testName = testName;
         this.startDate = startDate;
         this.started = started;
         this.questions = questions;
-        this.reoccuring = reoccuring;
+        this.surveyReoccuring = surveyReoccuring;
     }
 
     public Long getId() {
@@ -91,11 +92,11 @@ public class Survey {
         this.questions = questions;
     }
 
-    public List<SurveyReoccuring> getReoccuring() {
-        return reoccuring;
+    public SurveyReoccuring getSurveyReoccuring() {
+        return surveyReoccuring;
     }
 
-    public void setReoccuring(List<SurveyReoccuring> reoccuring) {
-        this.reoccuring = reoccuring;
+    public void setSurveyReoccuring(SurveyReoccuring surveyReoccuring) {
+        this.surveyReoccuring = surveyReoccuring;
     }
 }

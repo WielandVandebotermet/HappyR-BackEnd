@@ -1,5 +1,6 @@
 package RealDolmen.HappyR;
 
+import RealDolmen.HappyR.Data.SurveyRequest;
 import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.Service.SurveyService;
 import RealDolmen.HappyR.model.Survey;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
@@ -36,7 +36,7 @@ public class SurveyTest {
         survey.setStartDate(new Date());
         survey.setStarted(true);
         survey.setQuestions(null);
-        survey.setReoccuring(null);
+        survey.setSurveyReoccuring(null);
 
         List<Long> SurveyList = new ArrayList<>();
         SurveyList.add(1L);
@@ -50,7 +50,7 @@ public class SurveyTest {
         survey1.setStartDate(new Date());
         survey1.setStarted(true);
         survey1.setQuestions(null);
-        survey1.setReoccuring(null);
+        survey1.setSurveyReoccuring(null);
 
         List<Long> SurveyList1 = new ArrayList<>();
         SurveyList1.add(1L);
@@ -75,10 +75,10 @@ public class SurveyTest {
 
     @Test
     void testCreateSurvey() {
-        Survey survey = new Survey();
-        survey.setTestName("TestName");
+        SurveyRequest surveyRequest = new SurveyRequest();
+        surveyRequest.setTestName("TestName");
 
-        surveyService.createSurvey(survey);
+        surveyService.createSurvey(surveyRequest);
 
         // Verify that save method was called with the correct arguments
         verify(surveyRepository, times(1)).save(any(Survey.class));

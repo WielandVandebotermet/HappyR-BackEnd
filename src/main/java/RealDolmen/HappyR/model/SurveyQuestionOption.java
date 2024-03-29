@@ -2,28 +2,31 @@ package RealDolmen.HappyR.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
-public class TemplateOption {
+@Builder
+public class SurveyQuestionOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "template_id")
+    @JoinColumn(name = "survey_question_id")
     @JsonIgnore
-    private Template template;
+    private SurveyQuestion surveyQuestion;
 
     private String Setting;
+
     private boolean SettingValue;
 
-    public TemplateOption() {
+    public SurveyQuestionOption() {
     }
 
-    public TemplateOption(Long id, Template template, String setting, boolean settingValue) {
+    public SurveyQuestionOption(Long id, SurveyQuestion surveyQuestion, String setting, boolean settingValue) {
         this.id = id;
-        this.template = template;
+        this.surveyQuestion = surveyQuestion;
         Setting = setting;
         SettingValue = settingValue;
     }
@@ -36,12 +39,12 @@ public class TemplateOption {
         this.id = id;
     }
 
-    public Template getTemplate() {
-        return template;
+    public SurveyQuestion getSurveyQuestion() {
+        return surveyQuestion;
     }
 
-    public void setTemplate(Template template) {
-        this.template = template;
+    public void setSurveyQuestion(SurveyQuestion surveyQuestion) {
+        this.surveyQuestion = surveyQuestion;
     }
 
     public String getSetting() {

@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.SurveyRequest;
 import RealDolmen.HappyR.Service.SurveyService;
 import RealDolmen.HappyR.model.Survey;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,19 @@ public class SurveyController {
     public List<Survey> getAllSurveys() {
         return surveyService.getAllSurveys();
     }
+
+    @GetMapping("/FilterByUserId/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Survey> FilterByUserId(@PathVariable("id") String id) {
+        return surveyService.getSurveysByUserId(Integer.parseInt(id));
+    }
+
+    @GetMapping("/FilterByManagerId/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Survey> FilterByManagerId(@PathVariable("id") String id) {
+        return surveyService.getSurveysByManagerId(Integer.parseInt(id));
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Survey getSurveyById(@PathVariable("id") String id) {
@@ -36,10 +50,42 @@ public class SurveyController {
             (@PathVariable("id") String id, @RequestBody Survey survey) {
         surveyService.editSurvey(Integer.parseInt(id), survey);
     }
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public void createSurvey
-            (@RequestBody Survey survey) {
-        surveyService.createSurvey(survey);
+    public void createSurvey (@RequestBody SurveyRequest surveyRequest) {
+        surveyService.createSurvey(surveyRequest);
+    }
+
+
+
+    @DeleteMapping("question/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteSurveyQuestion
+            (@PathVariable("id") String id) {
+        surveyService.deleteSurvey(Integer.parseInt(id));
+    }
+
+    @PutMapping("question/edit/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void EditSurveyQuestion
+            (@PathVariable("id") String id, @RequestBody Survey survey) {
+        surveyService.editSurvey(Integer.parseInt(id), survey);
+    }
+    @PostMapping("question/create")
+    @ResponseStatus(HttpStatus.OK)
+    public void createSurveyQuestion (@RequestBody SurveyRequest surveyRequest) {
+        surveyService.createSurvey(surveyRequest);
+    }
+
+    @PutMapping("question/option/edit/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void EditSurveyQuestionOption
+            (@PathVariable("id") String id, @RequestBody Survey survey) {
+        surveyService.editSurvey(Integer.parseInt(id), survey);
+    }
+    @PostMapping("question/option/create")
+    @ResponseStatus(HttpStatus.OK)
+    public void createSurveyQuestionOption (@RequestBody SurveyRequest surveyRequest) {
+        surveyService.createSurvey(surveyRequest);
     }
 }

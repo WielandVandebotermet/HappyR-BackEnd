@@ -1,7 +1,9 @@
 package RealDolmen.HappyR.Data;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 public class MTURequest {
     private int teamId;
@@ -15,11 +17,4 @@ public class MTURequest {
         this.userId = userId;
     }
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 }

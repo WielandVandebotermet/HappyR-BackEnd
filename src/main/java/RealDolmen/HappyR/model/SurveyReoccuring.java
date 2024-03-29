@@ -1,17 +1,23 @@
 package RealDolmen.HappyR.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
+@Builder
 public class SurveyReoccuring {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
+
+    @OneToOne
+    @JoinColumn(name = "survey_id")
+    @JsonIgnore
     private Survey survey;
 
     private int Time;
