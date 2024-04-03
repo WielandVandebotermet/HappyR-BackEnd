@@ -1,6 +1,9 @@
 package RealDolmen.HappyR.Service;
 
-import RealDolmen.HappyR.model.Result;
+import RealDolmen.HappyR.Data.ResultRequest;
+import RealDolmen.HappyR.Repository.ResultScoreListRepository;
+import RealDolmen.HappyR.Repository.SurveyRepository;
+import RealDolmen.HappyR.model.*;
 import RealDolmen.HappyR.Repository.ResultRepository;
 import RealDolmen.HappyR.model.Result;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,35 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class ResultService {
     private final ResultRepository resultRepository;
+    private final ResultScoreListRepository resultScoreListRepository;
+    private final SurveyRepository surveyRepository;
 
-    public void createResult(Result resultRequest){
-        Result result = Result.builder()
-                .UserId(resultRequest.getUserId())
-                .SurveyId(resultRequest.getSurveyId())
-                .TotalResult(resultRequest.getTotalResult())
-                .scoreList(resultRequest.getScoreList())
-                .build();
+    public void createResult(ResultRequest resultRequest){
+        Survey survey = surveyRepository.findById((long) resultRequest.getSurveyId()).orElse(null);
 
-        resultRepository.save(result);
+        if(survey.getQuestions().size() == resultRequest.getScoreList().size()) {
+            Result result = Result.builder()
+                    .UserId(resultRequest.getUserId())
+                    .SurveyId(resultRequest.getSurveyId())
+                    .TotalResult(resultRequest.getTotalResult())
+                    .build();
+
+            List<ResultScoreList> resultScoreLists = new ArrayList<>();
+
+            for (ResultRequest.resultList resultList : resultRequest.getScoreList()) {
+
+                ResultScoreList resultScoreList = new ResultScoreList();
+                resultScoreList.setResult(result);
+                resultScoreList.setQuestionId(resultList.getQuestionId());
+                resultScoreList.setScore(resultList.getScore());
+                resultScoreList.setCategoryId(resultList.getCategoryId());
+
+                resultScoreLists.add(resultScoreList);
+            }
+
+            result.setScoreList(resultScoreLists);
+            resultRepository.save(result);
+        }
     }
 
     public void editResult(int id, Result resultRequest){

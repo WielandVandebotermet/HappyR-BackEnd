@@ -1,8 +1,10 @@
 package RealDolmen.HappyR;
 
+import RealDolmen.HappyR.Data.ResultRequest;
 import RealDolmen.HappyR.Repository.ResultRepository;
+import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.Service.ResultService;
-import RealDolmen.HappyR.model.Result;
+import RealDolmen.HappyR.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,8 @@ public class ResultTest {
 
     @Mock
     private ResultRepository resultRepository;
+    @Mock
+    private SurveyRepository surveyRepository;
 
     @Test
     void testGetAllResult() {
@@ -72,12 +77,53 @@ public class ResultTest {
 
     @Test
     void testCreateResult() {
-        Result result = new Result();
-        result.setId(1L);
-        result.setSurveyId(1);
+
+        Survey survey = new Survey();
+        survey.setId(5L);
+        survey.setTestName("Inactive Happiness Test");
+        survey.setStartDate(new Date());
+        survey.setStarted(false);
+
+        List<SurveyQuestion> question = new ArrayList<>();
+
+        SurveyQuestion question1 = new SurveyQuestion();
+        question1.setSurvey(survey);
+        question1.setTemplateId("1");
+        question1.setQuestion("How do you currently like your work environment?");
+        question1.setText("A 1 means not at all and a 5 means very much.");
+
+        List<SurveyQuestionOption> options1 = new ArrayList<>();
+        options1.add(new SurveyQuestionOption(null,question1, "subtext", true));
+        options1.add(new SurveyQuestionOption(null,question1,"comment", false));
+        options1.add(new SurveyQuestionOption(null,question1,"IncludeManager", false));
+        question1.setOptions(options1);
+
+        List<SurveyQuestionSetting> setting1 = new ArrayList<>();
+        setting1.add(new SurveyQuestionSetting(null,question1,"Bmin", "1"));
+        setting1.add(new SurveyQuestionSetting(null,question1,"Bmax", "5"));
+        setting1.add(new SurveyQuestionSetting(null,question1,"Step", "1"));
+        setting1.add(new SurveyQuestionSetting(null,question1,"CategorieId", "2"));
+        question1.setSettings(setting1);
+
+        question.add(question1);
+        survey.setQuestions(question);
+
+        ResultRequest.resultList resultList = new ResultRequest().new resultList(); // Instantiating inner class
+        resultList.setCategoryId(2);
+        resultList.setScore(5);
+        resultList.setQuestionId(0);
+
+        ResultRequest result = new ResultRequest();
+        result.setSurveyId(5);
         result.setUserId(1);
         result.setTotalResult(4);
-        result.setScoreList(null);
+
+        List<ResultRequest.resultList> scoreList = new ArrayList<>();
+        scoreList.add(resultList);
+
+        result.setScoreList(scoreList);
+
+        when(surveyRepository.findById(5L)).thenReturn(Optional.of(survey));
 
         resultService.createResult(result);
 

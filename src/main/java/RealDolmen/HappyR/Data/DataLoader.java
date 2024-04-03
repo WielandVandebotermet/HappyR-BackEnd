@@ -270,13 +270,13 @@ public class DataLoader {
 
             SurveyQuestion question2 = new SurveyQuestion();
             question2.setSurvey(survey1);
-            question1.setTemplateId("1");
+            question2.setTemplateId("1");
             question2.setQuestion("How do you currently like your assigned project?");
             question2.setText("A 1 means not at all and a 10 means very much.");
 
             SurveyQuestion question3 = new SurveyQuestion();
             question3.setSurvey(survey1);
-            question1.setTemplateId("1");
+            question3.setTemplateId("1");
             question3.setQuestion("How problematic do you find your team?");
             question3.setText("A 1 means very problamatic and a 5 means there are no problems.");
 
@@ -349,19 +349,19 @@ public class DataLoader {
 
             SurveyQuestion question4 = new SurveyQuestion();
             question4.setSurvey(survey);
-            question1.setTemplateId("1");
+            question4.setTemplateId("1");
             question4.setQuestion("How do you currently like your work environment?");
             question4.setText("A 1 means not at all and a 5 means very much.");
 
             SurveyQuestion question5 = new SurveyQuestion();
             question5.setSurvey(survey);
-            question1.setTemplateId("1");
+            question5.setTemplateId("1");
             question5.setQuestion("How do you currently like your assigned project?");
             question5.setText("A 1 means not at all and a 10 means very much.");
 
             SurveyQuestion question6 = new SurveyQuestion();
             question6.setSurvey(survey);
-            question1.setTemplateId("1");
+            question6.setTemplateId("1");
             question6.setQuestion("How problematic do you find your team?");
             question6.setText("A 1 means very problamatic and a 5 means there are no problems.");
 
@@ -387,7 +387,7 @@ public class DataLoader {
 
             List<SurveyQuestionSetting> setting5 = new ArrayList<>();
             setting5.add(new SurveyQuestionSetting(null,question5,"Bmin", "1"));
-            setting5.add(new SurveyQuestionSetting(null,question5,"Bmax", "5"));
+            setting5.add(new SurveyQuestionSetting(null,question5,"Bmax", "10"));
             setting5.add(new SurveyQuestionSetting(null,question5,"Step", "1"));
             setting5.add(new SurveyQuestionSetting(null,question5,"CategorieId", "3"));
             question5.setSettings(setting5);

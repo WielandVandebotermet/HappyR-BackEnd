@@ -27,7 +27,7 @@ public class SurveyService {
                 .startDate(surveyRequest.getStartDate())
                 .questions(null)
                 .groupList(surveyRequest.getGroupList())
-                .started(surveyRequest.getStarted())
+                .started(surveyRequest.isStarted())
                 .build();
 
             if(surveyRequest.getReoccuring() != null) {
@@ -45,18 +45,34 @@ public class SurveyService {
         SurveyRepository.save(survey);
     }
 
-    public void editSurvey(int id, Survey surveyRequest){
+    public void editSurvey(int id, SurveyRequest surveyRequest){
         Survey survey = SurveyRepository.findById((long) id).orElse(null);
 
         if(survey != null)
         {
             survey.setId(survey.getId());
-            survey.setStarted(surveyRequest.getStarted());
+            survey.setStarted(surveyRequest.isStarted());
             survey.setTestName(surveyRequest.getTestName());
             survey.setStartDate(surveyRequest.getStartDate());
-            survey.setSurveyReoccuring(surveyRequest.getSurveyReoccuring());
-            survey.setQuestions(surveyRequest.getQuestions());
             survey.setGroupList(surveyRequest.getGroupList());
+
+            if(surveyRequest.getReoccuring() != null) {
+                Map<String, Object> reoccuring = surveyRequest.getReoccuring();
+                Integer time = (Integer) reoccuring.get("Time");
+                String timeMultiplier = (String) reoccuring.get("Multiplier");
+
+
+                SurveyReoccuring reoccurring = new SurveyReoccuring();
+                reoccurring.setSurvey(survey);
+                reoccurring.setTime(time);
+                reoccurring.setTimeMultiplier(timeMultiplier);
+
+                survey.setSurveyReoccuring(reoccurring);
+            }
+            else {
+                surveyReoccuringRepository.delete(survey.getSurveyReoccuring());
+                survey.setSurveyReoccuring(null);
+            }
 
             SurveyRepository.save(survey);
         }

@@ -64,7 +64,7 @@ public class SurveyRequest {
         this.groupList = groupList;
     }
 
-    public boolean getStarted() {
+    public boolean isStarted() {
         return started;
     }
 

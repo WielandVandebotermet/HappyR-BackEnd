@@ -2,6 +2,8 @@ package RealDolmen.HappyR.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class ResultScoreList {
     @Id
@@ -11,17 +13,20 @@ public class ResultScoreList {
     @ManyToOne
     private Result result;
 
-    private String questionId;
-    private String score;
+    private int questionId;
+    private int score;
+
+    private int categoryId;
 
     public ResultScoreList() {
     }
 
-    public ResultScoreList(Long id, Result result, String questionId, String score) {
+    public ResultScoreList(Long id, Result result, int questionId, int score, int categoryId) {
         this.id = id;
         this.result = result;
         this.questionId = questionId;
         this.score = score;
+        this.categoryId = categoryId;
     }
 
     public Long getId() {
@@ -40,19 +45,27 @@ public class ResultScoreList {
         this.result = result;
     }
 
-    public String getQuestionId() {
+    public int getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(String questionId) {
+    public void setQuestionId(int questionId) {
         this.questionId = questionId;
     }
 
-    public String getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

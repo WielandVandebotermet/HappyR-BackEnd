@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.ResultRequest;
 import RealDolmen.HappyR.Service.ResultService;
 import RealDolmen.HappyR.model.Result;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,10 @@ public class ResultController {
         resultService.deleteResult(Integer.parseInt(id));
     }
 
-    @PutMapping("/edit/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void editResult
-            (@PathVariable("id") String id, @RequestBody Result result) {
-        resultService.editResult(Integer.parseInt(id), result);
-    }
-    @PostMapping
+    @PostMapping("/create/")
     @ResponseStatus(HttpStatus.OK)
     public void createResult
-            (@RequestBody Result result) {
-        resultService.createResult(result);
+            (@RequestBody ResultRequest resultRequest) {
+        resultService.createResult(resultRequest);
     }
 }

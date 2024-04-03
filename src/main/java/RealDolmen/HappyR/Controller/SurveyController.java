@@ -47,9 +47,10 @@ public class SurveyController {
     @PutMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void EditSurvey
-            (@PathVariable("id") String id, @RequestBody Survey survey) {
-        surveyService.editSurvey(Integer.parseInt(id), survey);
+            (@PathVariable("id") String id, @RequestBody SurveyRequest surveyRequest) {
+        surveyService.editSurvey(Integer.parseInt(id), surveyRequest);
     }
+
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
     public void createSurvey (@RequestBody SurveyRequest surveyRequest) {
@@ -68,8 +69,8 @@ public class SurveyController {
     @PutMapping("question/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void EditSurveyQuestion
-            (@PathVariable("id") String id, @RequestBody Survey survey) {
-        surveyService.editSurvey(Integer.parseInt(id), survey);
+            (@PathVariable("id") String id, @RequestBody SurveyRequest surveyRequest) {
+        surveyService.editSurvey(Integer.parseInt(id), surveyRequest);
     }
     @PostMapping("question/create")
     @ResponseStatus(HttpStatus.OK)
@@ -80,8 +81,8 @@ public class SurveyController {
     @PutMapping("question/option/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void EditSurveyQuestionOption
-            (@PathVariable("id") String id, @RequestBody Survey survey) {
-        surveyService.editSurvey(Integer.parseInt(id), survey);
+            (@PathVariable("id") String id, @RequestBody SurveyRequest surveyRequest) {
+        surveyService.editSurvey(Integer.parseInt(id), surveyRequest);
     }
     @PostMapping("question/option/create")
     @ResponseStatus(HttpStatus.OK)

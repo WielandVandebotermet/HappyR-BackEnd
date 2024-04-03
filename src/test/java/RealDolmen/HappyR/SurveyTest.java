@@ -90,8 +90,7 @@ public class SurveyTest {
         survey.setId(5L);
         survey.setTestName("TestName");
 
-        Survey survey1 = new Survey();
-        survey1.setId(5L);
+        SurveyRequest survey1 = new SurveyRequest();
         survey1.setTestName("EditName");
 
         when(surveyRepository.findById(5L)).thenReturn(Optional.of(survey));
@@ -100,8 +99,8 @@ public class SurveyTest {
 
         verify(surveyRepository, times(1)).save(survey);
 
-        assertEquals(5L, survey1.getId());
-        assertEquals("EditName", survey1.getTestName());
+        assertEquals(5L, survey.getId());
+        assertEquals("EditName", survey.getTestName());
     }
 
     @Test
