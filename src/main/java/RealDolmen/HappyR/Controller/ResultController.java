@@ -18,10 +18,23 @@ public class ResultController {
     public List<Result> getAllResults() {
         return resultService.getAllResults();
     }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Result getResultById(@PathVariable("id") String id) {
         return resultService.getResultById(Integer.parseInt(id));
+    }
+
+    @GetMapping("manager/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Result> getResultsByManager(@PathVariable("id") String id) {
+        return resultService.getResultByManagerId(Integer.parseInt(id));
+    }
+
+    @GetMapping("survey/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result getResultBySurvey(@PathVariable("id") String id) {
+        return resultService.getResultBySurveyId(Integer.parseInt(id));
     }
 
     @DeleteMapping("/delete/{id}")

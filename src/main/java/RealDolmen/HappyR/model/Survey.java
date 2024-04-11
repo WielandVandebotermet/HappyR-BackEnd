@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class Survey {
 
     private String testName;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private Calendar startDate;
 
     private Boolean started;
 
@@ -31,10 +32,14 @@ public class Survey {
     @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private SurveyReoccuring surveyReoccuring;
 
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Result> results;
+
     public Survey() {
     }
 
-    public Survey(Long id, List<Long> groupList, String testName, Date startDate, Boolean started, List<SurveyQuestion> questions, SurveyReoccuring surveyReoccuring) {
+    public Survey(Long id, List<Long> groupList, String testName, Calendar startDate, Boolean started, List<SurveyQuestion> questions, SurveyReoccuring surveyReoccuring, List<Result> results) {
         this.id = id;
         this.groupList = groupList;
         this.testName = testName;
@@ -42,6 +47,7 @@ public class Survey {
         this.started = started;
         this.questions = questions;
         this.surveyReoccuring = surveyReoccuring;
+        this.results = results;
     }
 
     public Long getId() {
@@ -68,11 +74,11 @@ public class Survey {
         this.testName = testName;
     }
 
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
     }
 
@@ -98,5 +104,9 @@ public class Survey {
 
     public void setSurveyReoccuring(SurveyReoccuring surveyReoccuring) {
         this.surveyReoccuring = surveyReoccuring;
+    }
+
+    public List<Result> getResults() {
+        return results;
     }
 }

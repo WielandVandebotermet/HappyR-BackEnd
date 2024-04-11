@@ -10,10 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +30,7 @@ public class SurveyTest {
         Survey survey = new Survey();
         survey.setId(1L);
         survey.setTestName("Satisfaction Survey");
-        survey.setStartDate(new Date());
+        survey.setStartDate(Calendar.getInstance());
         survey.setStarted(true);
         survey.setQuestions(null);
         survey.setSurveyReoccuring(null);
@@ -47,7 +44,7 @@ public class SurveyTest {
         Survey survey1 = new Survey();
         survey1.setId(1L);
         survey1.setTestName("Workplace Survey");
-        survey1.setStartDate(new Date());
+        survey1.setStartDate(Calendar.getInstance());
         survey1.setStarted(true);
         survey1.setQuestions(null);
         survey1.setSurveyReoccuring(null);

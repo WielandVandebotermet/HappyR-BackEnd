@@ -11,10 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -81,7 +78,7 @@ public class ResultTest {
         Survey survey = new Survey();
         survey.setId(5L);
         survey.setTestName("Inactive Happiness Test");
-        survey.setStartDate(new Date());
+        survey.setStartDate(Calendar.getInstance());
         survey.setStarted(false);
 
         List<SurveyQuestion> question = new ArrayList<>();
@@ -108,7 +105,7 @@ public class ResultTest {
         question.add(question1);
         survey.setQuestions(question);
 
-        ResultRequest.resultList resultList = new ResultRequest().new resultList(); // Instantiating inner class
+        ResultRequest.resultList resultList = new ResultRequest.resultList();
         resultList.setCategoryId(2);
         resultList.setScore(5);
         resultList.setQuestionId(0);

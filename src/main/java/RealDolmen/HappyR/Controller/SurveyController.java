@@ -3,6 +3,7 @@ package RealDolmen.HappyR.Controller;
 import RealDolmen.HappyR.Data.SurveyRequest;
 import RealDolmen.HappyR.Service.SurveyService;
 import RealDolmen.HappyR.model.Survey;
+import RealDolmen.HappyR.model.SurveyQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,12 @@ public class SurveyController {
     }
 
 
+    @GetMapping("question/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public SurveyQuestion GetSurveyQuestion
+            (@PathVariable("id") String id) {
+        return surveyService.getSurveyQuestionById(Integer.parseInt(id));
+    }
 
     @DeleteMapping("question/delete/{id}")
     @ResponseStatus(HttpStatus.OK)

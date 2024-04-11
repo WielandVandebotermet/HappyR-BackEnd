@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 
@@ -14,9 +15,12 @@ public class Result {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private int SurveyId;
-    private int UserId;
-    private int TotalResult;
+    @ManyToOne
+    private Survey survey;
+
+    private int userId;
+
+    private int totalResult;
 
     @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResultScoreList> scoreList;
@@ -24,11 +28,11 @@ public class Result {
     public Result() {
     }
 
-    public Result(Long id, int surveyId, int userId, int totalResult, List<ResultScoreList> scoreList) {
+    public Result(Long id, Survey survey, int userId, int totalResult, List<ResultScoreList> scoreList) {
         this.id = id;
-        SurveyId = surveyId;
-        UserId = userId;
-        TotalResult = totalResult;
+        this.survey = survey;
+        this.userId = userId;
+        this.totalResult = totalResult;
         this.scoreList = scoreList;
     }
 
@@ -40,28 +44,28 @@ public class Result {
         this.id = id;
     }
 
-    public int getSurveyId() {
-        return SurveyId;
+    public Survey getSurvey() {
+        return survey;
     }
 
-    public void setSurveyId(int surveyId) {
-        SurveyId = surveyId;
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 
     public int getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(int userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public int getTotalResult() {
-        return TotalResult;
+        return totalResult;
     }
 
     public void setTotalResult(int totalResult) {
-        TotalResult = totalResult;
+        this.totalResult = totalResult;
     }
 
     public List<ResultScoreList> getScoreList() {

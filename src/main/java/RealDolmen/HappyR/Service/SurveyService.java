@@ -6,12 +6,10 @@ import RealDolmen.HappyR.Repository.SurveyReoccuringRepository;
 import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.model.*;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +79,10 @@ public class SurveyService {
         SurveyRepository.deleteById((long) id);
     }
 
+    public SurveyQuestion getSurveyQuestionById(int id) {
+        return surveyQuestionRepository.findById((long) id).orElse(null);
+    }
+
     public List<Survey> getAllSurveys() {
         List<Survey> surveys = SurveyRepository.findAll();
 
@@ -98,7 +100,7 @@ public class SurveyService {
     }
 
     public List<Survey> getSurveysByManagerId(int managerId) {
-        List<Survey> surveys = SurveyRepository.findSurveysByManagerId((long) managerId);
+        List<Survey> surveys = SurveyRepository.findSurveysResultsByManagerId(managerId);
 
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }

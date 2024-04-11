@@ -7,43 +7,43 @@ import java.util.List;
 import java.util.Map;
 
 public class ResultRequest {
-    private int SurveyId;
-    private int UserId;
-    private int TotalResult;
-    private List<resultList> scoreList;
+    private int surveyId;
+    private int userId;
+    private int totalResult;
+    private List<ResultRequest.resultList> scoreList; // Modified type
 
     public ResultRequest() {
     }
 
     public ResultRequest(int surveyId, int userId, int totalResult, List<resultList> scoreList) {
-        SurveyId = surveyId;
-        UserId = userId;
-        TotalResult = totalResult;
+        this.surveyId = surveyId;
+        this.userId = userId;
+        this.totalResult = totalResult;
         this.scoreList = scoreList;
     }
 
     public int getSurveyId() {
-        return SurveyId;
+        return surveyId;
     }
 
     public void setSurveyId(int surveyId) {
-        SurveyId = surveyId;
+        this.surveyId = surveyId;
     }
 
     public int getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(int userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public int getTotalResult() {
-        return TotalResult;
+        return totalResult;
     }
 
     public void setTotalResult(int totalResult) {
-        TotalResult = totalResult;
+        this.totalResult = totalResult;
     }
 
     public List<resultList> getScoreList() {
@@ -54,42 +54,42 @@ public class ResultRequest {
         this.scoreList = scoreList;
     }
 
-    public class resultList {
-        private int QuestionId;
-        private int CategoryId;
-        private int Score;
+    public static class resultList { // Made static
+        private int questionId;
+        private int categoryId;
+        private int score;
 
         public resultList() {
         }
 
         public resultList(int questionId, int categoryId, int score) {
-            QuestionId = questionId;
-            CategoryId = categoryId;
-            Score = score;
+            this.questionId = questionId;
+            this.categoryId = categoryId;
+            this.score = score;
         }
 
         public int getQuestionId() {
-            return QuestionId;
+            return questionId;
         }
 
         public void setQuestionId(int questionId) {
-            QuestionId = questionId;
+            this.questionId = questionId;
         }
 
         public int getCategoryId() {
-            return CategoryId;
+            return categoryId;
         }
 
         public void setCategoryId(int categoryId) {
-            CategoryId = categoryId;
+            this.categoryId = categoryId;
         }
 
         public int getScore() {
-            return Score;
+            return score;
         }
 
         public void setScore(int score) {
-            Score = score;
+            this.score = score;
         }
     }
 }

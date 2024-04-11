@@ -1,21 +1,23 @@
 package RealDolmen.HappyR.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@Table(name = "ResultScoreList")
 public class ResultScoreList {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Result result;
 
     private int questionId;
     private int score;
-
     private int categoryId;
 
     public ResultScoreList() {

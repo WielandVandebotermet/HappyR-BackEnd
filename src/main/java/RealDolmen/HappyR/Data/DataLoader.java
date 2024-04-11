@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -244,7 +245,7 @@ public class DataLoader {
             Survey survey1 = new Survey();
             survey1.setId(null);
             survey1.setTestName("Inactive Happiness Test");
-            survey1.setStartDate(new Date());
+            survey1.setStartDate(Calendar.getInstance());
             survey1.setStarted(false);
             survey1.setQuestions(null);
 
@@ -331,7 +332,7 @@ public class DataLoader {
             survey.setId(null);
             survey.setStarted(true);
             survey.setTestName("Active Happiness Test");
-            survey.setStartDate(new Date());
+            survey.setStartDate(Calendar.getInstance());
 
             SurveyReoccuring reoccuring2 = new SurveyReoccuring();
             reoccuring.setId(null);
@@ -343,6 +344,8 @@ public class DataLoader {
 
             List<Long> groupList = new ArrayList<>();
             groupList.add(1L);
+            groupList.add(2L);
+            groupList.add(3L);
             survey.setGroupList(groupList);
 
             List<SurveyQuestion> questions = new ArrayList<>();
@@ -416,7 +419,7 @@ public class DataLoader {
             survey2.setId(null);
             survey2.setStarted(true);
             survey2.setTestName("Active Satisfaction Test");
-            survey2.setStartDate(new Date());
+            survey2.setStartDate(Calendar.getInstance());
             survey2.setQuestions(null);
             survey2.setSurveyReoccuring(null);
 
@@ -430,7 +433,7 @@ public class DataLoader {
             survey3.setId(null);
             survey3.setStarted(true);
             survey3.setTestName("Active Workplace satisfaction Test");
-            survey3.setStartDate(new Date());
+            survey3.setStartDate(Calendar.getInstance());
             survey3.setQuestions(null);
             survey3.setSurveyReoccuring(null);
 
