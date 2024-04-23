@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.SurveyQuestionRequest;
 import RealDolmen.HappyR.Data.SurveyRequest;
 import RealDolmen.HappyR.Service.SurveyService;
 import RealDolmen.HappyR.model.Survey;
@@ -76,24 +77,13 @@ public class SurveyController {
     @PutMapping("question/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void EditSurveyQuestion
-            (@PathVariable("id") String id, @RequestBody SurveyRequest surveyRequest) {
-        surveyService.editSurvey(Integer.parseInt(id), surveyRequest);
-    }
-    @PostMapping("question/create")
-    @ResponseStatus(HttpStatus.OK)
-    public void createSurveyQuestion (@RequestBody SurveyRequest surveyRequest) {
-        surveyService.createSurvey(surveyRequest);
+            (@PathVariable("id") String id, @RequestBody SurveyQuestionRequest surveyQuestionRequest) {
+        surveyService.editSurveyQuestion(Integer.parseInt(id), surveyQuestionRequest);
     }
 
-    @PutMapping("question/option/edit/{id}")
+    @PostMapping("question/create")
     @ResponseStatus(HttpStatus.OK)
-    public void EditSurveyQuestionOption
-            (@PathVariable("id") String id, @RequestBody SurveyRequest surveyRequest) {
-        surveyService.editSurvey(Integer.parseInt(id), surveyRequest);
-    }
-    @PostMapping("question/option/create")
-    @ResponseStatus(HttpStatus.OK)
-    public void createSurveyQuestionOption (@RequestBody SurveyRequest surveyRequest) {
-        surveyService.createSurvey(surveyRequest);
+    public void createSurveyQuestion (@RequestBody SurveyQuestionRequest surveyQuestionRequest) {
+        surveyService.createSurveyQuestion(surveyQuestionRequest);
     }
 }

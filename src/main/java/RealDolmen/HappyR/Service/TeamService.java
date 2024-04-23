@@ -47,6 +47,18 @@
             return teams.stream().map(this::mapToTeamResponse).toList();
         }
 
+        public List<Team> getAllTeamsByUserId(int userId) {
+            List<Team> teams = teamRepository.findTeamsByUserId((long) userId);
+
+            return teams.stream().map(this::mapToTeamResponse).toList();
+        }
+
+        public List<Team> getAllTeamsBySurveyId(int surveyId) {
+            List<Team> teams = teamRepository.findAllBySurveyId((long) surveyId);
+
+            return teams.stream().map(this::mapToTeamResponse).toList();
+        }
+
         public Team getTeamById(int id){
             return teamRepository.findById((long) id).orElse(null);
         }

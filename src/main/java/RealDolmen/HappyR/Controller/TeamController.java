@@ -14,11 +14,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
+
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Team> getAllTeams() {
         return teamService.getAllTeams();
     }
+
+    @GetMapping("/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Team> getAllTeamsByUserId(@PathVariable int id) {
+        return teamService.getAllTeamsByUserId(id);
+    }
+
+    @GetMapping("/survey/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Team> getAllTeamsBySurveyId(@PathVariable int id) {
+        return teamService.getAllTeamsBySurveyId(id);
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Team getTeamById(@PathVariable("id") String id) {

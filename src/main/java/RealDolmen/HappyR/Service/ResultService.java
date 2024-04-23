@@ -25,6 +25,7 @@ public class ResultService {
                 if (survey.getQuestions().size() == resultRequest.getScoreList().size()) {
                     Result result = Result.builder()
                             .userId(resultRequest.getUserId())
+                            .groupId(resultRequest.getGroupId())
                             .survey(survey)
                             .totalResult(resultRequest.getTotalResult())
                             .build();
@@ -56,6 +57,7 @@ public class ResultService {
         if(result != null)
         {
             result.setId(result.getId());
+            result.setGroupId(resultRequest.getGroupId());
             result.setUserId(resultRequest.getUserId());
             result.setTotalResult(resultRequest.getTotalResult());
             result.setScoreList(resultRequest.getScoreList());

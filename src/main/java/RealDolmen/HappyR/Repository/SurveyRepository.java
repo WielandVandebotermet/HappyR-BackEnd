@@ -25,7 +25,6 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
             LEFT JOIN Team t ON t.id IN (
                 SELECT m.team.id FROM Manager m WHERE m.user.id = :userId
             )
-            WHERE s.startDate <= CURRENT_TIMESTAMP AND s.started = true
             """)
     List<Survey> findSurveysResultsByManagerId(@Param("userId") int userId);
 

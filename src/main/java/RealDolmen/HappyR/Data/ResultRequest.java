@@ -9,6 +9,7 @@ import java.util.Map;
 public class ResultRequest {
     private int surveyId;
     private int userId;
+    private int groupId;
     private int totalResult;
     private List<ResultRequest.resultList> scoreList; // Modified type
 
@@ -28,6 +29,14 @@ public class ResultRequest {
 
     public void setSurveyId(int surveyId) {
         this.surveyId = surveyId;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public int getUserId() {
