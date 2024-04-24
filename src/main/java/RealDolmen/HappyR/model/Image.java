@@ -16,6 +16,37 @@ public class Image {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Constructors, getters, and setters
+    public Image() {
+    }
+
+    public Image(Long id, byte[] imageData, User user) {
+        this.id = id;
+        this.imageData = imageData;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
 
