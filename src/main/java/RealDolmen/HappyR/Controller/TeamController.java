@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.TeamRequest;
 import RealDolmen.HappyR.Service.TeamService;
 import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.User;
@@ -48,13 +49,13 @@ public class TeamController {
 
     @PutMapping("/edit/{groupId}")
     @ResponseStatus(HttpStatus.OK)
-    public void editTeam(@RequestBody String updatedName, @PathVariable int groupId) {
-        teamService.editTeam(updatedName, groupId);
+    public void editTeam(@RequestBody TeamRequest request, @PathVariable int groupId) {
+        teamService.editTeam(request, groupId);
     }
 
     @PostMapping("/create/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public void createTeam(@RequestBody String GroupName, @PathVariable int userId) {
-        teamService.createTeam(GroupName, userId);
+    public void createTeam(@RequestBody TeamRequest  request, @PathVariable int userId) {
+        teamService.createTeam(request, userId);
     }
 }

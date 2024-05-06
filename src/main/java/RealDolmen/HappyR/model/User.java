@@ -7,8 +7,7 @@ import lombok.Builder;
 
 import java.util.regex.Pattern;
 
-@Table(name = "User", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email"),})
+@Table(name = "User", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),})
 @Builder
 @Entity
 public class User {
@@ -16,23 +15,24 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true, nullable = false)
+    private String authId;
+    private String FullName;
     private String FirstName;
     private String LastName;
     private String email;
-    private String password;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private Image profileImage;
+    private String profileImage;
 
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, Image profileImage) {
+    public User(Long id, String authId, String fullName, String firstName, String lastName, String email, String profileImage) {
         this.id = id;
+        this.authId = authId;
+        FullName = fullName;
         FirstName = firstName;
         LastName = lastName;
         this.email = email;
-        this.password = password;
         this.profileImage = profileImage;
     }
 
@@ -42,6 +42,22 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAuthId() {
+        return authId;
+    }
+
+    public void setAuthId(String authId) {
+        authId = authId;
+    }
+
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String fullName) {
+        FullName = fullName;
     }
 
     public String getFirstName() {
@@ -68,33 +84,12 @@ public class User {
         this.email = email;
     }
 
-    public Image getProfileImage() {
+    public String getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(Image profileImage) {
+    public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public static boolean isValidPassword(String password) {
-        // Password must be at least 8 characters long
-        // Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-        return Pattern.compile(passwordRegex).matcher(password).matches();
-    }
-
-    // Hash the password before storing it in the database
-    public void setPassword(String password) {
-        if (!isValidPassword(password)) {
-            throw new IllegalArgumentException("Invalid password format");
-        }
-        // Hash the password using BCryptPasswordEncoder
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        this.password = encoder.encode(password);
     }
 }
 

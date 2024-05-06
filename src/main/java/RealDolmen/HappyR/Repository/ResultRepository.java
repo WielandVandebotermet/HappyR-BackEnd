@@ -14,7 +14,7 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     Result findResultByUserIdAndSurveyId(int userId, int surveyId);
 
-    Result findResultBySurveyId(int surveyId);
+    List<Result> findResultsBySurveyId(int surveyId);
 
 
     @Query("SELECT r FROM Result r " +

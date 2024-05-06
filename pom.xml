@@ -22,6 +22,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.okta.spring</groupId>
+			<artifactId>okta-spring-boot-starter</artifactId>
+			<version>3.0.6</version>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -93,6 +98,12 @@
 			<version>6.4.4.Final</version>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>okta-releases</id>
+			<url>https://repo.spring.io/release</url>
+		</repository>
+	</repositories>
 	<build>
 	<plugins>
 	<plugin>

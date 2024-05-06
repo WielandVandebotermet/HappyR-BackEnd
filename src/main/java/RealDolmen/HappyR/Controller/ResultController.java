@@ -1,18 +1,26 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Auth0.AuthController;
 import RealDolmen.HappyR.Data.ResultRequest;
 import RealDolmen.HappyR.Service.ResultService;
 import RealDolmen.HappyR.model.Result;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/result")
 @RequiredArgsConstructor
 public class ResultController {
     private final ResultService resultService;
+
+    private final Logger logger = LoggerFactory.getLogger(ResultController.class);
+
+
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Result> getAllResults() {
@@ -33,7 +41,8 @@ public class ResultController {
 
     @GetMapping("survey/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result getResultBySurvey(@PathVariable("id") String id) {
+    public List<Result> getResultBySurvey(@PathVariable("id") String id) {
+        logger.info("Received request to List<Result>", resultService.getResultBySurveyId(Integer.parseInt(id)).size());
         return resultService.getResultBySurveyId(Integer.parseInt(id));
     }
 

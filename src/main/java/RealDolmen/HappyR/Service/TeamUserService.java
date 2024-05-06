@@ -39,8 +39,8 @@ public class TeamUserService {
         return teamUserRepository.findByTeamId(teamId);
     }
 
-    public List<TeamUser> getAllTeamsByUserId(Long teamId) {
-        return teamUserRepository.findByUserId(teamId);
+    public List<TeamUser> getAllTeamsByUserId(Long UserId) {
+        return teamUserRepository.findByUserId(UserId);
     }
 
     public void editGroupUser(int id, TeamUser teamUserRequest){

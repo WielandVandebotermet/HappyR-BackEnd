@@ -79,8 +79,8 @@ public class ResultService {
         return resultRepository.findById((long) id).orElse(null);
     }
 
-    public Result getResultBySurveyId(int id){
-        return resultRepository.findResultBySurveyId(id);
+    public List<Result> getResultBySurveyId(int id){
+        return resultRepository.findResultsBySurveyId(id);
     }
 
     public List<Result> getResultByManagerId(int id){

@@ -1,5 +1,6 @@
     package RealDolmen.HappyR.Service;
 
+    import RealDolmen.HappyR.Data.TeamRequest;
     import RealDolmen.HappyR.Repository.TeamRepository;
     import RealDolmen.HappyR.model.Team;
     import RealDolmen.HappyR.model.User;
@@ -15,9 +16,9 @@
         private final UserService userService;
         private final ManagerService managerService;
 
-        public void createTeam(String GroupName, int userId){
+        public void createTeam(TeamRequest request, int userId){
             Team team = Team.builder()
-                    .GroupName(GroupName)
+                    .GroupName(request.getGroupName())
                     .build();
 
             teamRepository.save(team);
@@ -28,12 +29,12 @@
             }
         }
 
-        public void editTeam(String GroupName, int id){
+        public void editTeam(TeamRequest request, int id){
             Team team = teamRepository.findById((long) id).orElse(null);
 
             if(team != null)
             {
-                team.setGroupName(GroupName.strip());
+                team.setGroupName(request.getGroupName());
                 teamRepository.save(team);
             }
         }
