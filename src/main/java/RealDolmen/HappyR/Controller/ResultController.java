@@ -33,17 +33,16 @@ public class ResultController {
         return resultService.getResultById(Integer.parseInt(id));
     }
 
-    @GetMapping("manager/{id}")
+    @GetMapping("/manager")
     @ResponseStatus(HttpStatus.OK)
-    public List<Result> getResultsByManager(@PathVariable("id") String id) {
-        return resultService.getResultByManagerId(Integer.parseInt(id));
+    public List<Result> getResultsByManager(@RequestParam("surveyId") int surveyId, @RequestParam("userId") int userId) {
+        return resultService.getResultByManagerId(surveyId, userId);
     }
 
-    @GetMapping("survey/{id}")
+    @GetMapping("/survey/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Result> getResultBySurvey(@PathVariable("id") String id) {
-        logger.info("Received request to List<Result>", resultService.getResultBySurveyId(Integer.parseInt(id)).size());
-        return resultService.getResultBySurveyId(Integer.parseInt(id));
+    public List<Result> getResultsBySurvey(@PathVariable("id") String id) {
+        return resultService.getResultsBySurveyId(Integer.parseInt(id));
     }
 
     @DeleteMapping("/delete/{id}")

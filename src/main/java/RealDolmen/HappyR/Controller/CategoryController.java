@@ -12,12 +12,15 @@ import java.util.List;
 @RequestMapping("/category")
 @RequiredArgsConstructor
 public class CategoryController {
+
     private final CategoryService categoryService;
+
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Category> getAllCategorys() {
         return categoryService.getAllCategorys();
     }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Category getCategoryById(@PathVariable("id") String id) {

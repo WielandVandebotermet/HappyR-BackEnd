@@ -17,11 +17,7 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
     List<Result> findResultsBySurveyId(int surveyId);
 
 
-    @Query("SELECT r FROM Result r " +
-            "JOIN Manager m ON r.userId = m.id " +
-            "JOIN Team t ON m.team.id = t.id " +
-            "JOIN Survey s ON s.id IN (SELECT DISTINCT survey.id FROM Survey survey JOIN survey.groupList groupList WHERE groupList IN (SELECT DISTINCT team.id FROM Team team JOIN team.managers manager WHERE manager.id = :userId)) " +
-            "WHERE m.user.id = :userId")
-    List<Result> findResultsByManagerUserId(@Param("userId") int userId);
+    @Query("SELECT distinct r FROM Result r  JOIN Survey s ON r.survey.id = s.id JOIN Team t ON t.id IN (SELECT survey.groupList FROM Survey survey WHERE survey.id = 1 ) JOIN Manager m ON t.id = m.team.id WHERE m.user.id = :userId AND r.survey.id = :surveyId")
+            List<Result> findDistinctBySurveyAndUser(Long surveyId, Long userId);
 
 }

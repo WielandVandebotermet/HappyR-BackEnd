@@ -1,10 +1,12 @@
 package RealDolmen.HappyR.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import jakarta.persistence.*;
 import lombok.Builder;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Table(name = "User", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),})
@@ -23,10 +25,14 @@ public class User {
     private String email;
     private String profileImage;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<PushNotification> pushNotifications;
+
     public User() {
     }
 
-    public User(Long id, String authId, String fullName, String firstName, String lastName, String email, String profileImage) {
+    public User(Long id, String authId, String fullName, String firstName, String lastName, String email, String profileImage, List<PushNotification> pushNotifications) {
         this.id = id;
         this.authId = authId;
         FullName = fullName;
@@ -34,6 +40,7 @@ public class User {
         LastName = lastName;
         this.email = email;
         this.profileImage = profileImage;
+        this.pushNotifications = pushNotifications;
     }
 
     public Long getId() {
@@ -90,6 +97,14 @@ public class User {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public List<PushNotification> getPushNotifications() {
+        return pushNotifications;
+    }
+
+    public void setPushNotifications(List<PushNotification> pushNotifications) {
+        this.pushNotifications = pushNotifications;
     }
 }
 

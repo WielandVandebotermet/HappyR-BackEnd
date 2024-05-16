@@ -18,13 +18,7 @@ public class UserService {
 
     public void createUser(UserRequest userRequest){
         User userTest = userRepository.findUserByAuthId(userRequest.getUserId()).orElse(null);
-        System.out.println("Received UserRequest: " + userRequest);
-        System.out.println("Received getFullName: " + userRequest.getFullName());
-        System.out.println("Received getLastName: " + userRequest.getLastName());
-        System.out.println("Received getLastName: " + userRequest.getLastName());
-        System.out.println("Received getEmail: " + userRequest.getEmail());
-        System.out.println("Received getUserId: " + userRequest.getUserId());
-        System.out.println("Received getProfileImage: " + userRequest.getProfileImage());
+
 
         String userId = userRequest.getUserId();
         if (userId == null || userTest == null) {

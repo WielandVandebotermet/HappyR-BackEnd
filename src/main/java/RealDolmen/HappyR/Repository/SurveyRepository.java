@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Repository
@@ -27,5 +28,7 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
             )
             """)
     List<Survey> findSurveysResultsByManagerId(@Param("userId") int userId);
+
+    List<Survey> findByStartDateBeforeAndStartedFalse(Calendar currentDate);
 
 }

@@ -81,6 +81,15 @@ public class SurveyService {
             SurveyRepository.save(survey);
         }
     }
+
+    public void editSurveyStarted(Survey survey, boolean started){
+        if(survey != null)
+        {
+            survey.setStarted(started);
+            SurveyRepository.save(survey);
+        }
+    }
+
     public void deleteSurvey(int id){
         SurveyRepository.deleteById((long) id);
     }

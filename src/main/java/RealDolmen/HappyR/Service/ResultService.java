@@ -79,12 +79,13 @@ public class ResultService {
         return resultRepository.findById((long) id).orElse(null);
     }
 
-    public List<Result> getResultBySurveyId(int id){
-        return resultRepository.findResultsBySurveyId(id);
+    public List<Result> getResultsBySurveyId(int id){
+        List<Result> results = resultRepository.findResultsBySurveyId(id);
+        return results.stream().map(this::mapToResultResponse).toList();
     }
 
-    public List<Result> getResultByManagerId(int id){
-        return resultRepository.findResultsByManagerUserId(id);
+    public List<Result> getResultByManagerId(int surveyId, int userId) {
+        return resultRepository.findDistinctBySurveyAndUser((long) surveyId, (long) userId);
     }
 
     private Result mapToResultResponse(Result result) {
@@ -94,6 +95,7 @@ public class ResultService {
                 .survey(result.getSurvey())
                 .totalResult(result.getTotalResult())
                 .scoreList(result.getScoreList())
+                .groupId(result.getGroupId())
                 .build();
     }
 }
