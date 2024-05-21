@@ -9,7 +9,6 @@ import RealDolmen.HappyR.model.User;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.WebpushConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,8 @@ public class PushNotificationService {
     private final UserRepository userRepository;
 
     public void saveSubscription(SubscriptionRequest subscription) {
-        if(!subscription.getUserId().isEmpty()) {
+
+        if(!subscription.getUserId().isEmpty() || !(subscription.getUserId().equals("undefined"))) {
             User user = userRepository.findById(Long.valueOf(subscription.getUserId())).orElse(null);
             PushNotification pushNotificationToken = PushNotificationRepository.findByToken(subscription.getToken());
 

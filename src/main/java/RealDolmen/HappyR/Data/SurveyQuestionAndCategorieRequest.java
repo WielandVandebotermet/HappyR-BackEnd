@@ -1,12 +1,8 @@
 package RealDolmen.HappyR.Data;
 
-import RealDolmen.HappyR.model.SurveyQuestion;
-import RealDolmen.HappyR.model.SurveyQuestionOption;
-import RealDolmen.HappyR.model.SurveyQuestionSetting;
-
 import java.util.List;
 
-public class SurveyQuestionRequest {
+public class SurveyQuestionAndCategorieRequest {
 
     private int surveyId;
     private String Question;
@@ -14,17 +10,22 @@ public class SurveyQuestionRequest {
     private String TemplateId;
     private List<SurveyQuestionOptionRequest> options;
     private List<SurveyQuestionSettingRequest> settings;
+    private String CategoryName;
+    private int ScoreImpact;
 
-    public SurveyQuestionRequest() {
+
+    public SurveyQuestionAndCategorieRequest() {
     }
 
-    public SurveyQuestionRequest(int surveyId, String question, String text, String templateId, List<SurveyQuestionOptionRequest> options, List<SurveyQuestionSettingRequest> settings) {
+    public SurveyQuestionAndCategorieRequest(int surveyId, String question, String text, String templateId, List<SurveyQuestionOptionRequest> options, List<SurveyQuestionSettingRequest> settings, String categoryName, int scoreImpact) {
         this.surveyId = surveyId;
         Question = question;
         Text = text;
         TemplateId = templateId;
         this.options = options;
         this.settings = settings;
+        CategoryName = categoryName;
+        ScoreImpact = scoreImpact;
     }
 
     public int getSurveyId() {
@@ -73,6 +74,22 @@ public class SurveyQuestionRequest {
 
     public void setSettings(List<SurveyQuestionSettingRequest> settings) {
         this.settings = settings;
+    }
+
+    public String getCategoryName() {
+        return CategoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        CategoryName = categoryName;
+    }
+
+    public int getScoreImpact() {
+        return ScoreImpact;
+    }
+
+    public void setScoreImpact(int scoreImpact) {
+        ScoreImpact = scoreImpact;
     }
 }
 

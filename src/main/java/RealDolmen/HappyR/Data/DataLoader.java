@@ -50,7 +50,7 @@ public class DataLoader {
 
             TemplateOption option1 = new TemplateOption();
             option1.setTemplate(template);
-            option1.setSetting("subtext");
+            option1.setSetting("bar");
             option1.setSettingValue(true);
 
             TemplateOption option2 = new TemplateOption();
@@ -105,37 +105,14 @@ public class DataLoader {
             template.setExternalPeople(null);
             templateRepository.save(template);
 
-            Template template1 = new Template();
-            template1.setId(2L);
-            template1.setTemplateName("Team Question Bar");
-
-            List<TemplateOption> options1 = new ArrayList<>();
-            options1.add(new TemplateOption(null,template1, "subtext", true));
-            options1.add(new TemplateOption(null,template1,"comment", false));
-            options1.add(new TemplateOption(null,template1,"IncludeManager", false));
-            template1.setOptions(options1);
-
-            // Initialize questions
-            List<TemplateQuestion> questions1 = new ArrayList<>();
-            questions1.add(new TemplateQuestion(null,template1,"Title", ""));
-            questions1.add(new TemplateQuestion(null,template1,"SubText", ""));
-            questions1.add(new TemplateQuestion(null,template1,"Bmin", "1"));
-            questions1.add(new TemplateQuestion(null,template1,"Bmax", "5"));
-            questions1.add(new TemplateQuestion(null,template1,"Step", "1"));
-            questions1.add(new TemplateQuestion(null,template1,"CategorieId", ""));
-            template1.setQuestions(questions1);
-
-            template1.setExternalPeople(null);
-            templateRepository.save(template1);
-
             Template template2 = new Template();
             template2.setId(3L);
             template2.setTemplateName("Question Comment");
 
             List<TemplateOption> options2 = new ArrayList<>();
-            options2.add(new TemplateOption(null,template2, "subtext", true));
+            options2.add(new TemplateOption(null,template2, "bar", false));
+            options2.add(new TemplateOption(null,template2, "comment", true));
             template2.setOptions(options2);
-
             template2.setQuestions(null);
 
             template2.setExternalPeople(null);

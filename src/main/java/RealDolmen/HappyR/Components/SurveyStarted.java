@@ -1,7 +1,9 @@
 package RealDolmen.HappyR.Components;
 
+import RealDolmen.HappyR.Repository.PushNotificationRepository;
 import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.Repository.TeamRepository;
+import RealDolmen.HappyR.Repository.UserRepository;
 import RealDolmen.HappyR.Service.PushNotificationService;
 import RealDolmen.HappyR.model.*;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ public class SurveyStarted {
     private final SurveyRepository surveyRepository;
     private final TeamRepository teamRepository;
     private final PushNotificationService pushNotificationService;
+    private final UserRepository userRepository;
+    private final PushNotificationRepository pushNotificationRepository;
 
 
     @Scheduled(cron = "0 1 0 * * *") // Run at 00:00 every day

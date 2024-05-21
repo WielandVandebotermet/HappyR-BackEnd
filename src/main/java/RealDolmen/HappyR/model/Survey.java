@@ -29,9 +29,6 @@ public class Survey {
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SurveyQuestion> questions;
 
-    @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private SurveyReoccuring surveyReoccuring;
-
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Result> results;
@@ -39,14 +36,13 @@ public class Survey {
     public Survey() {
     }
 
-    public Survey(Long id, List<Long> groupList, String testName, Calendar startDate, Boolean started, List<SurveyQuestion> questions, SurveyReoccuring surveyReoccuring, List<Result> results) {
+    public Survey(Long id, List<Long> groupList, String testName, Calendar startDate, Boolean started, List<SurveyQuestion> questions, List<Result> results) {
         this.id = id;
         this.groupList = groupList;
         this.testName = testName;
         this.startDate = startDate;
         this.started = started;
         this.questions = questions;
-        this.surveyReoccuring = surveyReoccuring;
         this.results = results;
     }
 
@@ -96,14 +92,6 @@ public class Survey {
 
     public void setQuestions(List<SurveyQuestion> questions) {
         this.questions = questions;
-    }
-
-    public SurveyReoccuring getSurveyReoccuring() {
-        return surveyReoccuring;
-    }
-
-    public void setSurveyReoccuring(SurveyReoccuring surveyReoccuring) {
-        this.surveyReoccuring = surveyReoccuring;
     }
 
     public List<Result> getResults() {

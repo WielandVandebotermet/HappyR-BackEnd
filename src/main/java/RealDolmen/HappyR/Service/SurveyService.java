@@ -1,11 +1,8 @@
 package RealDolmen.HappyR.Service;
 
-import RealDolmen.HappyR.Data.SurveyQuestionOptionRequest;
-import RealDolmen.HappyR.Data.SurveyQuestionRequest;
-import RealDolmen.HappyR.Data.SurveyQuestionSettingRequest;
-import RealDolmen.HappyR.Data.SurveyRequest;
+import RealDolmen.HappyR.Data.*;
+import RealDolmen.HappyR.Repository.CategoryRepository;
 import RealDolmen.HappyR.Repository.SurveyQuestionRepository;
-import RealDolmen.HappyR.Repository.SurveyReoccuringRepository;
 import RealDolmen.HappyR.Repository.SurveyRepository;
 import RealDolmen.HappyR.model.*;
 
@@ -14,18 +11,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SurveyService {
-    private final SurveyRepository SurveyRepository;
+    private final SurveyRepository surveyRepository;
     private final SurveyQuestionRepository surveyQuestionRepository;
-    private final SurveyReoccuringRepository surveyReoccuringRepository;
+    private final CategoryRepository categoryRepository;
 
-    public void createSurvey(SurveyRequest surveyRequest){
-
+    public void createSurvey(SurveyRequest surveyRequest) {
         Survey survey = Survey.builder()
                 .testName(surveyRequest.getTestName())
                 .startDate(surveyRequest.getStartDate())
@@ -34,64 +28,32 @@ public class SurveyService {
                 .started(surveyRequest.isStarted())
                 .build();
 
-            if(surveyRequest.getReoccuring() != null) {
-                Map<String, Object> reoccuring = surveyRequest.getReoccuring();
-                Integer time = (Integer) reoccuring.get("Time");
-                String timeMultiplier = (String) reoccuring.get("Multiplier");
-
-            SurveyReoccuring reoccurring = new SurveyReoccuring();
-                reoccurring.setSurvey(survey);
-                reoccurring.setTime(time);
-                reoccurring.setTimeMultiplier(timeMultiplier);
-
-            survey.setSurveyReoccuring(reoccurring);
-        }
-        SurveyRepository.save(survey);
+        surveyRepository.save(survey);
     }
 
-    public void editSurvey(int id, SurveyRequest surveyRequest){
-        Survey survey = SurveyRepository.findById((long) id).orElse(null);
+    public void editSurvey(int id, SurveyRequest surveyRequest) {
+        Survey survey = surveyRepository.findById((long) id).orElse(null);
 
-        if(survey != null)
-        {
+        if (survey != null) {
             survey.setId(survey.getId());
             survey.setStarted(surveyRequest.isStarted());
             survey.setTestName(surveyRequest.getTestName());
             survey.setStartDate(surveyRequest.getStartDate());
             survey.setGroupList(surveyRequest.getGroupList());
 
-            if(surveyRequest.getReoccuring() != null) {
-                Map<String, Object> reoccuring = surveyRequest.getReoccuring();
-                Integer time = (Integer) reoccuring.get("Time");
-                String timeMultiplier = (String) reoccuring.get("Multiplier");
-
-
-                SurveyReoccuring reoccurring = new SurveyReoccuring();
-                reoccurring.setSurvey(survey);
-                reoccurring.setTime(time);
-                reoccurring.setTimeMultiplier(timeMultiplier);
-
-                survey.setSurveyReoccuring(reoccurring);
-            }
-            else {
-                surveyReoccuringRepository.delete(survey.getSurveyReoccuring());
-                survey.setSurveyReoccuring(null);
-            }
-
-            SurveyRepository.save(survey);
+            surveyRepository.save(survey);
         }
     }
 
-    public void editSurveyStarted(Survey survey, boolean started){
-        if(survey != null)
-        {
+    public void editSurveyStarted(Survey survey, boolean started) {
+        if (survey != null) {
             survey.setStarted(started);
-            SurveyRepository.save(survey);
+            surveyRepository.save(survey);
         }
     }
 
-    public void deleteSurvey(int id){
-        SurveyRepository.deleteById((long) id);
+    public void deleteSurvey(int id) {
+        surveyRepository.deleteById((long) id);
     }
 
     public SurveyQuestion getSurveyQuestionById(int id) {
@@ -99,46 +61,122 @@ public class SurveyService {
     }
 
     public List<Survey> getAllSurveys() {
-        List<Survey> surveys = SurveyRepository.findAll();
-
+        List<Survey> surveys = surveyRepository.findAll();
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
-    public Survey getSurveyById(int id){
-        return SurveyRepository.findById((long) id).orElse(null);
+    public Survey getSurveyById(int id) {
+        return surveyRepository.findById((long) id).orElse(null);
     }
 
     public List<Survey> getSurveysByUserId(int userId) {
-        List<Survey> surveys = SurveyRepository.findSurveysByUserId((long) userId);
-
+        List<Survey> surveys = surveyRepository.findSurveysByUserId((long) userId);
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
     public List<Survey> getSurveysByManagerId(int managerId) {
-        List<Survey> surveys = SurveyRepository.findSurveysResultsByManagerId(managerId);
-
+        List<Survey> surveys = surveyRepository.findSurveysByManagerId(managerId);
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
-    public void editSurveyReoccuring(int id, SurveyReoccuring surveyRequest){
-        SurveyReoccuring reoccuring = surveyReoccuringRepository.findById((long) id).orElse(null);
+    public List<Survey> getSurveysResultsByManagerId(int managerId) {
+        List<Survey> surveys = surveyRepository.findSurveysResultsByManagerId(managerId);
+        return surveys.stream().map(this::mapToSurveyResponse).toList();
+    }
 
-        if(reoccuring != null)
-        {
-            reoccuring.setId(reoccuring.getId());
-            reoccuring.setTime(surveyRequest.getTime());
-            reoccuring.setTimeMultiplier(surveyRequest.getTimeMultiplier());
+    public void createSurveyQuestionAndCategory(SurveyQuestionAndCategorieRequest surveyQuestionAndCategorieRequest) {
+        Survey survey = surveyRepository.findById((long) surveyQuestionAndCategorieRequest.getSurveyId()).orElse(null);
 
-            surveyReoccuringRepository.save(reoccuring);
+        if (survey != null) {
+            Category category = Category.builder()
+                    .CategoryName(surveyQuestionAndCategorieRequest.getCategoryName())
+                    .ScoreImpact(surveyQuestionAndCategorieRequest.getScoreImpact())
+                    .build();
+
+            categoryRepository.save(category);
+
+            SurveyQuestion question = new SurveyQuestion();
+            question.setSurvey(survey);
+            question.setQuestion(surveyQuestionAndCategorieRequest.getQuestion());
+            question.setText(surveyQuestionAndCategorieRequest.getText());
+            question.setTemplateId(surveyQuestionAndCategorieRequest.getTemplateId());
+
+            // Handle options
+            List<SurveyQuestionOptionRequest> optionRequests = surveyQuestionAndCategorieRequest.getOptions();
+            if (optionRequests != null) {
+                question.getOptions().clear(); // Clear the existing collection
+                for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
+                    SurveyQuestionOption option = new SurveyQuestionOption();
+                    option.setSetting(optionRequest.getSetting());
+                    option.setSettingValue(optionRequest.isSettingValue());
+                    option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getOptions().add(option);
+                }
+            }
+
+            // Handle settings
+            List<SurveyQuestionSettingRequest> settingRequests = surveyQuestionAndCategorieRequest.getSettings();
+            if (settingRequests != null) {
+                question.getSettings().clear(); // Clear the existing collection
+                for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
+                    SurveyQuestionSetting setting = new SurveyQuestionSetting();
+                    setting.setQuestion(settingRequest.getQuestion());
+                    setting.setText(settingRequest.getText());
+                    setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getSettings().add(setting);
+                }
+            }
+
+            surveyQuestionRepository.save(question);
         }
     }
-    public void deleteSurveyReoccuring(int id){
-        surveyReoccuringRepository.deleteById((long) id);
+
+    public void editSurveyQuestionAndCategory(int id, SurveyQuestionAndCategorieRequest surveyQuestionAndCategorieRequest) {
+        SurveyQuestion question = surveyQuestionRepository.findById((long) id).orElse(null);
+
+        if (question != null) {
+            Category category = Category.builder()
+                    .CategoryName(surveyQuestionAndCategorieRequest.getCategoryName())
+                    .ScoreImpact(surveyQuestionAndCategorieRequest.getScoreImpact())
+                    .build();
+
+            categoryRepository.save(category);
+
+            question.setQuestion(surveyQuestionAndCategorieRequest.getQuestion());
+            question.setText(surveyQuestionAndCategorieRequest.getText());
+
+            // Handle options
+            List<SurveyQuestionOptionRequest> optionRequests = surveyQuestionAndCategorieRequest.getOptions();
+            if (optionRequests != null) {
+                question.getOptions().clear(); // Clear the existing collection
+                for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
+                    SurveyQuestionOption option = new SurveyQuestionOption();
+                    option.setSetting(optionRequest.getSetting());
+                    option.setSettingValue(optionRequest.isSettingValue());
+                    option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getOptions().add(option);
+                }
+            }
+
+            // Handle settings
+            List<SurveyQuestionSettingRequest> settingRequests = surveyQuestionAndCategorieRequest.getSettings();
+            if (settingRequests != null) {
+                question.getSettings().clear(); // Clear the existing collection
+                for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
+                    SurveyQuestionSetting setting = new SurveyQuestionSetting();
+                    setting.setQuestion(settingRequest.getQuestion());
+                    setting.setText(settingRequest.getText());
+                    setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getSettings().add(setting);
+                }
+            }
+
+            surveyQuestionRepository.save(question);
+        }
     }
 
-
-    public void createSurveyQuestion(SurveyQuestionRequest surveyQuestionRequest){
-        Survey survey = SurveyRepository.findById((long) surveyQuestionRequest.getSurveyId()).orElse(null);
+    public void createSurveyQuestion(SurveyQuestionRequest surveyQuestionRequest) {
+        Survey survey = surveyRepository.findById((long) surveyQuestionRequest.getSurveyId()).orElse(null);
 
         if (survey != null) {
             SurveyQuestion question = new SurveyQuestion();
@@ -147,90 +185,88 @@ public class SurveyService {
             question.setText(surveyQuestionRequest.getText());
             question.setTemplateId(surveyQuestionRequest.getTemplateId());
 
-            // Initialize lists for options and settings
             List<SurveyQuestionOption> options = new ArrayList<>();
             List<SurveyQuestionSetting> settings = new ArrayList<>();
 
-            // Iterate over options from the request and create SurveyQuestionOption objects
-            for (SurveyQuestionOptionRequest optionRequest : surveyQuestionRequest.getOptions()) {
-                SurveyQuestionOption option = new SurveyQuestionOption();
-                option.setSurveyQuestion(question);
-                option.setSetting(optionRequest.getSetting());
-                option.setSettingValue(optionRequest.isSettingValue());
-                options.add(option);
+            // Handle options
+            List<SurveyQuestionOptionRequest> optionRequests = surveyQuestionRequest.getOptions();
+            if (optionRequests != null) {
+                question.getOptions().clear(); // Clear the existing collection
+                for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
+                    SurveyQuestionOption option = new SurveyQuestionOption();
+                    option.setSetting(optionRequest.getSetting());
+                    option.setSettingValue(optionRequest.isSettingValue());
+                    option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getOptions().add(option);
+                }
             }
 
-            // Iterate over settings from the request and create SurveyQuestionSetting objects
-            for (SurveyQuestionSettingRequest settingRequest : surveyQuestionRequest.getSettings()) {
-                SurveyQuestionSetting setting = new SurveyQuestionSetting();
-                setting.setSurveyQuestion(question);
-                setting.setQuestion(settingRequest.getQuestion()); // Assuming getQuestion() retrieves Bmax/Bmin
-                setting.setText(settingRequest.getText());       // Assuming getText() retrieves the value of Bmax/Bmin
-                settings.add(setting);
+            // Handle settings
+            List<SurveyQuestionSettingRequest> settingRequests = surveyQuestionRequest.getSettings();
+            if (settingRequests != null) {
+                question.getSettings().clear(); // Clear the existing collection
+                for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
+                    SurveyQuestionSetting setting = new SurveyQuestionSetting();
+                    setting.setQuestion(settingRequest.getQuestion());
+                    setting.setText(settingRequest.getText());
+                    setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getSettings().add(setting);
+                }
             }
 
-            // Set options and settings lists in the question
-            question.setOptions(options);
-            question.setSettings(settings);
-
-            // Save the question along with its options and settings
             surveyQuestionRepository.save(question);
         }
     }
 
-    public void editSurveyQuestion(int id, SurveyQuestionRequest surveyQuestionRequest){
+    public void editSurveyQuestion(int id, SurveyQuestionRequest surveyQuestionRequest) {
         SurveyQuestion question = surveyQuestionRepository.findById((long) id).orElse(null);
 
         if (question != null) {
             question.setQuestion(surveyQuestionRequest.getQuestion());
             question.setText(surveyQuestionRequest.getText());
 
+            // Handle options
             List<SurveyQuestionOptionRequest> optionRequests = surveyQuestionRequest.getOptions();
-            List<SurveyQuestionOption> options = new ArrayList<>();
             if (optionRequests != null) {
+                question.getOptions().clear(); // Clear the existing collection
                 for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
                     SurveyQuestionOption option = new SurveyQuestionOption();
-                    // Populate option properties from optionRequest
                     option.setSetting(optionRequest.getSetting());
                     option.setSettingValue(optionRequest.isSettingValue());
-                    // Add option to the list
-                    options.add(option);
+                    option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getOptions().add(option);
                 }
             }
 
-            // Update settings
+            // Handle settings
             List<SurveyQuestionSettingRequest> settingRequests = surveyQuestionRequest.getSettings();
-            List<SurveyQuestionSetting> settings = new ArrayList<>();
             if (settingRequests != null) {
+                question.getSettings().clear(); // Clear the existing collection
                 for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
                     SurveyQuestionSetting setting = new SurveyQuestionSetting();
-                    // Populate setting properties from settingRequest
                     setting.setQuestion(settingRequest.getQuestion());
                     setting.setText(settingRequest.getText());
-                    // Add setting to the list
-                    settings.add(setting);
+                    setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    question.getSettings().add(setting);
                 }
             }
 
-            // Save the updated question
             surveyQuestionRepository.save(question);
         }
     }
-    public void deleteSurveyQuestion(int id){
+
+    public void deleteSurveyQuestion(int id) {
         surveyQuestionRepository.deleteById((long) id);
     }
-
 
     private Survey mapToSurveyResponse(Survey survey) {
         return Survey.builder()
                 .id(survey.getId())
                 .testName(survey.getTestName())
                 .startDate(survey.getStartDate())
-                .surveyReoccuring(survey.getSurveyReoccuring())
                 .questions(survey.getQuestions())
                 .groupList(survey.getGroupList())
                 .started(survey.getStarted())
                 .build();
     }
-
 }

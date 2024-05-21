@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Service;
 
+import RealDolmen.HappyR.Data.CategorieRequest;
 import RealDolmen.HappyR.Repository.CategoryRepository;
 import RealDolmen.HappyR.model.Category;
 import jakarta.annotation.PostConstruct;
@@ -13,7 +14,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public void createCategory(Category categoryRequest){
+    public void createCategory(CategorieRequest categoryRequest){
         Category category = Category.builder()
                 .CategoryName(categoryRequest.getCategoryName())
                 .ScoreImpact(categoryRequest.getScoreImpact())
@@ -22,7 +23,7 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public void editCategory(int id, Category categoryRequest){
+    public void editCategory(int id, CategorieRequest categoryRequest){
         Category category = categoryRepository.findById((long) id).orElse(null);
 
         if(category != null)
@@ -34,6 +35,7 @@ public class CategoryService {
             categoryRepository.save(category);
         }
     }
+
     public void deleteCategory(int id){
         categoryRepository.deleteById((long) id);
     }

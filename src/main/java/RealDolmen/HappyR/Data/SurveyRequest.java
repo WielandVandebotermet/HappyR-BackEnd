@@ -7,7 +7,6 @@ import java.util.Map;
 public class SurveyRequest {
     private String testName;
     private Calendar startDate;
-    private Map<String, Object> reoccuring;
     private List<String> questions;
     private List<Long> groupList;
     private boolean started;
@@ -15,10 +14,9 @@ public class SurveyRequest {
     public SurveyRequest() {
     }
 
-    public SurveyRequest(String testName, Calendar startDate, Map<String, Object> reoccuring, List<String> questions, List<Long> groupList, boolean started) {
+    public SurveyRequest(String testName, Calendar startDate, List<String> questions, List<Long> groupList, boolean started) {
         this.testName = testName;
         this.startDate = startDate;
-        this.reoccuring = reoccuring;
         this.questions = questions;
         this.groupList = groupList;
         this.started = started;
@@ -40,13 +38,6 @@ public class SurveyRequest {
         this.startDate = startDate;
     }
 
-    public Map<String, Object> getReoccuring() {
-        return reoccuring;
-    }
-
-    public void setReoccuring(Map<String, Object> reoccuring) {
-        this.reoccuring = reoccuring;
-    }
 
     public List<String> getQuestions() {
         return questions;

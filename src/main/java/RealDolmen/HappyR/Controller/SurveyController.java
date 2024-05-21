@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.SurveyQuestionAndCategorieRequest;
 import RealDolmen.HappyR.Data.SurveyQuestionRequest;
 import RealDolmen.HappyR.Data.SurveyRequest;
 import RealDolmen.HappyR.Service.SurveyService;
@@ -27,10 +28,16 @@ public class SurveyController {
         return surveyService.getSurveysByUserId(Integer.parseInt(id));
     }
 
-    @GetMapping("/FilterByManagerId/{id}")
+    @GetMapping("/FilterByManagerId/{ManagerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Survey> FilterByManagerId(@PathVariable("id") String id) {
+    public List<Survey> FilterByManagerId(@PathVariable("ManagerId") String id) {
         return surveyService.getSurveysByManagerId(Integer.parseInt(id));
+    }
+
+    @GetMapping("/FilterResultsByManagerId/{ManagerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Survey> FilterResultsByManagerId(@PathVariable("ManagerId") String id) {
+        return surveyService.getSurveysResultsByManagerId(Integer.parseInt(id));
     }
 
     @GetMapping("/{id}")
@@ -85,5 +92,18 @@ public class SurveyController {
     @ResponseStatus(HttpStatus.OK)
     public void createSurveyQuestion (@RequestBody SurveyQuestionRequest surveyQuestionRequest) {
         surveyService.createSurveyQuestion(surveyQuestionRequest);
+    }
+
+    @PostMapping("question/create/categorie")
+    @ResponseStatus(HttpStatus.OK)
+    public void createSurveyQuestionAndCategory (@RequestBody SurveyQuestionAndCategorieRequest surveyQuestionAndCategorieRequest) {
+        surveyService.createSurveyQuestionAndCategory(surveyQuestionAndCategorieRequest);
+    }
+
+    @PutMapping("question/edit/categorie/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void EditSurveyQuestionAndCategory
+            (@PathVariable("id") String id, @RequestBody SurveyQuestionAndCategorieRequest surveyQuestionAndCategorieRequest) {
+        surveyService.editSurveyQuestionAndCategory(Integer.parseInt(id), surveyQuestionAndCategorieRequest);
     }
 }

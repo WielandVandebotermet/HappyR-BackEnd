@@ -1,5 +1,6 @@
 package RealDolmen.HappyR.Controller;
 
+import RealDolmen.HappyR.Data.CategorieRequest;
 import RealDolmen.HappyR.Service.CategoryService;
 import RealDolmen.HappyR.model.Category;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +38,16 @@ public class CategoryController {
     @PutMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void editCategory
-            (@PathVariable("id") String id, @RequestBody Category category) {
-        categoryService.editCategory(Integer.parseInt(id), category);
+            (@PathVariable("id") String id, @RequestBody CategorieRequest categorieRequest) {
+        System.out.println("Received CategoryName: " + categorieRequest.getCategoryName());
+        System.out.println("Received ScoreImpact: " + categorieRequest.getScoreImpact());
+        categoryService.editCategory(Integer.parseInt(id), categorieRequest);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void createCategory
-            (@RequestBody Category category) {
-        categoryService.createCategory(category);
+            (@RequestBody CategorieRequest categorieRequest) {
+        categoryService.createCategory(categorieRequest);
     }
 }
