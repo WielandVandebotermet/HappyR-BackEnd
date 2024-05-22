@@ -65,7 +65,6 @@ public class UserService {
         return userRepository.findUserByAuthId(id).orElse(null);
     }
 
-
     private User mapToUserResponse(User user) {
         return User.builder()
                 .id(user.getId())
@@ -73,6 +72,7 @@ public class UserService {
                 .email(user.getEmail())
                 .FirstName(user.getFirstName())
                 .LastName(user.getLastName())
+                .FullName(user.getFullName())
                 .profileImage(user.getProfileImage())
                 .build();
     }

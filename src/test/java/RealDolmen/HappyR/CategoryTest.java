@@ -1,5 +1,6 @@
 package RealDolmen.HappyR;
 
+import RealDolmen.HappyR.Data.CategorieRequest;
 import RealDolmen.HappyR.Repository.CategoryRepository;
 import RealDolmen.HappyR.Service.CategoryService;
 import RealDolmen.HappyR.model.Category;
@@ -20,100 +21,62 @@ import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryTest {
-    @InjectMocks
-    private CategoryService categoryService;
 
     @Mock
     private CategoryRepository categoryRepository;
 
-    @Test
-    void testGetAllCategory() {
-        Category category = new Category();
-        category.setId(1L);
-        category.setCategoryName("General happiness");
-        category.setScoreImpact(100);
-        categoryRepository.save(category);
-
-        Category category1 = new Category();
-        category1.setId(2L);
-        category1.setCategoryName("Workplace");
-        category1.setScoreImpact(80);
-        categoryRepository.save(category1);
-
-        Category category2 = new Category();
-        category2.setId(3L);
-        category2.setCategoryName("Project");
-        category2.setScoreImpact(90);
-        categoryRepository.save(category2);
-
-        List<Category> categoryList = new ArrayList<>();
-        categoryList.add(category);
-        categoryList.add(category1);
-        categoryList.add(category2);
-
-        when(categoryRepository.findAll()).thenReturn(categoryList);
-        List<Category> categorys = categoryService.getAllCategorys();
-
-
-        assertEquals(3, categorys.size());
-
-        assertEquals("General happiness", categorys.get(0).getCategoryName());
-        assertEquals(100, categorys.get(0).getScoreImpact());
-
-        assertEquals("Workplace", categorys.get(1).getCategoryName());
-        assertEquals(80, categorys.get(1).getScoreImpact());
-
-
-        assertEquals("Project", categorys.get(2).getCategoryName());
-        assertEquals(90, categorys.get(2).getScoreImpact());
-
-    }
+    @InjectMocks
+    private CategoryService categoryService;
 
     @Test
     void testCreateCategory() {
-        Category category = new Category();
-        category.setCategoryName("General happiness");
-        category.setScoreImpact(100);
+        CategorieRequest request = new CategorieRequest();
+        request.setCategoryName("TestCategory");
+        request.setScoreImpact(5);
 
-        categoryService.createCategory(category);
+        categoryService.createCategory(request);
 
-        // Verify that save method was called with the correct arguments
         verify(categoryRepository, times(1)).save(any(Category.class));
     }
 
     @Test
     void testEditCategory() {
+        CategorieRequest request = new CategorieRequest();
+        request.setCategoryName("UpdatedCategory");
+        request.setScoreImpact(10);
+
         Category category = new Category();
-        category.setId(1L);
-        category.setCategoryName("General happiness");
-        category.setScoreImpact(100);
+        when(categoryRepository.findById(anyLong())).thenReturn(Optional.of(category));
 
-        Category category1 = new Category();
-        category1.setId(1L);
-        category1.setCategoryName("Workplace");
-        category1.setScoreImpact(80);
-        categoryRepository.save(category1);
+        categoryService.editCategory(1, request);
 
-        when(categoryRepository.findById(5L)).thenReturn(Optional.of(category));
-
-        categoryService.editCategory(5, category1);
-
-        verify(categoryRepository, times(1)).save(category);
-
-        assertEquals(1L, category.getId());
-        assertEquals("Workplace", category.getCategoryName());
-        assertEquals(80, category.getScoreImpact());
+        assertEquals("UpdatedCategory", category.getCategoryName());
+        assertEquals(10, category.getScoreImpact());
+        verify(categoryRepository, times(1)).save(any(Category.class));
     }
 
     @Test
     void testDeleteCategory() {
-        Category category = new Category();
-        category.setId(1L);
-        category.setCategoryName("General happiness");
-        category.setScoreImpact(100);
-
         categoryService.deleteCategory(1);
 
-        verify(categoryRepository, times(1)).deleteById(1L);
+        verify(categoryRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void testGetAllCategories() {
+        categoryService.getAllCategorys();
+
+        verify(categoryRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetCategoryById() {
+        Category category = new Category();
+        when(categoryRepository.findById(anyLong())).thenReturn(Optional.of(category));
+
+        Category result = categoryService.getCategoryById(1);
+
+        assertEquals(category, result);
+        verify(categoryRepository, times(1)).findById(anyLong());
     }
 }

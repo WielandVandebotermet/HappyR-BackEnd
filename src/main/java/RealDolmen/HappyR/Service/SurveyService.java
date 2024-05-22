@@ -101,31 +101,37 @@ public class SurveyService {
             question.setText(surveyQuestionAndCategorieRequest.getText());
             question.setTemplateId(surveyQuestionAndCategorieRequest.getTemplateId());
 
+            List<SurveyQuestionOption> options = new ArrayList<>();
+            List<SurveyQuestionSetting> settings = new ArrayList<>();
+
             // Handle options
             List<SurveyQuestionOptionRequest> optionRequests = surveyQuestionAndCategorieRequest.getOptions();
             if (optionRequests != null) {
-                question.getOptions().clear(); // Clear the existing collection
                 for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
                     SurveyQuestionOption option = new SurveyQuestionOption();
                     option.setSetting(optionRequest.getSetting());
                     option.setSettingValue(optionRequest.isSettingValue());
                     option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
-                    question.getOptions().add(option);
+                    options.add(option);
                 }
             }
 
             // Handle settings
             List<SurveyQuestionSettingRequest> settingRequests = surveyQuestionAndCategorieRequest.getSettings();
             if (settingRequests != null) {
-                question.getSettings().clear(); // Clear the existing collection
                 for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
                     SurveyQuestionSetting setting = new SurveyQuestionSetting();
                     setting.setQuestion(settingRequest.getQuestion());
-                    setting.setText(settingRequest.getText());
-                    setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
-                    question.getSettings().add(setting);
+                    if (settingRequest.getQuestion().equals("categorieId")) {
+                        setting.setText(String.valueOf(category.getId()));
+                    } else {
+                        setting.setText(settingRequest.getText());
+                    }                    setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
+                    settings.add(setting);
                 }
             }
+            question.setOptions(options);
+            question.setSettings(settings);
 
             surveyQuestionRepository.save(question);
         }
@@ -165,7 +171,11 @@ public class SurveyService {
                 for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
                     SurveyQuestionSetting setting = new SurveyQuestionSetting();
                     setting.setQuestion(settingRequest.getQuestion());
-                    setting.setText(settingRequest.getText());
+                    if (settingRequest.getQuestion().equals("categorieId")) {
+                        setting.setText(String.valueOf(category.getId()));
+                    } else {
+                        setting.setText(settingRequest.getText());
+                    }
                     setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
                     question.getSettings().add(setting);
                 }
@@ -191,28 +201,28 @@ public class SurveyService {
             // Handle options
             List<SurveyQuestionOptionRequest> optionRequests = surveyQuestionRequest.getOptions();
             if (optionRequests != null) {
-                question.getOptions().clear(); // Clear the existing collection
                 for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
                     SurveyQuestionOption option = new SurveyQuestionOption();
                     option.setSetting(optionRequest.getSetting());
                     option.setSettingValue(optionRequest.isSettingValue());
                     option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
-                    question.getOptions().add(option);
+                    options.add(option);
                 }
             }
 
             // Handle settings
             List<SurveyQuestionSettingRequest> settingRequests = surveyQuestionRequest.getSettings();
             if (settingRequests != null) {
-                question.getSettings().clear(); // Clear the existing collection
                 for (SurveyQuestionSettingRequest settingRequest : settingRequests) {
                     SurveyQuestionSetting setting = new SurveyQuestionSetting();
                     setting.setQuestion(settingRequest.getQuestion());
                     setting.setText(settingRequest.getText());
                     setting.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
-                    question.getSettings().add(setting);
+                    settings.add(setting);
                 }
             }
+            question.setOptions(options);
+            question.setSettings(settings);
 
             surveyQuestionRepository.save(question);
         }
@@ -231,9 +241,9 @@ public class SurveyService {
                 question.getOptions().clear(); // Clear the existing collection
                 for (SurveyQuestionOptionRequest optionRequest : optionRequests) {
                     SurveyQuestionOption option = new SurveyQuestionOption();
+                    option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
                     option.setSetting(optionRequest.getSetting());
                     option.setSettingValue(optionRequest.isSettingValue());
-                    option.setSurveyQuestion(question); // Maintain bidirectional relationship if needed
                     question.getOptions().add(option);
                 }
             }

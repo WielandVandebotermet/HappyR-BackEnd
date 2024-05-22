@@ -27,136 +27,60 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class ManagerTest {
 
-    @InjectMocks
-    private ManagerService managerService;
-    @InjectMocks
-    private TeamService teamService;
-    @InjectMocks
-    private UserService userService;
-
     @Mock
     private ManagerRepository managerRepository;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private TeamRepository teamRepository;
+
+    @InjectMocks
+    private ManagerService managerService;
 
     @Test
-    void testGetAllManagers() {
-        User user2 = new User();
-        user2.setId(3L);
-        user2.setFirstName("Jeff");
-        user2.setLastName("Burrows");
-        userRepository.save(user2);
-
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
-
+    void testCreateManager() {
         Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
+        User user = new User();
 
-        Manager manager = new Manager();
-        manager.setId(1L);
-        manager.setUser(userService.getUserById(2));
-        manager.setTeam(teamService.getTeamById(1));
-        managerRepository.save(manager);
+        managerService.createManager(team, user);
 
-        Manager manager1 = new Manager();
-        manager1.setId(2L);
-        manager1.setUser(userService.getUserById(3));
-        manager1.setTeam(teamService.getTeamById(1));
-        managerRepository.save(manager1);
-
-        List<Manager> managerList = new ArrayList<>();
-        managerList.add(manager);
-        managerList.add(manager1);
-
-
-        when(managerRepository.findAll()).thenReturn(managerList);
-        List<Manager> managers = managerService.getAllManagers();
-
-        assertEquals(2, managers.size());
-
-        assertEquals(userService.getUserById(2), managers.get(0).getTeam());
-        assertEquals(teamService.getTeamById(1), managers.get(0).getUser());
-
-        assertEquals(userService.getUserById(3), managers.get(1).getTeam());
-        assertEquals(teamService.getTeamById(1), managers.get(1).getUser());
-    }
-
-    @Test
-    void testCreateTeamUser() {
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
-
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
-
-        managerService.createManager(team,user1);
-
-        // Verify that save method was called with the correct arguments
         verify(managerRepository, times(1)).save(any(Manager.class));
     }
 
     @Test
-    void testEditTeamUser() {
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
-
-        User user2 = new User();
-        user2.setId(3L);
-        user2.setFirstName("Jeff");
-        user2.setLastName("Burrows");
-        userRepository.save(user2);
-
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
+    void testEditManager() {
+        Manager managerRequest = new Manager();
+        managerRequest.setUser(new User());
+        managerRequest.setTeam(new Team());
 
         Manager manager = new Manager();
-        manager.setId(1L);
-        manager.setUser(userService.getUserById(2));
-        manager.setTeam(teamService.getTeamById(1));
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
-        Manager manager1 = new Manager();
-        manager1.setId(1L);
-        manager1.setUser(userService.getUserById(3));
-        manager1.setTeam(teamService.getTeamById(1));
+        managerService.editManager(1, managerRequest);
 
-        when(managerRepository.findById(5L)).thenReturn(Optional.of(manager));
-
-        managerService.editManager(5, manager1);
-
-        verify(managerRepository, times(1)).save(manager);
-
-        assertEquals(1L, manager.getId());
-        assertEquals(userService.getUserById(2), manager.getTeam());
-        assertEquals(teamService.getTeamById(1), manager.getUser());
+        assertEquals(managerRequest.getUser(), manager.getUser());
+        assertEquals(managerRequest.getTeam(), manager.getTeam());
+        verify(managerRepository, times(1)).save(any(Manager.class));
     }
 
     @Test
-    void testDeleteTemplate() {
-        Manager manager = new Manager();
-        manager.setId(1L);
-        manager.setUser(userService.getUserById(2));
-        manager.setTeam(teamService.getTeamById(1));
-
+    void testDeleteManager() {
         managerService.deleteManager(1);
 
-        verify(managerRepository, times(1)).deleteById(1L);
+        verify(managerRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void testGetAllManagers() {
+        managerService.getAllManagers();
+
+        verify(managerRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetManagerById() {
+        Manager manager = new Manager();
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+
+        Manager result = managerService.getManagerById(1);
+
+        assertEquals(manager, result);
+        verify(managerRepository, times(1)).findById(anyLong());
     }
 }

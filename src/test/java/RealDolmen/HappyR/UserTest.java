@@ -1,5 +1,6 @@
 package RealDolmen.HappyR;
 
+import RealDolmen.HappyR.Data.UserRequest;
 import RealDolmen.HappyR.Repository.UserRepository;
 import RealDolmen.HappyR.Service.UserService;
 import RealDolmen.HappyR.model.User;
@@ -9,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,102 +27,117 @@ public class UserTest {
     private UserRepository userRepository;
 
     @Test
-    void testGetAllUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setFirstName("Wieland");
-        user.setLastName("Vandebotermet");
-        userRepository.save(user);
+    void testCreateUser_Success() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUserId("test_user_id");
+        userRequest.setEmail("test@example.com");
+        userRequest.setFullName("Test User");
+        userRequest.setFirstName("Test");
+        userRequest.setLastName("User");
+        userRequest.setProfileImage("profile.jpg");
 
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
+        when(userRepository.findUserByAuthId(any())).thenReturn(Optional.empty());
 
-        User user2 = new User();
-        user2.setId(3L);
-        user2.setFirstName("Jeff");
-        user2.setLastName("Burrows");
-        userRepository.save(user2);
+        userService.createUser(userRequest);
 
-        User user3 = new User();
-        user3.setId(4L);
-        user3.setFirstName("Tilda");
-        user3.setLastName("Miles");
-        userRepository.save(user3);
-
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
-        userList.add(user1);
-        userList.add(user2);
-        userList.add(user3);
-
-        when(userRepository.findAll()).thenReturn(userList);
-        List<User> users = userService.getAllUsers();
-
-
-        assertEquals(4, users.size());
-
-        assertEquals("Wieland", users.get(0).getFirstName());
-        assertEquals("Vandebotermet", users.get(0).getLastName());
-
-        assertEquals("Hugh", users.get(1).getFirstName());
-        assertEquals("Hargraves", users.get(1).getLastName());
-
-
-        assertEquals("Jeff", users.get(2).getFirstName());
-        assertEquals("Burrows", users.get(2).getLastName());
-
-
-        assertEquals("Tilda", users.get(3).getFirstName());
-        assertEquals("Miles", users.get(3).getLastName());
-    }
-
-    @Test
-    void testCreateUser() {
-        User user = new User();
-        user.setFirstName("TestFirstName");
-        user.setLastName("TestLastName");
-
-        userService.createUser(user);
-
-        // Verify that save method was called with the correct arguments
         verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
-    void testEditUser() {
-        User user = new User();
-        user.setId(5L);
-        user.setFirstName("Wieland");
-        user.setLastName("Vandebotermet");
+    void testEditUser_Success() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setEmail("updated@example.com");
+        userRequest.setFullName("Updated User");
+        userRequest.setFirstName("Updated");
+        userRequest.setLastName("User");
+        userRequest.setProfileImage("updated_profile.jpg");
 
-        User user1 = new User();
-        user1.setId(5L);
-        user1.setFirstName("Alex");
-        user1.setLastName("Jones");
+        User existingUser = new User();
+        existingUser.setId(1L);
 
-        when(userRepository.findById(5L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
 
-        userService.editUser(5, user1);
+        userService.editUser(1, userRequest);
 
-        verify(userRepository, times(1)).save(user);
-
-        assertEquals(5L, user1.getId());
-        assertEquals("Alex", user1.getFirstName());
-        assertEquals("Jones", user1.getLastName());
+        assertEquals("updated@example.com", existingUser.getEmail());
+        assertEquals("Updated User", existingUser.getFullName());
+        assertEquals("Updated", existingUser.getFirstName());
+        assertEquals("updated_profile.jpg", existingUser.getProfileImage());
+        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
-    void testDeleteUser() {
+    void testGetUserById_Success() {
         User user = new User();
         user.setId(1L);
-        user.setFirstName("Wieland");
-        user.setLastName("Vandebotermet");
+        user.setAuthId("test_user_id");
+        user.setEmail("test@example.com");
+        user.setFullName("Test User");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setProfileImage("profile.jpg");
 
-        userService.deleteUser(1);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
-        verify(userRepository, times(1)).deleteById(1L);
+        User retrievedUser = userService.getUserById(1);
+
+        assertEquals(user.getId(), retrievedUser.getId());
+        assertEquals(user.getAuthId(), retrievedUser.getAuthId());
+        assertEquals(user.getEmail(), retrievedUser.getEmail());
+        assertEquals(user.getFullName(), retrievedUser.getFullName());
+        assertEquals(user.getFirstName(), retrievedUser.getFirstName());
+        assertEquals(user.getLastName(), retrievedUser.getLastName());
+        assertEquals(user.getProfileImage(), retrievedUser.getProfileImage());
     }
+
+    @Test
+    void testGetAllUsers_Success() {
+        User user = new User();
+        user.setId(1L);
+        user.setAuthId("test_user_id");
+        user.setEmail("test@example.com");
+        user.setFullName("Test User");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setProfileImage("profile.jpg");
+
+        when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
+
+        List<User> users = userService.getAllUsers();
+
+        assertEquals(1, users.size());
+        User retrievedUser = users.getFirst();
+        assertEquals(user.getId(), retrievedUser.getId());
+        assertEquals(user.getAuthId(), retrievedUser.getAuthId());
+        assertEquals(user.getEmail(), retrievedUser.getEmail());
+        assertEquals(user.getFullName(), retrievedUser.getFullName());
+        assertEquals(user.getFirstName(), retrievedUser.getFirstName());
+        assertEquals(user.getLastName(), retrievedUser.getLastName());
+        assertEquals(user.getProfileImage(), retrievedUser.getProfileImage());
+    }
+
+    @Test
+    void testGetUserByAuthId_Success() {
+        User user = new User();
+        user.setId(1L);
+        user.setAuthId("test_user_id");
+        user.setEmail("test@example.com");
+        user.setFullName("Test User");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setProfileImage("profile.jpg");
+
+        when(userRepository.findUserByAuthId(anyString())).thenReturn(Optional.of(user));
+
+        User retrievedUser = userService.getUserByAuthId("test_user_id");
+
+        assertEquals(user.getId(), retrievedUser.getId());
+        assertEquals(user.getAuthId(), retrievedUser.getAuthId());
+        assertEquals(user.getEmail(), retrievedUser.getEmail());
+        assertEquals(user.getFullName(), retrievedUser.getFullName());
+        assertEquals(user.getFirstName(), retrievedUser.getFirstName());
+        assertEquals(user.getLastName(), retrievedUser.getLastName());
+        assertEquals(user.getProfileImage(), retrievedUser.getProfileImage());
+    }
+
 }

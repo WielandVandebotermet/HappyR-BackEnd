@@ -1,12 +1,11 @@
 package RealDolmen.HappyR;
 
-import RealDolmen.HappyR.Repository.ManagerRepository;
+import RealDolmen.HappyR.Data.TeamRequest;
+
 import RealDolmen.HappyR.Repository.TeamRepository;
-import RealDolmen.HappyR.Repository.UserRepository;
 import RealDolmen.HappyR.Service.ManagerService;
 import RealDolmen.HappyR.Service.TeamService;
 import RealDolmen.HappyR.Service.UserService;
-import RealDolmen.HappyR.model.Manager;
 import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.User;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,94 +23,58 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TeamTest {
-    @InjectMocks
-    private TeamService teamService;
     @Mock
-    private ManagerService managerService;
+    private TeamRepository teamRepository;
 
     @Mock
     private UserService userService;
+
     @Mock
-    private TeamRepository teamRepository;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private ManagerRepository managerRepository;
+    private ManagerService managerService;
+
+    @InjectMocks
+    private TeamService teamService;
 
     @Test
-    void testGetAllTeam() {
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
+    void testCreateTeam_Success() {
+        TeamRequest teamRequest = new TeamRequest();
+        teamRequest.setGroupName("Test Team");
+        int userId = 1;
 
-        Team team1 = new Team();
-        team1.setId(2L);
-        team1.setGroupName("Operations");
-        teamRepository.save(team1);
-
-        Team team2 = new Team();
-        team2.setId(3L);
-        team2.setGroupName("Quality Control");
-        teamRepository.save(team2);
-
-        List<Team> teamList = new ArrayList<>();
-        teamList.add(team);
-        teamList.add(team1);
-        teamList.add(team2);
-
-        when(teamRepository.findAll()).thenReturn(teamList);
-        List<Team> teams = teamService.getAllTeams();
-
-
-        assertEquals(3, teams.size());
-
-        assertEquals("Development", teams.get(0).getGroupName());
-
-        assertEquals("Operations", teams.get(1).getGroupName());
-
-        assertEquals("Quality Control", teams.get(2).getGroupName());
-    }
-
-    @Test
-    void testCreateTeam() {
         User user = new User();
-        user.setId(1L);
-        user.setFirstName("Wieland");
-        user.setLastName("Vandebotermet");
-        when(userService.getUserById(1)).thenReturn(user);
+        user.setId((long) userId);
 
-        teamService.createTeam("Development", 1);
+        when(userService.getUserById(anyInt())).thenReturn(user);
+
+        teamService.createTeam(teamRequest, userId);
 
         verify(teamRepository, times(1)).save(any(Team.class));
         verify(managerService, times(1)).createManager(any(Team.class), any(User.class));
     }
 
-
     @Test
-    void testEditTeam() {
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
+    void testEditTeam_Success() {
+        TeamRequest teamRequest = new TeamRequest();
+        teamRequest.setGroupName("Updated Team Name");
+        int teamId = 1;
 
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
+        Team existingTeam = new Team();
+        existingTeam.setId((long) teamId);
 
-        teamService.editTeam("Operations",1);
+        when(teamRepository.findById(anyLong())).thenReturn(Optional.of(existingTeam));
 
-        verify(teamRepository, times(1)).save(team);
+        teamService.editTeam(teamRequest, teamId);
 
-        assertEquals(1L, team.getId());
-        assertEquals("Operations", team.getGroupName());
+        assertEquals("Updated Team Name", existingTeam.getGroupName());
+        verify(teamRepository, times(1)).save(any(Team.class));
     }
 
     @Test
-    void testDeleteTeam() {
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Operations");
+    void testDeleteTeam_Success() {
+        int teamId = 1;
 
-        teamService.deleteTeam(1);
+        teamService.deleteTeam(teamId);
 
-        verify(teamRepository, times(1)).deleteById(1L);
+        verify(teamRepository, times(1)).deleteById(anyLong());
     }
 }

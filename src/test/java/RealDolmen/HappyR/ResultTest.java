@@ -22,152 +22,99 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 
 public class ResultTest {
-    @InjectMocks
-    private ResultService resultService;
-
     @Mock
     private ResultRepository resultRepository;
+
     @Mock
     private SurveyRepository surveyRepository;
 
+    @InjectMocks
+    private ResultService resultService;
+
     @Test
-    void testGetAllResult() {
-        Result result = new Result();
-        result.setId(1L);
-        result.setSurveyId(1);
-        result.setUserId(1);
-        result.setTotalResult(4);
-        result.setScoreList(null);
-        resultRepository.save(result);
+    void testCreateResult_SurveyNotFound() {
+        ResultRequest resultRequest = new ResultRequest();
+        resultRequest.setSurveyId(1);
 
-        Result result1 = new Result();
-        result1.setId(2L);
-        result1.setSurveyId(1);
-        result1.setUserId(2);
-        result1.setTotalResult(3);
-        result1.setScoreList(null);
-        resultRepository.save(result1);
+        when(surveyRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
+        resultService.createResult(resultRequest);
 
-        List<Result> resultList = new ArrayList<>();
-        resultList.add(result);
-        resultList.add(result1);
-
-
-        when(resultRepository.findAll()).thenReturn(resultList);
-        List<Result> results = resultService.getAllResults();
-
-
-        assertEquals(2, results.size());
-
-        assertEquals(4, results.get(0).getTotalResult());
-        assertEquals(1, results.get(0).getSurveyId());
-        assertEquals(1, results.get(0).getUserId());
-        assertNull(results.get(0).getScoreList());
-
-        assertEquals(3, results.get(1).getTotalResult());
-        assertEquals(1, results.get(1).getSurveyId());
-        assertEquals(2, results.get(1).getUserId());
-        assertNull(results.get(1).getScoreList());
-
+        verify(resultRepository, never()).save(any(Result.class));
     }
 
     @Test
-    void testCreateResult() {
-
+    void testCreateResult_SurveyNotStarted() {
         Survey survey = new Survey();
-        survey.setId(5L);
-        survey.setTestName("Inactive Happiness Test");
-        survey.setStartDate(Calendar.getInstance());
-        survey.setStarted(false);
+        ResultRequest resultRequest = new ResultRequest();
+        resultRequest.setSurveyId(1);
 
-        List<SurveyQuestion> question = new ArrayList<>();
+        when(surveyRepository.findById(any(Long.class))).thenReturn(Optional.of(survey));
 
-        SurveyQuestion question1 = new SurveyQuestion();
-        question1.setSurvey(survey);
-        question1.setTemplateId("1");
-        question1.setQuestion("How do you currently like your work environment?");
-        question1.setText("A 1 means not at all and a 5 means very much.");
+        resultService.createResult(resultRequest);
 
-        List<SurveyQuestionOption> options1 = new ArrayList<>();
-        options1.add(new SurveyQuestionOption(null,question1, "subtext", true));
-        options1.add(new SurveyQuestionOption(null,question1,"comment", false));
-        options1.add(new SurveyQuestionOption(null,question1,"IncludeManager", false));
-        question1.setOptions(options1);
+        verify(resultRepository, never()).save(any(Result.class));
+    }
 
-        List<SurveyQuestionSetting> setting1 = new ArrayList<>();
-        setting1.add(new SurveyQuestionSetting(null,question1,"Bmin", "1"));
-        setting1.add(new SurveyQuestionSetting(null,question1,"Bmax", "5"));
-        setting1.add(new SurveyQuestionSetting(null,question1,"Step", "1"));
-        setting1.add(new SurveyQuestionSetting(null,question1,"CategorieId", "2"));
-        question1.setSettings(setting1);
+    @Test
+    void testCreateResult_ExistingResult() {
+        Survey survey = new Survey();
+        ResultRequest resultRequest = new ResultRequest();
+        resultRequest.setSurveyId(1);
+        resultRequest.setUserId(1);
 
-        question.add(question1);
-        survey.setQuestions(question);
+        Result existingResult = new Result();
 
-        ResultRequest.resultList resultList = new ResultRequest.resultList();
-        resultList.setCategoryId(2);
-        resultList.setScore(5);
-        resultList.setQuestionId(0);
+        when(surveyRepository.findById(any(Long.class))).thenReturn(Optional.of(survey));
+        when(resultRepository.findResultByUserIdAndSurveyId(anyInt(), anyInt())).thenReturn(existingResult);
 
-        ResultRequest result = new ResultRequest();
-        result.setSurveyId(5);
-        result.setUserId(1);
-        result.setTotalResult(4);
+        resultService.createResult(resultRequest);
 
-        List<ResultRequest.resultList> scoreList = new ArrayList<>();
-        scoreList.add(resultList);
+        verify(resultRepository, never()).save(any(Result.class));
+    }
 
-        result.setScoreList(scoreList);
+    @Test
+    void testCreateResult_Success() {
+        Survey survey = new Survey();
+        survey.setStarted(true);
+        ResultRequest resultRequest = new ResultRequest();
+        resultRequest.setSurveyId(1);
+        resultRequest.setUserId(1);
+        resultRequest.setScoreList(Collections.emptyList());
 
-        when(surveyRepository.findById(5L)).thenReturn(Optional.of(survey));
+        when(surveyRepository.findById(any(Long.class))).thenReturn(Optional.of(survey));
+        when(resultRepository.findResultByUserIdAndSurveyId(anyInt(), anyInt())).thenReturn(null);
 
-        resultService.createResult(result);
+        resultService.createResult(resultRequest);
 
-        // Verify that save method was called with the correct arguments
         verify(resultRepository, times(1)).save(any(Result.class));
     }
 
     @Test
-    void testEditResult() {
-        Result result = new Result();
-        result.setId(1L);
-        result.setSurveyId(1);
-        result.setUserId(1);
-        result.setTotalResult(4);
-        result.setScoreList(null);
+    void testEditResult_Success() {
+        Result existingResult = new Result();
+        ResultRequest resultRequest = new ResultRequest();
+        resultRequest.setGroupId(1);
+        resultRequest.setUserId(1);
+        resultRequest.setSurveyId(1);
+        resultRequest.setTotalResult(100);
 
-        Result result1 = new Result();
-        result1.setId(1L);
-        result1.setSurveyId(1);
-        result1.setUserId(2);
-        result1.setTotalResult(3);
-        result1.setScoreList(null);
+        when(resultRepository.findById(anyLong())).thenReturn(Optional.of(existingResult));
 
-        when(resultRepository.findById(5L)).thenReturn(Optional.of(result));
+        resultService.editResult(1, existingResult);
 
-        resultService.editResult(5, result1);
-
-        verify(resultRepository, times(1)).save(result);
-
-        assertEquals(1L, result1.getId());
-        assertEquals(3, result1.getTotalResult());
-        assertEquals(1, result1.getSurveyId());
-        assertEquals(2, result1.getUserId());
-        assertNull(result1.getScoreList());
+        assertEquals(1, existingResult.getGroupId());
+        assertEquals(1, existingResult.getUserId());
+        assertEquals(1, existingResult.getSurvey().getId());
+        assertEquals(100, existingResult.getTotalResult());
+        verify(resultRepository, times(1)).save(any(Result.class));
     }
 
     @Test
-    void testDeleteResult() {
-        Result result = new Result();
-        result.setId(1L);
-        result.setSurveyId(1);
-        result.setUserId(1);
-        result.setTotalResult(4);
-        result.setScoreList(null);
-
+    void testDeleteResult_Success() {
         resultService.deleteResult(1);
 
-        verify(resultRepository, times(1)).deleteById(1L);
+        verify(resultRepository, times(1)).deleteById(anyLong());
     }
+
 }

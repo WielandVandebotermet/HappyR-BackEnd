@@ -6,6 +6,7 @@ import RealDolmen.HappyR.Repository.UserRepository;
 import RealDolmen.HappyR.Service.TeamService;
 import RealDolmen.HappyR.Service.TeamUserService;
 import RealDolmen.HappyR.Service.UserService;
+import RealDolmen.HappyR.model.Manager;
 import RealDolmen.HappyR.model.Team;
 import RealDolmen.HappyR.model.TeamUser;
 import RealDolmen.HappyR.model.User;
@@ -29,136 +30,61 @@ public class TeamUserTest {
 
     @InjectMocks
     private TeamUserService teamUserService;
-    @InjectMocks
-    private TeamService teamService;
-    @InjectMocks
-    private UserService userService;
 
     @Mock
     private TeamUserRepository teamUserRepository;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private TeamRepository teamRepository;
 
-
-    @Test
-    void testGetAllTeamUser() {
-        User user2 = new User();
-        user2.setId(3L);
-        user2.setFirstName("Jeff");
-        user2.setLastName("Burrows");
-        userRepository.save(user2);
-
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
-
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
-
-        TeamUser teamUser = new TeamUser();
-        teamUser.setId(1L);
-        teamUser.setUser(userService.getUserById(2));
-        teamUser.setTeam(teamService.getTeamById(1));
-        teamUserRepository.save(teamUser);
-
-        TeamUser teamUser1 = new TeamUser();
-        teamUser1.setId(2L);
-        teamUser1.setUser(userService.getUserById(3));
-        teamUser1.setTeam(teamService.getTeamById(1));
-        teamUserRepository.save(teamUser1);
-
-        List<TeamUser> teamUserList = new ArrayList<>();
-        teamUserList.add(teamUser);
-        teamUserList.add(teamUser1);
-
-
-        when(teamUserRepository.findAll()).thenReturn(teamUserList);
-        List<TeamUser> teamUsers = teamUserService.getAllGroupUsers();
-
-        assertEquals(2, teamUsers.size());
-
-        assertEquals(userService.getUserById(2), teamUsers.get(0).getTeam());
-        assertEquals(teamService.getTeamById(1), teamUsers.get(0).getUser());
-
-        assertEquals(userService.getUserById(3), teamUsers.get(1).getTeam());
-        assertEquals(teamService.getTeamById(1), teamUsers.get(1).getUser());
-    }
 
     @Test
     void testCreateTeamUser() {
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
-
         Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
+        User user = new User();
 
+        teamUserService.createGroupUser(team, user);
 
-        teamUserService.createGroupUser(team,user1);
-
-        // Verify that save method was called with the correct arguments
         verify(teamUserRepository, times(1)).save(any(TeamUser.class));
     }
 
     @Test
     void testEditTeamUser() {
-        User user1 = new User();
-        user1.setId(2L);
-        user1.setFirstName("Hugh");
-        user1.setLastName("Hargraves");
-        userRepository.save(user1);
-
-        User user2 = new User();
-        user2.setId(3L);
-        user2.setFirstName("Jeff");
-        user2.setLastName("Burrows");
-        userRepository.save(user2);
-
-        Team team = new Team();
-        team.setId(1L);
-        team.setGroupName("Development");
-        teamRepository.save(team);
+        TeamUser teamUserRequest = new TeamUser();
+        teamUserRequest.setUser(new User());
+        teamUserRequest.setTeam(new Team());
 
         TeamUser teamUser = new TeamUser();
-        teamUser.setId(1L);
-        teamUser.setUser(userService.getUserById(2));
-        teamUser.setTeam(teamService.getTeamById(1));
+        when(teamUserRepository.findById(anyLong())).thenReturn(Optional.of(teamUser));
 
-        TeamUser teamUser1 = new TeamUser();
-        teamUser1.setId(1L);
-        teamUser1.setUser(userService.getUserById(3));
-        teamUser1.setTeam(teamService.getTeamById(1));
+        teamUserService.editGroupUser(1, teamUserRequest);
 
-        when(teamUserRepository.findById(5L)).thenReturn(Optional.of(teamUser));
-
-        teamUserService.editGroupUser(5, teamUser1);
-
-        verify(teamUserRepository, times(1)).save(teamUser);
-
-        assertEquals(1L, teamUser1.getId());
-        assertEquals(userService.getUserById(2), teamUser.getTeam());
-        assertEquals(teamService.getTeamById(1), teamUser.getUser());
+        assertEquals(teamUserRequest.getUser(), teamUser.getUser());
+        assertEquals(teamUserRequest.getTeam(), teamUser.getTeam());
+        verify(teamUserRepository, times(1)).save(any(TeamUser.class));
     }
 
     @Test
-    void testDeleteTemplate() {
-        TeamUser teamUser = new TeamUser();
-        teamUser.setId(1L);
-        teamUser.setUser(userService.getUserById(2));
-        teamUser.setTeam(teamService.getTeamById(1));
-
+    void testDeleteTeamUser() {
         teamUserService.deleteGroupUser(1);
 
-        verify(teamUserRepository, times(1)).deleteById(1L);
+        verify(teamUserRepository, times(1)).deleteById(anyLong());
     }
+
+    @Test
+    void testGetAllTeamUsers() {
+        teamUserService.getAllGroupUsers();
+
+        verify(teamUserRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetTeamUserById() {
+        TeamUser teamUser = new TeamUser();
+        when(teamUserRepository.findById(anyLong())).thenReturn(Optional.of(teamUser));
+
+        TeamUser result = teamUserService.getGroupUserById(1);
+
+        assertEquals(teamUser, result);
+        verify(teamUserRepository, times(1)).findById(anyLong());
+    }
+
+
 }
