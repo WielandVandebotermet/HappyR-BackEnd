@@ -1,21 +1,46 @@
 package RealDolmen.HappyR.model;
 
+import jakarta.persistence.*;
+import lombok.Builder;
+/**
+ * Model class representing a category.
+ */
+@Entity
+@Table(name = "Category") // Specifies the table name in the database
+@Builder // Lombok annotation for builder pattern
 public class Category {
-    private int id;
-    private String CategoryName;
-    private int ScoreImpact;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the category
 
-    public Category(int id, String categoryName, int scoreImpact) {
+    private String CategoryName; // Name of the category
+    private int ScoreImpact; // Impact score of the category
+
+    /**
+     * Default constructor.
+     */
+    public Category() {
+    }
+
+    /**
+     * Parameterized constructor to initialize category data.
+     *
+     * @param id            The ID of the category
+     * @param categoryName  The name of the category
+     * @param scoreImpact   The impact score of the category
+     */
+    public Category(Long id, String categoryName, int scoreImpact) {
         this.id = id;
         CategoryName = categoryName;
         ScoreImpact = scoreImpact;
     }
 
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -33,14 +58,5 @@ public class Category {
 
     public void setScoreImpact(int scoreImpact) {
         ScoreImpact = scoreImpact;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", CategoryName='" + CategoryName + '\'' +
-                ", ScoreImpact=" + ScoreImpact +
-                '}';
     }
 }

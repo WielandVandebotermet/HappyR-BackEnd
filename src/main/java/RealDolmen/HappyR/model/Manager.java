@@ -1,46 +1,66 @@
 package RealDolmen.HappyR.model;
 
+import jakarta.persistence.*;
+import lombok.Builder;
+/**
+ * Model class representing a manager.
+ */
+@Entity // Specifies that this class is an entity
+@Table(name = "Manager") // Specifies the table name in the database
+@Builder // Lombok annotation to generate builder methods
 public class Manager {
-    private int id;
-    private int Userid;
-    private int Groupid;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the manager
 
-    public Manager(int id, int userid, int groupid) {
-        this.id = id;
-        Userid = userid;
-        Groupid = groupid;
+    @ManyToOne // Specifies a many-to-one relationship
+    @JoinColumn(name = "user_id") // Specifies the foreign key column in the database
+    private User user; // User associated with the manager
+
+    @ManyToOne // Specifies a many-to-one relationship
+    @JoinColumn(name = "group_id") // Specifies the foreign key column in the database
+    private Team team; // Team associated with the manager
+
+    /**
+     * Default constructor.
+     */
+    public Manager() {
     }
 
-    public int getId() {
+    /**
+     * Parameterized constructor to initialize manager data.
+     *
+     * @param id    The ID of the manager
+     * @param user  The user associated with the manager
+     * @param team  The team associated with the manager
+     */
+    public Manager(Long id, User user, Team team) {
+        this.id = id;
+        this.user = user;
+        this.team = team;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getUserid() {
-        return Userid;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserid(int userid) {
-        Userid = userid;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getGroupid() {
-        return Groupid;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setGroupid(int groupid) {
-        Groupid = groupid;
-    }
-
-    @Override
-    public String toString() {
-        return "Manager{" +
-                "id=" + id +
-                ", Userid=" + Userid +
-                ", Groupid=" + Groupid +
-                '}';
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

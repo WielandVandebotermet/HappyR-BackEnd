@@ -1,71 +1,102 @@
 package RealDolmen.HappyR.model;
 
-import java.util.Dictionary;
+import jakarta.persistence.*;
+import lombok.Builder;
+
 import java.util.List;
-
+/**
+ * Model class representing a result.
+ */
+@Builder // Lombok annotation to generate builder methods
+@Entity // Specifies that this class is an entity
+@Table(name = "Result") // Specifies the table name in the database
 public class Result {
-    private int id;
-    private int SurveyId;
-    private int UserId;
-    private int TotalResult;
-    private Dictionary ScoreList;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the result
 
-    public Result(int id, int surveyId, int userId, int totalResult, Dictionary scoreList) {
-        this.id = id;
-        SurveyId = surveyId;
-        UserId = userId;
-        TotalResult = totalResult;
-        ScoreList = scoreList;
+    @ManyToOne // Specifies a many-to-one relationship
+    private Survey survey; // Survey associated with the result
+
+    private int userId; // ID of the user associated with the result
+
+    private int groupId; // ID of the group associated with the result
+
+    private int totalResult; // Total result of the survey
+
+    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true) // Specifies a one-to-many relationship
+    private List<ResultScoreList> scoreList; // List of score lists associated with the result
+
+    /**
+     * Default constructor.
+     */
+    public Result() {
     }
 
-    public int getId() {
+    /**
+     * Parameterized constructor to initialize result data.
+     *
+     * @param id          The ID of the result
+     * @param survey      The survey associated with the result
+     * @param userId      The ID of the user associated with the result
+     * @param groupId     The ID of the group associated with the result
+     * @param totalResult The total result of the survey
+     * @param scoreList   The list of score lists associated with the result
+     */
+    public Result(Long id, Survey survey, int userId, int groupId, int totalResult, List<ResultScoreList> scoreList) {
+        this.id = id;
+        this.survey = survey;
+        this.userId = userId;
+        this.groupId = groupId;
+        this.totalResult = totalResult;
+        this.scoreList = scoreList;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getSurveyId() {
-        return SurveyId;
+    public Survey getSurvey() {
+        return survey;
     }
 
-    public void setSurveyId(int surveyId) {
-        SurveyId = surveyId;
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 
     public int getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(int userId) {
-        UserId = userId;
+        this.userId = userId;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public int getTotalResult() {
-        return TotalResult;
+        return totalResult;
     }
 
     public void setTotalResult(int totalResult) {
-        TotalResult = totalResult;
+        this.totalResult = totalResult;
     }
 
-    public Dictionary getScoreList() {
-        return ScoreList;
+    public List<ResultScoreList> getScoreList() {
+        return scoreList;
     }
 
-    public void setScoreList(Dictionary scoreList) {
-        ScoreList = scoreList;
-    }
-
-    @Override
-    public String toString() {
-        return "Result{" +
-                "id=" + id +
-                ", SurveyId=" + SurveyId +
-                ", UserId=" + UserId +
-                ", TotalResult=" + TotalResult +
-                ", ScoreList=" + ScoreList +
-                '}';
+    public void setScoreList(List<ResultScoreList> scoreList) {
+        this.scoreList = scoreList;
     }
 }
