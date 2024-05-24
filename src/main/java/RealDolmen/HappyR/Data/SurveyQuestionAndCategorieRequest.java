@@ -4,19 +4,33 @@ import java.util.List;
 
 public class SurveyQuestionAndCategorieRequest {
 
-    private int surveyId;
-    private String Question;
-    private String Text;
-    private String TemplateId;
-    private List<SurveyQuestionOptionRequest> options;
-    private List<SurveyQuestionSettingRequest> settings;
-    private String CategoryName;
-    private int ScoreImpact;
+    private int surveyId; // The ID of the survey
+    private String Question; // The question text
+    private String Text; // The question subtext
+    private String TemplateId; // The ID of the template
+    private List<SurveyQuestionOptionRequest> options; // The options for the question
+    private List<SurveyQuestionSettingRequest> settings; // The settings for the question
+    private String CategoryName; // The name of the category
+    private int ScoreImpact; // The impact score of the category
 
-
+    /**
+     * Default constructor.
+     */
     public SurveyQuestionAndCategorieRequest() {
     }
 
+    /**
+     * Parameterized constructor.
+     *
+     * @param surveyId     The ID of the survey
+     * @param question     The question text
+     * @param text         The question subtext
+     * @param templateId   The ID of the template
+     * @param options      The options for the question
+     * @param settings     The settings for the question
+     * @param categoryName The name of the category
+     * @param scoreImpact  The impact score of the category
+     */
     public SurveyQuestionAndCategorieRequest(int surveyId, String question, String text, String templateId, List<SurveyQuestionOptionRequest> options, List<SurveyQuestionSettingRequest> settings, String categoryName, int scoreImpact) {
         this.surveyId = surveyId;
         Question = question;

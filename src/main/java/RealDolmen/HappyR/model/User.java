@@ -8,30 +8,49 @@ import lombok.Builder;
 
 import java.util.List;
 import java.util.regex.Pattern;
-
-@Table(name = "User", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),})
-@Builder
-@Entity
+/**
+ * Model class representing a user in the system.
+ */
+@Entity // Specifies that this class is an entity
+@Table(name = "User", uniqueConstraints = {@UniqueConstraint(columnNames = "email")}) // Specifies the table name and unique constraints
+@Builder // Lombok annotation for builder pattern
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @Column(unique = true, nullable = false)
-    private String authId;
-    private String FullName;
-    private String FirstName;
-    private String LastName;
-    private String email;
-    private String profileImage;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the user
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<PushNotification> pushNotifications;
+    @Column(unique = true, nullable = false) // Specifies unique constraint for email column
+    private String authId; // Authentication ID of the user
 
+    private String FullName; // Full name of the user
+    private String FirstName; // First name of the user
+    private String LastName; // Last name of the user
+    private String email; // Email address of the user
+    private String profileImage; // Profile image URL of the user
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // One-to-many relationship with PushNotification entity
+    @JsonIgnore // Ignores this property during JSON serialization
+    private List<PushNotification> pushNotifications; // List of push notifications associated with the user
+
+    /**
+     * Default constructor.
+     */
     public User() {
     }
 
+    /**
+     * Parameterized constructor to initialize user data.
+     *
+     * @param id                 The ID of the user
+     * @param authId             The authentication ID of the user
+     * @param fullName           The full name of the user
+     * @param firstName          The first name of the user
+     * @param lastName           The last name of the user
+     * @param email              The email address of the user
+     * @param profileImage       The profile image URL of the user
+     * @param pushNotifications  The list of push notifications associated with the user
+     */
     public User(Long id, String authId, String fullName, String firstName, String lastName, String email, String profileImage, List<PushNotification> pushNotifications) {
         this.id = id;
         this.authId = authId;

@@ -6,16 +6,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Data class representing a result request.
+ */
 public class ResultRequest {
-    private int surveyId;
-    private int userId;
-    private int groupId;
-    private int totalResult;
-    private List<ResultRequest.resultList> scoreList; // Modified type
+    private int surveyId; // The ID of the survey
+    private int userId; // The ID of the user
+    private int groupId; // The ID of the group
+    private int totalResult; // The total result
+    private List<resultList> scoreList; // The list of result scores
 
+    /**
+     * Default constructor.
+     */
     public ResultRequest() {
     }
 
+    /**
+     * Parameterized constructor to initialize result request data.
+     *
+     * @param surveyId    The ID of the survey
+     * @param userId      The ID of the user
+     * @param totalResult The total result
+     * @param scoreList   The list of result scores
+     */
     public ResultRequest(int surveyId, int userId, int totalResult, List<resultList> scoreList) {
         this.surveyId = surveyId;
         this.userId = userId;
@@ -63,14 +77,27 @@ public class ResultRequest {
         this.scoreList = scoreList;
     }
 
-    public static class resultList { // Made static
-        private int questionId;
-        private int categoryId;
-        private int score;
+    /**
+     * Static inner class representing a result list.
+     */
+    public static class resultList {
+        private int questionId; // The ID of the question
+        private int categoryId; // The ID of the category
+        private int score; // The score
 
+        /**
+         * Default constructor.
+         */
         public resultList() {
         }
 
+        /**
+         * Parameterized constructor to initialize result list data.
+         *
+         * @param questionId The ID of the question
+         * @param categoryId The ID of the category
+         * @param score      The score
+         */
         public resultList(int questionId, int categoryId, int score) {
             this.questionId = questionId;
             this.categoryId = categoryId;

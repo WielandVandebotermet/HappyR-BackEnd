@@ -2,24 +2,37 @@ package RealDolmen.HappyR.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-@Entity
+/**
+ * Model class representing questions associated with a survey template.
+ */
+@Entity // Specifies that this class is an entity
 public class TemplateQuestion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the template question
 
-    @ManyToOne
-    @JoinColumn(name = "template_id")
-    @JsonIgnore
+    @ManyToOne // Specifies many-to-one relationship with Template entity
+    @JoinColumn(name = "template_id") // Specifies the foreign key column
+    @JsonIgnore // Ignores this property during JSON serialization
+    private Template template; // Template associated with the question
 
-    private Template template;
-    private String Question;
-    private String Text;
+    private String Question; // The question text
+    private String Text; // Additional text related to the question
 
+    /**
+     * Default constructor.
+     */
     public TemplateQuestion() {
     }
 
+    /**
+     * Parameterized constructor to initialize template question data.
+     *
+     * @param id       The ID of the template question
+     * @param template The template associated with the question
+     * @param question The text of the question
+     * @param text     Additional text related to the question
+     */
     public TemplateQuestion(Long id, Template template, String question, String text) {
         this.id = id;
         this.template = template;

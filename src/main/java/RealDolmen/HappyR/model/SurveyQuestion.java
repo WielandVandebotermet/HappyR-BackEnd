@@ -7,36 +7,52 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-
-@Setter
-@Getter
-@Entity
-@Builder
+/**
+ * Model class representing a survey question.
+ */
+@Setter // Lombok annotation to generate setter methods
+@Getter // Lombok annotation to generate getter methods
+@Entity // Specifies that this class is an entity
+@Builder // Provides a builder pattern for creating instances of the class
 public class SurveyQuestion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the survey question
 
-    @ManyToOne
-    @JoinColumn(name = "survey_id")
-    @JsonIgnore
-    private Survey survey;
-
-    @OneToMany(mappedBy = "surveyQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SurveyQuestionOption> options;
+    @ManyToOne // Specifies a many-to-one relationship
+    @JoinColumn(name = "survey_id") // Specifies the foreign key column name
+    @JsonIgnore // Ignores this property during JSON serialization/deserialization
+    private Survey survey; // The survey associated with the question
 
     @OneToMany(mappedBy = "surveyQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SurveyQuestionSetting> settings;
+    private List<SurveyQuestionOption> options; // List of options associated with the question
 
-    private String Question;
+    @OneToMany(mappedBy = "surveyQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SurveyQuestionSetting> settings; // List of settings associated with the question
 
-    private String TemplateId;
+    private String Question; // The question text
 
-    private String Text;
+    private String TemplateId; // The template ID associated with the question
 
+    private String Text; // Additional text related to the question
+
+    /**
+     * Default constructor.
+     */
     public SurveyQuestion() {
     }
 
+    /**
+     * Parameterized constructor to initialize survey question data.
+     *
+     * @param id         The ID of the survey question
+     * @param survey     The survey associated with the question
+     * @param options    The list of options associated with the question
+     * @param settings   The list of settings associated with the question
+     * @param question   The question text
+     * @param templateId The template ID associated with the question
+     * @param text       Additional text related to the question
+     */
     public SurveyQuestion(Long id, Survey survey, List<SurveyQuestionOption> options, List<SurveyQuestionSetting> settings, String question, String templateId, String text) {
         this.id = id;
         this.survey = survey;

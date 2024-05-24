@@ -4,14 +4,25 @@ import RealDolmen.HappyR.model.PushNotification;
 import RealDolmen.HappyR.model.User;
 import jakarta.persistence.Column;
 
+/**
+ * Data class representing a subscription request for push notifications.
+ */
 public class SubscriptionRequest {
-    private String userId;
-    private String token;
+    private String userId; // The ID of the user
+    private String token; // The token for push notifications
 
-
+    /**
+     * Default constructor.
+     */
     public SubscriptionRequest() {
     }
 
+    /**
+     * Parameterized constructor.
+     *
+     * @param userId The ID of the user
+     * @param token  The token for push notifications
+     */
     public SubscriptionRequest(String userId, String token) {
         this.userId = userId;
         this.token = token;

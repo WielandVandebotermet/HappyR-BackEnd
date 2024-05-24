@@ -2,25 +2,37 @@ package RealDolmen.HappyR.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-
-@Builder
-@Entity
-@Table(name = "PushNotification")
+/**
+ * Model class representing a push notification.
+ */
+@Builder // Lombok annotation to generate builder methods
+@Entity // Specifies that this class is an entity
+@Table(name = "PushNotification") // Specifies the table name in the database
 public class PushNotification {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the push notification
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne // Specifies a many-to-one relationship
+    @JoinColumn(name = "user_id") // Specifies the foreign key column in the database
+    private User user; // User associated with the push notification
 
-    @Column(unique = true, nullable = false)
-    private String token;
+    @Column(unique = true, nullable = false) // Specifies column constraints
+    private String token; // Token associated with the push notification
 
+    /**
+     * Default constructor.
+     */
     public PushNotification() {
     }
 
+    /**
+     * Parameterized constructor to initialize push notification data.
+     *
+     * @param id    The ID of the push notification
+     * @param user  The user associated with the push notification
+     * @param token The token associated with the push notification
+     */
     public PushNotification(Long id, User user, String token) {
         this.id = id;
         this.user = user;

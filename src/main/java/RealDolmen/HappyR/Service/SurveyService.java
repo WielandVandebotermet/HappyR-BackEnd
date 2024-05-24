@@ -11,14 +11,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Service class for managing operations related to surveys.
+ */
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor // Generates a constructor with required arguments for the final fields
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final SurveyQuestionRepository surveyQuestionRepository;
     private final CategoryRepository categoryRepository;
 
+    /**
+     * Creates a new survey.
+     *
+     * @param surveyRequest The survey object to be created.
+     */
     public void createSurvey(SurveyRequest surveyRequest) {
         Survey survey = Survey.builder()
                 .testName(surveyRequest.getTestName())
@@ -31,6 +38,12 @@ public class SurveyService {
         surveyRepository.save(survey);
     }
 
+    /**
+     * Edits an existing survey.
+     *
+     * @param id            The ID of the survey to be edited.
+     * @param surveyRequest The updated survey object.
+     */
     public void editSurvey(int id, SurveyRequest surveyRequest) {
         Survey survey = surveyRepository.findById((long) id).orElse(null);
 
@@ -45,6 +58,12 @@ public class SurveyService {
         }
     }
 
+    /**
+     * Edits the started status of a survey.
+     *
+     * @param survey  The survey to be edited.
+     * @param started The new started status.
+     */
     public void editSurveyStarted(Survey survey, boolean started) {
         if (survey != null) {
             survey.setStarted(started);
@@ -52,38 +71,83 @@ public class SurveyService {
         }
     }
 
+    /**
+     * Deletes a survey by its ID.
+     *
+     * @param id The ID of the survey to be deleted.
+     */
     public void deleteSurvey(int id) {
         surveyRepository.deleteById((long) id);
     }
 
+    /**
+     * Retrieves a survey question by its ID.
+     *
+     * @param id The ID of the survey question.
+     * @return The survey question object if found, otherwise null.
+     */
     public SurveyQuestion getSurveyQuestionById(int id) {
         return surveyQuestionRepository.findById((long) id).orElse(null);
     }
 
+    /**
+     * Retrieves all surveys.
+     *
+     * @return A list of all surveys.
+     */
     public List<Survey> getAllSurveys() {
         List<Survey> surveys = surveyRepository.findAll();
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
+    /**
+     * Retrieves a survey by its ID.
+     *
+     * @param id The ID of the survey.
+     * @return The survey object if found, otherwise null.
+     */
     public Survey getSurveyById(int id) {
         return surveyRepository.findById((long) id).orElse(null);
     }
 
+    /**
+     * Retrieves surveys by user ID.
+     *
+     * @param userId The ID of the user.
+     * @return A list of surveys associated with the user.
+     */
     public List<Survey> getSurveysByUserId(int userId) {
         List<Survey> surveys = surveyRepository.findSurveysByUserId((long) userId);
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
+    /**
+     * Retrieves surveys by manager ID.
+     *
+     * @param managerId The ID of the manager.
+     * @return A list of surveys associated with the manager.
+     */
     public List<Survey> getSurveysByManagerId(int managerId) {
         List<Survey> surveys = surveyRepository.findSurveysByManagerId(managerId);
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
+    /**
+     * Retrieves surveys results by manager ID.
+     *
+     * @param managerId The ID of the manager.
+     * @return A list of surveys results associated with the manager.
+     */
     public List<Survey> getSurveysResultsByManagerId(int managerId) {
         List<Survey> surveys = surveyRepository.findSurveysResultsByManagerId(managerId);
         return surveys.stream().map(this::mapToSurveyResponse).toList();
     }
 
+    /**
+     * Creates a survey question along with its category.
+     *
+     * @param surveyQuestionAndCategorieRequest The request containing information about the survey question and category.
+     */
     public void createSurveyQuestionAndCategory(SurveyQuestionAndCategorieRequest surveyQuestionAndCategorieRequest) {
         Survey survey = surveyRepository.findById((long) surveyQuestionAndCategorieRequest.getSurveyId()).orElse(null);
 
@@ -137,6 +201,12 @@ public class SurveyService {
         }
     }
 
+    /**
+     * Edits a survey question along with its category.
+     *
+     * @param id                                  The ID of the survey question.
+     * @param surveyQuestionAndCategorieRequest The updated request containing information about the survey question and category.
+     */
     public void editSurveyQuestionAndCategory(int id, SurveyQuestionAndCategorieRequest surveyQuestionAndCategorieRequest) {
         SurveyQuestion question = surveyQuestionRepository.findById((long) id).orElse(null);
 
@@ -185,6 +255,11 @@ public class SurveyService {
         }
     }
 
+    /**
+     * Creates a new survey question based on the provided request.
+     *
+     * @param surveyQuestionRequest The request containing information about the survey question.
+     */
     public void createSurveyQuestion(SurveyQuestionRequest surveyQuestionRequest) {
         Survey survey = surveyRepository.findById((long) surveyQuestionRequest.getSurveyId()).orElse(null);
 
@@ -228,6 +303,12 @@ public class SurveyService {
         }
     }
 
+    /**
+     * Edits an existing survey question based on the provided request.
+     *
+     * @param id                     The ID of the survey question to edit.
+     * @param surveyQuestionRequest The updated request containing information about the survey question.
+     */
     public void editSurveyQuestion(int id, SurveyQuestionRequest surveyQuestionRequest) {
         SurveyQuestion question = surveyQuestionRepository.findById((long) id).orElse(null);
 
@@ -265,10 +346,21 @@ public class SurveyService {
         }
     }
 
+    /**
+     * Deletes a survey question based on the provided ID.
+     *
+     * @param id The ID of the survey question to delete.
+     */
     public void deleteSurveyQuestion(int id) {
         surveyQuestionRepository.deleteById((long) id);
     }
 
+    /**
+     * Maps a survey entity to a response object for presentation.
+     *
+     * @param survey The survey entity to map.
+     * @return A mapped survey response object.
+     */
     private Survey mapToSurveyResponse(Survey survey) {
         return Survey.builder()
                 .id(survey.getId())

@@ -5,24 +5,41 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "ResultScoreList")
+/**
+ * Model class representing a result score list.
+ */
+@Entity // Specifies that this class is an entity
+@Table(name = "ResultScoreList") // Specifies the table name in the database
 public class ResultScoreList {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the result score list
 
-    @ManyToOne
-    @JsonIgnore
-    private Result result;
+    @ManyToOne // Specifies a many-to-one relationship
+    @JsonIgnore // Ignores this property during JSON serialization/deserialization
+    private Result result; // Result associated with the score list
 
-    private int questionId;
-    private int score;
-    private int categoryId;
+    private int questionId; // ID of the question associated with the score
 
+    private int score; // Score value
+
+    private int categoryId; // ID of the category associated with the score
+
+    /**
+     * Default constructor.
+     */
     public ResultScoreList() {
     }
 
+    /**
+     * Parameterized constructor to initialize result score list data.
+     *
+     * @param id          The ID of the result score list
+     * @param result      The result associated with the score list
+     * @param questionId  The ID of the question associated with the score
+     * @param score       The score value
+     * @param categoryId  The ID of the category associated with the score
+     */
     public ResultScoreList(Long id, Result result, int questionId, int score, int categoryId) {
         this.id = id;
         this.result = result;

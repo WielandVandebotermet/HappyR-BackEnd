@@ -2,25 +2,37 @@ package RealDolmen.HappyR.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-@Entity
+/**
+ * Model class representing options associated with a survey template.
+ */
+@Entity // Specifies that this class is an entity
 public class TemplateOption {
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the template option
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @ManyToOne // Specifies many-to-one relationship with Template entity
+    @JoinColumn(name = "template_id") // Specifies the foreign key column
+    @JsonIgnore // Ignores this property during JSON serialization
+    private Template template; // Template associated with the option
 
-    @ManyToOne
-    @JoinColumn(name = "template_id")
-    @JsonIgnore
-    private Template template;
+    private String Setting; // Setting of the option
+    private boolean SettingValue; // Value of the setting
 
-    private String Setting;
-    private boolean SettingValue;
-
+    /**
+     * Default constructor.
+     */
     public TemplateOption() {
     }
 
+    /**
+     * Parameterized constructor to initialize template option data.
+     *
+     * @param id           The ID of the template option
+     * @param template     The template associated with the option
+     * @param setting      The setting of the option
+     * @param settingValue The value of the setting
+     */
     public TemplateOption(Long id, Template template, String setting, boolean settingValue) {
         this.id = id;
         this.template = template;

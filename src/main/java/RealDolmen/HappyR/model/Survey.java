@@ -7,35 +7,51 @@ import lombok.Builder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-@Entity
-@Table(name = "Survey")
-@Builder
+/**
+ * Model class representing a survey.
+ */
+@Entity // Specifies that this class is an entity
+@Table(name = "Survey") // Specifies the table name in the database
+@Builder // Provides a builder pattern for creating instances of the class
 public class Survey {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id // Specifies the primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) // Specifies the generation strategy for the primary key
+    private Long id; // ID of the survey
 
-    @ElementCollection
-    private List<Long> groupList;
+    @ElementCollection // Specifies a collection of basic types or embeddable objects
+    private List<Long> groupList; // List of group IDs associated with the survey
 
-    private String testName;
+    private String testName; // Name of the survey
 
-    @Temporal(TemporalType.DATE)
-    private Calendar startDate;
+    @Temporal(TemporalType.DATE) // Specifies the type for date and/or time data
+    private Calendar startDate; // Start date of the survey
 
-    private Boolean started;
-
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SurveyQuestion> questions;
+    private Boolean started; // Indicates if the survey has started
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Result> results;
+    private List<SurveyQuestion> questions; // List of survey questions associated with the survey
 
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Ignores this property during JSON serialization/deserialization
+    private List<Result> results; // List of results associated with the survey
+
+    /**
+     * Default constructor.
+     */
     public Survey() {
     }
 
+    /**
+     * Parameterized constructor to initialize survey data.
+     *
+     * @param id          The ID of the survey
+     * @param groupList   The list of group IDs associated with the survey
+     * @param testName    The name of the survey
+     * @param startDate   The start date of the survey
+     * @param started     Indicates if the survey has started
+     * @param questions   The list of survey questions associated with the survey
+     * @param results     The list of results associated with the survey
+     */
     public Survey(Long id, List<Long> groupList, String testName, Calendar startDate, Boolean started, List<SurveyQuestion> questions, List<Result> results) {
         this.id = id;
         this.groupList = groupList;
